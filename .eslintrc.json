@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest/globals": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb", "prettier"],
   "parserOptions": {
@@ -11,6 +12,6 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["jest", "react"],
   "rules": {}
 }
