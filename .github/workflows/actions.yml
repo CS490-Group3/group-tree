@@ -1,0 +1,35 @@
+name: GitHub Actions CI
+
+on: [push, pull_request]
+
+jobs:
+  pylint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --requirement requirements.txt
+          python3 -m pip install pylint
+      - name: Analyzing Python files with pylint
+        run: |
+          python3 -m pylint $(find ./ -type f | grep '\.py$' | xargs)
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Analyzing JS files with eslint
+        run: |
+          npx eslint ./
