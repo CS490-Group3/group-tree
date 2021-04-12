@@ -1,6 +1,7 @@
 """
 Template Flask app
 """
+# pylint: disable=import-error
 import os
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
