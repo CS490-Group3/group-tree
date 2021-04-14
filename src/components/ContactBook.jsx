@@ -15,7 +15,7 @@ export default function ContactBook() {
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone Number</th>
-                        <th scope="col">Priority Level</th>
+                        <th scope="col">Next Reminder</th>
                         <th scope="col"> </th>
                     </tr>
                 </thead>
@@ -25,7 +25,7 @@ export default function ContactBook() {
                        <td>Mark Otto</td>
                        <td>otto@gmail.com</td>
                        <td>732-000-0000</td>
-                       <td>5</td>
+                       <td>5 Days</td>
                        <td><button type="button" className="edit-button">Edit</button></td>
                     </tr>
                     <tr>
@@ -33,7 +33,7 @@ export default function ContactBook() {
                         <td>Jacob Thornton</td>
                         <td>thornton@gmail.com</td>
                         <td>732-000-5660</td>
-                        <td>2</td>
+                        <td>2 Days</td>
                         <td><button type="button" className="edit-button">Edit</button></td>
 
                     </tr>
@@ -42,7 +42,7 @@ export default function ContactBook() {
                         <td>Larry the Bird</td>
                         <td>larry@gmail.com</td>
                         <td>732-567-0000</td>
-                        <td>5</td>
+                        <td>5 Days</td>
                         <td><button type="button" className="edit-button">Edit</button></td>
 
                     </tr>

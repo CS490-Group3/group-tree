@@ -21,7 +21,8 @@ class Contact(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True)
     name = DB.Column(DB.String(30), nullable=False)
     emails = DB.Column(DB.String(30), nullable=False)
-    priorityLevel = DB.Column(DB.Integer, nullable=False)
+    phoneNumber = DB.Column(DB.String(30), nullable=False) 
+    nextReminder = DB.Column(DB.Integer, nullable=False)
     person_id = DB.Column(DB.Integer, DB.ForeignKey('person.id'), nullable=False)
 
     def __repr__(self):
