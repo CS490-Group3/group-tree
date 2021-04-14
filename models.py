@@ -1,22 +1,29 @@
-from app import db
+# pylint: disable=no-member
+# pylint: disable=too-few-public-methods
+"""This file creates our database with contacts and persons"""
+from app import DB
 
-class Person(db.Model): 
-    __tablename__ = 'users'
+class Person(DB.Model):
+    """This class creates persons table"""
+    __tablename__ = 'person'
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False)
+    id = DB.Column(DB.Integer, primary_key=True)
+    username = DB.Column(DB.String(30), nullable=False)
+    contacts = DB.relationship('Contact', backref='person', lazy=True)
 
-    def __repr__(self): 
+    def __repr__(self):
         return '<User %r>' % self.username
 
-class Contact(db.Model): 
+class Contact(DB.Model):
+    """This class creates contacts table"""
     __tablename__ = 'contacts'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), nullable=False)
-    emails = db.Column(db.String(30), nullable=False)
-    priorityLevel = db.Column(db.Integer, nullable=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    id = DB.Column(DB.Integer, primary_key=True)
+    name = DB.Column(DB.String(30), nullable=False)
+    emails = DB.Column(DB.String(30), nullable=False)
+    priorityLevel = DB.Column(DB.Integer, nullable=False)
+    person_id = DB.Column(DB.Integer, DB.ForeignKey('person.id'), nullable=False)
 
-    def __repr__(self): 
+    def __repr__(self):
         return '<Contact %r>' % self.name
+        
