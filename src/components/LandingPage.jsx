@@ -30,9 +30,21 @@ export default function LandingPage() {
             </ul>
           </div>
           </div>
-          <div className="container">
+          <div className="container-form">
           <div className="item">
-          <h2>Test</h2>
+            <form>
+              <div className="form-row">
+                <div className="col">
+                  <input type="text" className="form-control" placeholder="Person involved"/>
+                </div>
+                <div className="col">
+    <input className="form-control" type="date" placeholder="Date" id="example-date-input"/>    
+    </div>
+                <div className="col">
+                  <input className="btn btn-primary" type="submit" value="Add new event"/>
+                </div>
+              </div>
+            </form>
           </div>
           </div>
         </div>
