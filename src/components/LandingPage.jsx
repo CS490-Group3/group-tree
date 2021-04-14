@@ -35,7 +35,7 @@ export default function LandingPage() {
             <form>
               <div className="form-row">
                 <div className="col">
-                  <input type="text" className="form-control" placeholder="Person involved"/>
+                  <input type="text" className="form-control" placeholder="Person"/>
                 </div>
                 <div className="col">
     <input className="form-control" type="date" placeholder="Date" id="example-date-input"/>    
