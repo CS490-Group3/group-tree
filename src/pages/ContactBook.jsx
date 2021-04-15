@@ -10,31 +10,23 @@ export default function ContactBook() {
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
-
     
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-  
-  
-    const onSubmit = (data) => console.log(data);
-
     
-    /*
-    const [contacts, setContacts] = useState(
-       { name: 'Lary', email: '@gmail.com' },
-    //    { name: 'Pine', email: '@gmail.com' },
-    //    { name: 'pal', email: '@gmail.com' }
-    //    ); // all the users
-    
-    */
-    const contacts = [
-    { name: 'Chris Doe', email:"@gmail", phoneNumber: "732-344-0000"},
-    { name: 'Nick Doe', email:"@gmail", phoneNumber: "732-344-0000"},
-    { name: 'Jacov Doe', email:"@gmail", phoneNumber: "732-344-0000"}
-    ];
+    const [contacts, setContacts] = useState([
+        { name: 'Chris Doe', email:"@gmail", phoneNumber: "732-344-0000"},
+        { name: 'Nick Doe', email:"@gmail", phoneNumber: "732-344-0000"},
+        { name: 'Jacov Doe', email:"@gmail", phoneNumber: "732-344-0000"}
+    ]);
+  
+    function onSubmit(data) {
+        console.log(data);
+        setContacts(copyContacts => [...copyContacts, data])
+    }
   
     return (
         <div>
