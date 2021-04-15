@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/__pycache__/
 /.pnp
 .pnp.js
 
@@ -23,3 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
+sql.env

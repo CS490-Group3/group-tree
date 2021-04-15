@@ -1,0 +1,7 @@
+.edit-button {
+    display: none;
+}
+
+tr:hover .edit-button {
+    display: block;
+}

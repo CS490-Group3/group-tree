@@ -4,13 +4,26 @@ Template Flask app
 
 import os
 
-from flask import Flask, request, send_from_directory
 import requests
+from flask import Flask, request, send_from_directory
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv, find_dotenv
+
+
+load_dotenv(find_dotenv())
+
+app = Flask(__name__, static_folder="./build/static")
+# Point SQLAlchemy to Heroku database
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# Gets rid of a warning
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+# IMPORTANT: This must be AFTER creating db variable to prevent circular import issues
+db.create_all()
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
-
-app = Flask(__name__, static_folder="./build/static")
 
 
 @app.route("/login", methods=["POST"])
