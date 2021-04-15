@@ -22,9 +22,6 @@ db = SQLAlchemy(app)
 # IMPORTANT: This must be AFTER creating db variable to prevent circular import issues
 db.create_all()
 
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
-GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
-
 
 @app.route("/login", methods=["POST"])
 def login():
