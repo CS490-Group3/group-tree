@@ -46,6 +46,12 @@ def add_contact(user_name, user_email, user_phone):
 
 #add_contact("aria", "aria@gmail.com", "000000344")
 
+def get_contact_username(id_num):
+    temp = models.Person.query.filter_by(id=id_num).first()
+    username = temp.username
+    print(username)
+# get_contact_username(2)
+
 @app.route("/login", methods=["POST"])
 def login():
     """
