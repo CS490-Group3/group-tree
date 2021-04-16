@@ -26,16 +26,18 @@ from exts import db
 import models
 db.create_all()
 
-CURRENT_USERID = 1 #to store the id of current user (t o d o)
+CURRENT_USERID = '11' #to store the id of current user (t o d o)
 
 def add_user(sub, name):
     ''' helper method to add new user to database '''
     temp = models.Person.query.filter_by(id=sub).first()
     if not temp:
         #working with databsse
+        print("worked")
         new_user = models.Person(id=sub, username=name)
         db.session.add(new_user)
         db.session.commit()
+# add_user(CURRENT_USERID, "john")
 
 def add_contact(user_name, user_email, user_phone):
     ''' helper method to add new contact to database '''
@@ -46,25 +48,27 @@ def add_contact(user_name, user_email, user_phone):
     db.session.add(contact)
     db.session.commit()
 
-add_contact("aria", "aria@gmail.com", "000000344")
+# add_contact("arias", "arias123@gmail.com", "000000344")
 
 def get_user_username(id_num):
     ''' helper method to retrieve username from database '''
     temp = models.Person.query.filter_by(id=id_num).first()
+    #id_num - temp.id
+    #print(id_num)
     username = temp.username
     print(username)
-# get_user_username(2)
+# get_user_username(CURRENT_USERID)
 
 def get_contact_info(id_num):
     ''' helper method to retrieve contact info from database '''
-    result = db.engine.execute("SELECT * FROM CONTACTS")
+    result = db.engine.execute("SELECT * FROM CONTACTS WHERE person_id = " + id_num)
     print("CONTACT LIST FOR ID \'" + str(id_num) + "\'\n")
     for row in result:
         # print(r[0]) # Access by positional index
         print("Contact Name: " + row['name']) # Access by column name as a string
         # r_dict = dict(r.items()) # convert to dict keyed by column names
 
-# get_contact_info(1)
+# get_contact_info(CURRENT_USERID)
 
 @app.route("/login", methods=["POST"])
 def login():
