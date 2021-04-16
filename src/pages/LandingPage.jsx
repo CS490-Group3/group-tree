@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import EVENT_DATA from '../assets/EventData';
+import ActivityOption from '../components/ActivityOption';
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
@@ -12,13 +13,13 @@ export default function LandingPage() {
   const [activityList, setList] = useState([]);
 
   function updateActivityList() {
+    /* Todo: clean activity data (change all to lowercase) before adding to database */
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
     setList(unique);
   }
 
   useEffect(() => {
     updateActivityList();
-
     console.log('loaded!');
     console.log(activityList);
   });
@@ -63,20 +64,7 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
-                <label htmlFor="exampleSelect1">
-                  Activity
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    placeholder="Activity"
-                  >
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-                </label>
+                <ActivityOption activityList={activityList} />
               </div>
               <div className="col center">
                 <input
