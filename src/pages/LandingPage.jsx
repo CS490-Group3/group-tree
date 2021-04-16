@@ -13,6 +13,7 @@ export default function LandingPage() {
   const [activityList, setList] = useState([]);
 
   function updateActivityList() {
+    /* Todo: clean activity data (change all to lowercase) before adding to database */
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
     setList(unique);
   }
