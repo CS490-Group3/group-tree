@@ -29,19 +29,45 @@ export default function LandingPage() {
         <div className="item">
           <form>
             <div className="form-row">
-              <div className="col">
-                <input type="text" className="form-control" placeholder="Person" />
+              <div className="col center">
+                <label htmlFor="exampleTextarea">
+                  Person
+                  <input type="text" className="form-control" placeholder="Person" />
+                </label>
               </div>
-              <div className="col">
+              <div className="col center">
+                <label htmlFor="example-date-input">
+                  Date
+                  <input
+                    className="form-control"
+                    type="date"
+                    placeholder="Date"
+                    id="example-date-input"
+                  />
+                </label>
+              </div>
+              <div className="col center">
+                <label htmlFor="exampleSelect1">
+                  Activity
+                  <select
+                    className="form-control"
+                    id="exampleSelect1"
+                    placeholder="Activity"
+                  >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </label>
+              </div>
+              <div className="col center">
                 <input
-                  className="form-control"
-                  type="date"
-                  placeholder="Date"
-                  id="example-date-input"
+                  className=" form-control btn btn-primary"
+                  type="submit"
+                  value="Add new event"
                 />
-              </div>
-              <div className="col">
-                <input className="btn btn-primary" type="submit" value="Add new event" />
               </div>
             </div>
           </form>
