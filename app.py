@@ -44,7 +44,7 @@ def add_contact(user_name, user_email, user_phone):
     db.session.add(contact)
     db.session.commit()
 
-add_contact("aria", "aria@gmail.com", "000000344")
+#add_contact("aria", "aria@gmail.com", "000000344")
 
 @app.route("/login", methods=["POST"])
 def login():
