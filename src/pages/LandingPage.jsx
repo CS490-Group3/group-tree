@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import EVENT_DATA from '../assets/EventData';
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
   function onClickDay(date) {
     console.log(date);
+    console.log(EVENT_DATA);
   }
+  const [activityList, setList] = useState([]);
+
+  function updateActivityList() {
+    const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
+    setList(unique);
+  }
+
+  useEffect(() => {
+    updateActivityList();
+
+    console.log('loaded!');
+    console.log(activityList);
+  });
+
   return (
     <div className="landing">
       <div className="container">
