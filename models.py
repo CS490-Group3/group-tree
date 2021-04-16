@@ -27,5 +27,17 @@ class Contact(db.Model):
     phoneNumber = db.Column(db.String(30), nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey("person.id"), nullable=False)
 
+class Events(db.Model):
+    """This class creates events table"""
+
+    __tablename__ = "events"
+
+    id = db.Column(db.Integer, primary_key=True)
+    contact_name = db.Column(db.String(30), nullable=False)
+    user_name = db.Column(db.String(30), nullable=False)
+    activity = db.Column(db.String(30), nullable=False)
+    date_time = db.Column(db.DateTime(), nullable=False)
+    person_id = db.Column(db.Integer, db.ForeignKey("person.id"), nullable=False)
+
     def __repr__(self):
         return "<Contact %r>" % self.name
