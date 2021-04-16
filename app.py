@@ -43,7 +43,7 @@ def add_contact(user_name, user_email, user_phone):
                              phoneNumber=user_phone, person_id=CURRENT_USERID)
     db.session.add(contact)
     db.session.commit()
-    
+
 add_contact("aria", "aria@gmail.com", "000000344")
 
 @app.route("/login", methods=["POST"])
