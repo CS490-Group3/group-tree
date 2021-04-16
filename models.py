@@ -1,5 +1,6 @@
 # pylint: disable=no-member
 # pylint: disable=too-few-public-methods
+# pylint: disable=import-error
 """This file creates our database with contacts and persons"""
 import os
 #from app import db

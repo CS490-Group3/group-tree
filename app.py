@@ -1,3 +1,5 @@
+# pylint: disable=no-member
+# pylint: disable=wrong-import-position
 """
 Template Flask app
 """
