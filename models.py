@@ -1,8 +1,21 @@
 # pylint: disable=no-member
 # pylint: disable=too-few-public-methods
 """This file creates our database with contacts and persons"""
-from app import db
+import os
+#from app import db
+from flask import Flask, request, send_from_directory
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
+
+app = Flask(__name__, static_folder="./build/static")
+# Point SQLAlchemy to Heroku database
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# Gets rid of a warning
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 class Person(db.Model):
     """This class creates persons table"""
