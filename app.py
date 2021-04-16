@@ -27,8 +27,8 @@ import models
 
 db.create_all()
 
-#to store the id of current user
-CURRENT_USERID = ""
+#to store the id of current user #TODO
+CURRENT_USERID = 1
 
 def add_user(sub, name):
     ''' helper method to add new user to database '''
@@ -66,8 +66,6 @@ def login():
             sub = profile["sub"]  # can use as primary key
             name = profile["name"]
             email = profile["email"]
-            global CURRENT_USERID
-            CURRENT_USERID = sub
             add_user(sub, name)
 
         print(sub, name, email)
