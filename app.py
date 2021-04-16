@@ -39,19 +39,31 @@ def add_user(sub, name):
 
 def add_contact(user_name, user_email, user_phone):
     ''' helper method to add new contact to database '''
+    # WE LIKELY NEED TO ADD A CHECK TO SEE IF DATA IS ALREADY IN DATABASE
+    # WILL NEED TO CHECK ID OF PERSON_ID FIRST BEFORE ADDING
     contact = models.Contact(name=user_name, emails=user_email,
                              phoneNumber=user_phone, person_id=CURRENT_USERID)
     db.session.add(contact)
     db.session.commit()
 
-#add_contact("aria", "aria@gmail.com", "000000344")
+add_contact("aria", "aria@gmail.com", "000000344")
 
-def get_contact_username(id_num):
+def get_user_username(id_num):
     ''' helper method to retrieve username from database '''
     temp = models.Person.query.filter_by(id=id_num).first()
     username = temp.username
     print(username)
-# get_contact_username(2)
+# get_user_username(2)
+
+def get_contact_info(id_num):
+    result = db.engine.execute("SELECT * FROM CONTACTS")
+    print("CONTACT LIST FOR ID \'" + str(id_num) + "\'\n")
+    for r in result:
+        # print(r[0]) # Access by positional index
+        print("Contact Name: " + r['name']) # Access by column name as a string
+        r_dict = dict(r.items()) # convert to dict keyed by column names
+
+get_contact_info(1)
 
 @app.route("/login", methods=["POST"])
 def login():
