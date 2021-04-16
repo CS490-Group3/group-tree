@@ -59,9 +59,9 @@ def get_contact_info(id_num):
     ''' helper method to retrieve contact info from database '''
     result = db.engine.execute("SELECT * FROM CONTACTS")
     print("CONTACT LIST FOR ID \'" + str(id_num) + "\'\n")
-    for r in result:
+    for row in result:
         # print(r[0]) # Access by positional index
-        print("Contact Name: " + r['name']) # Access by column name as a string
+        print("Contact Name: " + row['name']) # Access by column name as a string
         # r_dict = dict(r.items()) # convert to dict keyed by column names
 
 # get_contact_info(1)
