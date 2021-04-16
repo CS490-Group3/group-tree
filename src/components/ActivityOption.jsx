@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ActivityOption(prop) {
+function ActivityOption(prop) {
   const { activityList } = prop;
   return (
     <label htmlFor="exampleSelect1">
@@ -13,3 +13,5 @@ export default function ActivityOption(prop) {
     </label>
   );
 }
+
+export default ActivityOption;
