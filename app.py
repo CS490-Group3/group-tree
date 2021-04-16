@@ -8,23 +8,22 @@ import os
 
 import requests
 from flask import Flask, request, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-app = Flask(__name__, static_folder="./build/static")
-# Point SQLAlchemy to Heroku database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-# Gets rid of a warning
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+def create_app():
+    ''' helper method to create app'''
+    appp = Flask(__name__, static_folder="./build/static")
+    # Point SQLAlchemy to Heroku database
+    appp.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    # Gets rid of a warning
+    appp.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    return appp
 
-db = SQLAlchemy(app)
-
-# IMPORTANT: This must be AFTER creating db variable to prevent circular import
-# import models
+app = create_app()
+from exts import db
 import models
-
 db.create_all()
 
 CURRENT_USERID = 1 #to store the id of current user (t o d o)
@@ -44,6 +43,8 @@ def add_contact(user_name, user_email, user_phone):
                              phoneNumber=user_phone, person_id=CURRENT_USERID)
     db.session.add(contact)
     db.session.commit()
+    
+add_contact("aria", "aria@gmail.com", "000000344")
 
 @app.route("/login", methods=["POST"])
 def login():
