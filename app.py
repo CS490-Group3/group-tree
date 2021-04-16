@@ -27,8 +27,7 @@ import models
 
 db.create_all()
 
-#to store the id of current user #TODO
-CURRENT_USERID = 1
+CURRENT_USERID = 1 #to store the id of current user (t o d o)
 
 def add_user(sub, name):
     ''' helper method to add new user to database '''
