@@ -7,7 +7,7 @@ Template Flask app
 import os
 
 import requests
-from flask import Flask, request, send_from_directory, jsonify, Response
+from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
