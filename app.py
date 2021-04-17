@@ -7,7 +7,7 @@ Template Flask app
 import os
 
 import requests
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, jsonify, Response
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -46,25 +46,49 @@ def add_contact(user_name, user_email, user_phone):
     db.session.add(contact)
     db.session.commit()
 
-add_contact("aria", "aria@gmail.com", "000000344")
-
 def get_user_username(id_num):
     ''' helper method to retrieve username from database '''
     temp = models.Person.query.filter_by(id=id_num).first()
     username = temp.username
     print(username)
-# get_user_username(2)
+# get_user_username(URRENT_USERID)
 
 def get_contact_info(id_num):
     ''' helper method to retrieve contact info from database '''
     result = db.engine.execute("SELECT * FROM CONTACTS")
     print("CONTACT LIST FOR ID \'" + str(id_num) + "\'\n")
+    contacts = []
     for row in result:
         # print(r[0]) # Access by positional index
         print("Contact Name: " + row['name']) # Access by column name as a string
-        # r_dict = dict(r.items()) # convert to dict keyed by column names
+        r_dict = dict(row.items()) # convert to dict keyed by column names
+        contacts.append(r_dict)
+        
+    return contacts
 
-# get_contact_info(1)
+# get_contact_info(CURRENT_USERID) 
+
+# A route to return all of the contacts of current user
+@app.route('/api/v1/contacts/all', methods=['GET'])
+def api_all():
+    return jsonify(get_contact_info(CURRENT_USERID))
+    
+# A route to create or access a specific entry in our catalog based on request.
+@app.route('/api/v1/addContact', methods=['GET', 'POST'])
+def api_id():
+    # User wants to add new contact
+    if request.method == 'POST':
+        # Gets the JSON object from the body of request sent by client
+        request_data = request.get_json()
+        name = request_data['name']
+        email = request_data["email"]
+        phoneNumber = request_data["phoneNumber"]
+        add_contact(name, email, phoneNumber)
+        #return {'success': True} # Return success status if it worked
+
+    return jsonify(get_contact_info(CURRENT_USERID))
+
+
 
 @app.route("/login", methods=["POST"])
 def login():
