@@ -39,12 +39,14 @@ def add_user(sub, name):
 
 def add_contact(user_name, user_email, user_phone):
     ''' helper method to add new contact to database '''
-    # WE LIKELY NEED TO ADD A CHECK TO SEE IF DATA IS ALREADY IN DATABASE
-    # WILL NEED TO CHECK ID OF PERSON_ID FIRST BEFORE ADDING
-    contact = models.Contact(name=user_name, emails=user_email,
-                             phoneNumber=user_phone, person_id=CURRENT_USERID)
-    db.session.add(contact)
-    db.session.commit()
+    # checking if contact exits in database by email
+    temp = models.Contact.query.filter_by(email=user_email).first()
+
+    if not temp:
+        contact = models.Contact(name=user_name, emails=user_email,
+                                phoneNumber=user_phone, person_id=CURRENT_USERID)
+        db.session.add(contact)
+        db.session.commit()
 
 def get_user_username(id_num):
     ''' helper method to retrieve username from database '''
