@@ -19,11 +19,6 @@ export default function ContactBook() {
     formState: { errors },
   } = useForm();
 
-  function onSubmit(data) {
-    console.log(data);
-    setContacts((copyContacts) => [...copyContacts, data]);
-  }
-
   // Fetch all contacts when you first load the page
   useEffect(() => {
     window
@@ -40,6 +35,35 @@ export default function ContactBook() {
         setContacts(responseData);
       });
   }, []);
+
+  function addContact(contact) {
+    // setCreateStatus(false);
+
+    const data = JSON.stringify({
+      name: contact.name,
+      email: contact.email,
+      phoneNumber: contact.phoneNumber,
+    });
+    window
+      .fetch('/api/v1/addContact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data, // No query parameter, for POST we put in body
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+        setContacts(responseData);
+        // setCreateStatus(responseData.success);
+      });
+  }
+
+  function onSubmit(data) {
+    console.log(data);
+    // setContacts((copyContacts) => [...copyContacts, data]);
+    addContact(data);
+  }
 
   return (
     <div>
@@ -61,7 +85,7 @@ export default function ContactBook() {
           {contacts.map((c) => (
             <tr>
               <th>{c.name}</th>
-              <td>{c.email}</td>
+              <td>{c.emails}</td>
               <td>{c.phoneNumber}</td>
             </tr>
           ))}
