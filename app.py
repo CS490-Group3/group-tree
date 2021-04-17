@@ -7,7 +7,7 @@ Template Flask app
 import os
 
 import requests
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -29,7 +29,7 @@ import models
 
 db.create_all()
 
-CURRENT_USERID = 1  # to store the id of current user (t o d o)
+CURRENT_USERID = "11"  # to store the id of current user (t o d o)
 
 
 def add_user(sub, name):
@@ -42,19 +42,77 @@ def add_user(sub, name):
         db.session.commit()
 
 
+# add_user(CURRENT_USERID, "john")
+
+
 def add_contact(user_name, user_email, user_phone):
     """ helper method to add new contact to database """
-    contact = models.Contact(
-        name=user_name,
-        emails=user_email,
-        phoneNumber=user_phone,
-        person_id=CURRENT_USERID,
-    )
-    db.session.add(contact)
-    db.session.commit()
+    # checking if contact exits in database by email
+    temp = models.Contact.query.filter_by(emails=user_email).first()
+
+    if not temp:
+        contact = models.Contact(
+            name=user_name,
+            emails=user_email,
+            phoneNumber=user_phone,
+            person_id=CURRENT_USERID,
+        )
+        db.session.add(contact)
+        db.session.commit()
 
 
-# add_contact("aria", "aria@gmail.com", "000000344")
+def get_user_username(id_num):
+    """ helper method to retrieve username from database """
+    temp = models.Person.query.filter_by(id=id_num).first()
+    # id_num - temp.id
+    # print(id_num)
+    username = temp.username
+    print(username)
+
+
+def get_contact_info(id_num):
+    """ helper method to retrieve contact info from database """
+    result = db.engine.execute("SELECT * FROM CONTACTS WHERE person_id = " + id_num)
+    print("CONTACT LIST FOR ID '" + str(id_num) + "'\n")
+    contacts = []
+    for row in result:
+        # print(r[0]) # Access by positional index
+        print("Contact Name: " + row["name"])  # Access by column name as a string
+        r_dict = dict(row.items())  # convert to dict keyed by column names
+        contacts.append(r_dict)
+
+    return contacts
+
+
+# get_contact_info(CURRENT_USERID)
+
+# A route to return all of the contacts of current user
+@app.route("/api/v1/contacts/all", methods=["GET"])
+def api_all():
+    """
+    Endpoint for sending all contacts for current user
+    """
+    return jsonify(get_contact_info(CURRENT_USERID))
+
+
+# A route to create or access a specific entry in our catalog based on request.
+@app.route("/api/v1/addContact", methods=["GET", "POST"])
+def api_id():
+    """
+    Endpoint for adding a new contact
+    """
+    print("here")
+    # User wants to add new contact
+    if request.method == "POST":
+        # Gets the JSON object from the body of request sent by client
+        request_data = request.get_json()
+        name = request_data["name"]
+        email = request_data["email"]
+        phone_number = request_data["phoneNumber"]
+        add_contact(name, email, phone_number)
+        # return {'success': True} # Return success status if it worked
+
+    return jsonify(get_contact_info(CURRENT_USERID))
 
 
 @app.route("/login", methods=["POST"])
