@@ -40,7 +40,7 @@ def add_user(sub, name):
 def add_contact(user_name, user_email, user_phone):
     ''' helper method to add new contact to database '''
     # checking if contact exits in database by email
-    temp = models.Contact.query.filter_by(email=user_email).first()
+    temp = models.Contact.query.filter_by(emails=user_email).first()
 
     if not temp:
         contact = models.Contact(name=user_name, emails=user_email,
@@ -84,6 +84,7 @@ def api_id():
     '''
     Endpoint for adding a new contact
     '''
+    print("here")
     # User wants to add new contact
     if request.method == 'POST':
         # Gets the JSON object from the body of request sent by client
