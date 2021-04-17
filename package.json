@@ -4,6 +4,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
     "eslint-plugin-prettier": "^3.4.0",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-calendar": "^3.3.1",
