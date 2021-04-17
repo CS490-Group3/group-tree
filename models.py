@@ -3,6 +3,7 @@
 """This file creates our database with contacts and persons"""
 from exts import db
 
+
 class Person(db.Model):
     """This class creates persons table"""
 
@@ -26,6 +27,7 @@ class Contact(db.Model):
     emails = db.Column(db.String(30), nullable=False)
     phoneNumber = db.Column(db.String(30), nullable=False)
     person_id = db.Column(db.String(30), db.ForeignKey("person.id"), nullable=False)
+
 
 class Events(db.Model):
     """This class creates events table"""

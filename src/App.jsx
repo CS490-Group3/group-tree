@@ -1,11 +1,13 @@
 import React from 'react';
-import './css/App.css';
-
+import { GoogleLogin } from 'react-google-login';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
-import LoginPage from './pages/LoginPage';
 import ContactBook from './pages/ContactBook';
+import './css/App.css';
+
+const clientId =
+  '1021307606256-ktn0m9dj0bn27nc2qei22m42h9dj02dk.apps.googleusercontent.com';
 
 function App() {
   return (
@@ -14,9 +16,6 @@ function App() {
         <div>
           <nav>
             <ul>
-              <li>
-                <Link to="/login">Log in here</Link>
-              </li>
               <li>
                 <Link to="/landing">Landing</Link>
               </li>
@@ -28,12 +27,25 @@ function App() {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/login" exact component={LoginPage} />
             <Route path="/landing" exact component={LandingPage} />
             <Route path="/contact-book" exact component={ContactBook} />
           </Switch>
         </div>
       </Router>
+      <GoogleLogin
+        clientId={clientId}
+        onSuccess={(googleResponse) => {
+          fetch('/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: googleResponse.tokenId }),
+          });
+        }}
+        onFailure={() => {}}
+        cookiePolicy="single_host_origin"
+      />
     </div>
   );
 }
