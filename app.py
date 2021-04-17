@@ -44,7 +44,7 @@ def add_contact(user_name, user_email, user_phone):
 
     if not temp:
         contact = models.Contact(name=user_name, emails=user_email,
-                                phoneNumber=user_phone, person_id=CURRENT_USERID)
+                                 phoneNumber=user_phone, person_id=CURRENT_USERID)
         db.session.add(contact)
         db.session.commit()
 
@@ -65,27 +65,33 @@ def get_contact_info(id_num):
         print("Contact Name: " + row['name']) # Access by column name as a string
         r_dict = dict(row.items()) # convert to dict keyed by column names
         contacts.append(r_dict)
-        
+
     return contacts
 
-# get_contact_info(CURRENT_USERID) 
+# get_contact_info(CURRENT_USERID)
 
 # A route to return all of the contacts of current user
 @app.route('/api/v1/contacts/all', methods=['GET'])
 def api_all():
+    '''
+    Endpoint for sending all contacts for current user
+    '''
     return jsonify(get_contact_info(CURRENT_USERID))
-    
+
 # A route to create or access a specific entry in our catalog based on request.
 @app.route('/api/v1/addContact', methods=['GET', 'POST'])
 def api_id():
+    '''
+    Endpoint for adding a new contact
+    '''
     # User wants to add new contact
     if request.method == 'POST':
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
         name = request_data['name']
         email = request_data["email"]
-        phoneNumber = request_data["phoneNumber"]
-        add_contact(name, email, phoneNumber)
+        phone_number = request_data["phoneNumber"]
+        add_contact(name, email, phone_number)
         #return {'success': True} # Return success status if it worked
 
     return jsonify(get_contact_info(CURRENT_USERID))
