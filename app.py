@@ -26,16 +26,18 @@ from exts import db
 import models
 db.create_all()
 
-CURRENT_USERID = 1 #to store the id of current user (t o d o)
+CURRENT_USERID = '11' #to store the id of current user (t o d o)
 
 def add_user(sub, name):
     ''' helper method to add new user to database '''
     temp = models.Person.query.filter_by(id=sub).first()
     if not temp:
         #working with databsse
+        print("worked")
         new_user = models.Person(id=sub, username=name)
         db.session.add(new_user)
         db.session.commit()
+# add_user(CURRENT_USERID, "john")
 
 def add_contact(user_name, user_email, user_phone):
     ''' helper method to add new contact to database '''
@@ -48,16 +50,18 @@ def add_contact(user_name, user_email, user_phone):
         db.session.add(contact)
         db.session.commit()
 
+
 def get_user_username(id_num):
     ''' helper method to retrieve username from database '''
     temp = models.Person.query.filter_by(id=id_num).first()
+    #id_num - temp.id
+    #print(id_num)
     username = temp.username
     print(username)
-# get_user_username(URRENT_USERID)
 
 def get_contact_info(id_num):
     ''' helper method to retrieve contact info from database '''
-    result = db.engine.execute("SELECT * FROM CONTACTS")
+    result = db.engine.execute("SELECT * FROM CONTACTS WHERE person_id = " + id_num)
     print("CONTACT LIST FOR ID \'" + str(id_num) + "\'\n")
     contacts = []
     for row in result:
@@ -96,8 +100,6 @@ def api_id():
         #return {'success': True} # Return success status if it worked
 
     return jsonify(get_contact_info(CURRENT_USERID))
-
-
 
 @app.route("/login", methods=["POST"])
 def login():
