@@ -5,6 +5,7 @@
 2. `pip install -r requirements.txt`
 2. `npm i -S react-responsive-modal`
 3. `npm install react-hook-form`
+4. `npm i node-fetch`
 
 ## Setup
 1. Run `echo "DANGEROUSLY_DISABLE_HOST_CHECK=true" > .env.development.local` in the project directory
