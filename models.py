@@ -1,8 +1,8 @@
 # pylint: disable=no-member
 # pylint: disable=too-few-public-methods
 """This file creates our database with contacts and persons"""
-from exts import db
 import datetime
+from exts import db
 
 class Person(db.Model):
     """This class creates persons table"""

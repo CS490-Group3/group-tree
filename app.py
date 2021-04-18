@@ -77,12 +77,13 @@ def get_contact_info(id_num):
 def add_event_info(contact_name, user_name, activity, date_time, person_id):
     ''' helper method to add events to database '''
     # result = db.engine.execute("INSERT INTO events VALUES(" + str(contact_name) +  + ")")
-    event = models.Events(contact_name=contact_name, user_name=user_name, activity=activity, 
+    event = models.Events(contact_name=contact_name, user_name=user_name, activity=activity,
                                                     date_time=date_time, person_id=person_id)
     db.session.add(event)
     db.session.commit()
 
 # This example creates event with the current utc time as the datetime
+# import datetime
 # add_event_info("Contact1", "admin", "shopping", datetime.datetime.utcnow(), CURRENT_USERID)
 
 # This example creates event with an inpurt utc time as the datetime
