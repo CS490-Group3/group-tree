@@ -5,7 +5,7 @@ Template Flask app
 """
 
 import os
-
+import datetime
 import requests
 from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv, find_dotenv
@@ -69,10 +69,39 @@ def get_contact_info(id_num):
         print("Contact Name: " + row['name']) # Access by column name as a string
         r_dict = dict(row.items()) # convert to dict keyed by column names
         contacts.append(r_dict)
-
+    # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
 # get_contact_info(CURRENT_USERID)
+
+def add_event_info(contact_name, user_name, activity, date_time, person_id):
+    ''' helper method to add events to database '''
+    # result = db.engine.execute("INSERT INTO events VALUES(" + str(contact_name) +  + ")")
+    event = models.Events(contact_name=contact_name, user_name=user_name, activity=activity, 
+                                                    date_time=date_time, person_id=person_id)
+    db.session.add(event)
+    db.session.commit()
+
+# This example creates event with the current utc time as the datetime
+# add_event_info("Contact1", "admin", "shopping", datetime.datetime.utcnow(), CURRENT_USERID)
+
+# This example creates event with an inpurt utc time as the datetime
+# add_event_info("Contact1", "admin", "shopping", "2021-06-09 04:20:00", CURRENT_USERID)
+
+def get_user_events(person_id):
+    ''' helper method to get events from database '''
+    result = db.engine.execute("SELECT * FROM EVENTS WHERE person_id = " + person_id)
+    print("EVENTS LIST FOR ID \'" + str(person_id) + "\'\n")
+    contacts = []
+    for row in result:
+        # print(r[0]) # Access by positional index
+        # print("Event Activity: " + row['name']) # Access by column name as a string
+        r_dict = dict(row.items()) # convert to dict keyed by column names
+        contacts.append(r_dict)
+    # This returns a dictionary that contains key,value pairs of each data from database
+    return contacts
+
+print(get_user_events(CURRENT_USERID))
 
 # A route to return all of the contacts of current user
 @app.route('/api/v1/contacts/all', methods=['GET'])

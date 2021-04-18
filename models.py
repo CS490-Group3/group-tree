@@ -2,6 +2,7 @@
 # pylint: disable=too-few-public-methods
 """This file creates our database with contacts and persons"""
 from exts import db
+import datetime
 
 class Person(db.Model):
     """This class creates persons table"""
@@ -36,7 +37,7 @@ class Events(db.Model):
     contact_name = db.Column(db.String(30), nullable=False)
     user_name = db.Column(db.String(30), nullable=False)
     activity = db.Column(db.String(30), nullable=False)
-    date_time = db.Column(db.DateTime(), nullable=False)
+    date_time = db.Column(db.DateTime(), default=datetime.datetime.now, nullable=False)
     person_id = db.Column(db.String(30), db.ForeignKey("person.id"), nullable=False)
 
     def __repr__(self):
