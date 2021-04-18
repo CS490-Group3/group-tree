@@ -105,10 +105,10 @@ def get_user_events(person_id):
 # print(get_user_events(CURRENT_USERID))
 
 def update_contact(contact_id, name, emails, phone_number):
-    ''' helper method to update contact info from database 
+    ''' helper method to update contact info from database
         IMPORTANT: MUST PASS CONTACT ID TO FIND CORRECT CONTACT TO CHANGE'''
-    db.engine.execute("UPDATE contacts SET name=\'" + name + "\', emails=\'" + emails 
-                                + "\', \"phoneNumber\"=\'" + phone_number + "\' WHERE id = " + contact_id)
+    db.engine.execute("UPDATE contacts SET name=\'" + name + "\', emails=\'" + emails
+                        + "\', \"phoneNumber\"=\'" + phone_number + "\' WHERE id = " + contact_id)
 
 # This will update contact information with given values
 # IMPORTANT: Must keep track of the user idea to update the correct value
