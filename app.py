@@ -102,7 +102,19 @@ def get_user_events(person_id):
     # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
-print(get_user_events(CURRENT_USERID))
+# print(get_user_events(CURRENT_USERID))
+
+def update_contact(contact_id, name, emails, phoneNumber):
+    ''' helper method to update contact info from database 
+        IMPORTANT: MUST PASS CONTACT ID TO FIND CORRECT CONTACT TO CHANGE'''
+    result = db.engine.execute("UPDATE contacts SET name=\'" + name + "\', emails=\'" + emails 
+                                + "\', \"phoneNumber\"=\'" + phoneNumber + "\' WHERE id = " + contact_id)
+    db.session.commit()
+
+# This will update contact information with given values
+# IMPORTANT: Must keep track of the user idea to update the correct value
+# When passing contact info to React, must keep id value to send back to python later
+# update_contact("40", "JamesSmith", "newEmail@gmail.com", "732-123-4567")
 
 # A route to return all of the contacts of current user
 @app.route('/api/v1/contacts/all', methods=['GET'])
