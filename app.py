@@ -86,25 +86,7 @@ def get_contact_info(id_num):
     # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
-
 # get_contact_info(CURRENT_USERID)
-
-
-def add_event_info(contact_name, user_name, activity, date_time, person_id):
-    """ helper method to add events to database """
-    # result = db.engine.execute("INSERT INTO events VALUES(" + str(contact_name) +  + ")")
-    event = models.Events(
-        contact_name=contact_name,
-        user_name=user_name,
-        activity=activity,
-        date_time=date_time,
-        person_id=person_id,
-    )
-    db.session.add(event)
-
-
-# print(get_contact_info(CURRENT_USERID))
-
 
 def add_event_info(
     contact_name, user_name, activity, date_time, person_id, frequency, amount
@@ -165,18 +147,19 @@ def get_user_events(person_id):
 # print(get_user_events(CURRENT_USERID))
 
 
-def get_next_reminder(person_id, contact_name):
+def get_next_reminder(person_id, contact_name
+    """
+    Helper method to get next reminder from database
+    """
     events = (
         db.session.query(models.Events)
         .filter_by(person_id=person_id, contact_name=contact_name)
         .order_by(models.Events.date_time.asc())
     )
-    event_dict = {}
     event_list = []
-
     for event in events:
         event_list.append(event.date_time)
-    # Accessing current time to get closet to date value
+    # Accessing current time to get closest to date value
     time_now = datetime.datetime.utcnow()
     print("Time now: ", end="")
     print(time_now)
