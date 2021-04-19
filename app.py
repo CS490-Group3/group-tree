@@ -1,5 +1,6 @@
 # pylint: disable=no-member
 # pylint: disable=wrong-import-position
+# plint: disable=too-many-arguments
 """
 Template Flask app
 """
@@ -101,8 +102,9 @@ def add_event_info(contact_name, user_name, activity, date_time, person_id, freq
 # add_event_info("Contact1", "admin", "shopping", datetime.datetime.utcnow(), CURRENT_USERID)
 
 # This example creates event with an input utc time as the datetime
-# Also expects either single, daily, weekly, biweekly, or monthly for frequency, and the amount of them
-# add_event_info("TestContact", "admin", "shopping", "2021-04-20 04:20:00", CURRENT_USERID, "monthly", 3)
+# Also expects either single, daily, weekly, biweekly, or monthly for frequency, and the amount
+# add_event_info("TestContact", "admin", "shopping", "2021-04-20 04:20:00",
+#                               CURRENT_USERID, "monthly", 3)
 
 def get_user_events(person_id):
     ''' helper method to get events from database '''
@@ -132,6 +134,7 @@ def get_next_reminder(person_id, contact_name):
     print("Time now: ", end="")
     print(time_now)
     # Obtaining closest date
+    
     for time in event_list:
         print(time)
         if time > time_now:
