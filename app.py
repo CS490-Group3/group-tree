@@ -147,16 +147,18 @@ def get_user_events(person_id):
 # print(get_user_events(CURRENT_USERID))
 
 
-def get_next_reminder(person_id, contact_name
+def get_next_reminder(person_id, contact_name):
     """
-    Helper method to get next reminder from database
+    Helper method to get events from database
     """
     events = (
         db.session.query(models.Events)
         .filter_by(person_id=person_id, contact_name=contact_name)
         .order_by(models.Events.date_time.asc())
     )
+    
     event_list = []
+
     for event in events:
         event_list.append(event.date_time)
     # Accessing current time to get closest to date value
