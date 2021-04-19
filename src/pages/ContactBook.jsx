@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useForm } from 'react-hook-form';
 
 /* eslint-disable react/jsx-props-no-spreading */
+/* const BASE_URL = '/api/v1/contacts'; */
 
 export default function ContactBook() {
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
+  const [contacts, setContacts] = useState([]);
 
   const {
     register,
@@ -17,15 +19,50 @@ export default function ContactBook() {
     formState: { errors },
   } = useForm();
 
-  const [contacts, setContacts] = useState([
-    { name: 'Chris Doe', email: '@gmail', phoneNumber: '732-344-0000' },
-    { name: 'Nick Doe', email: '@gmail', phoneNumber: '732-344-0000' },
-    { name: 'Jacov Doe', email: '@gmail', phoneNumber: '732-344-0000' },
-  ]);
+  // Fetch all contacts when you first load the page
+  useEffect(() => {
+    window
+      .fetch('/api/v1/contacts/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        (response) => response.json(), // Convert to json
+      )
+      .then((responseData) => {
+        setContacts(responseData);
+      });
+  }, []);
+
+  function addContact(contact) {
+    // setCreateStatus(false);
+
+    const data = JSON.stringify({
+      name: contact.name,
+      email: contact.email,
+      phoneNumber: contact.phoneNumber,
+    });
+    window
+      .fetch('/api/v1/addContact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data, // No query parameter, for POST we put in body
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+        setContacts(responseData);
+        // setCreateStatus(responseData.success);
+      });
+  }
 
   function onSubmit(data) {
     console.log(data);
-    setContacts((copyContacts) => [...copyContacts, data]);
+    // setContacts((copyContacts) => [...copyContacts, data]);
+    addContact(data);
   }
 
   return (
@@ -48,7 +85,7 @@ export default function ContactBook() {
           {contacts.map((c) => (
             <tr>
               <th>{c.name}</th>
-              <td>{c.email}</td>
+              <td>{c.emails}</td>
               <td>{c.phoneNumber}</td>
             </tr>
           ))}
