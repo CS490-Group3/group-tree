@@ -4,13 +4,9 @@
 Template Flask app
 """
 
-import os
-<<<<<<< HEAD
-
-# import datetime
-=======
 import datetime
->>>>>>> 418ab4449ec41b93998a6985e76df0ff19d2773e
+import os
+
 import requests
 from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv, find_dotenv
@@ -104,10 +100,15 @@ def add_event_info(contact_name, user_name, activity, date_time, person_id):
         person_id=person_id,
     )
     db.session.add(event)
+
+
 # print(get_contact_info(CURRENT_USERID))
 
-def add_event_info(contact_name, user_name, activity, date_time, person_id, frequency, amount):
-    ''' helper method to add events to database '''
+
+def add_event_info(
+    contact_name, user_name, activity, date_time, person_id, frequency, amount
+):
+    """ helper method to add events to database """
     if frequency == "single":
         days = 0
         amount = 1
@@ -119,12 +120,17 @@ def add_event_info(contact_name, user_name, activity, date_time, person_id, freq
         days = 14
     elif frequency == "monthly":
         days = 30
-    date_time_obj = datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S')
+    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
     for i in range(amount):
         time_change = datetime.timedelta(days=days * i)
         new_time = date_time_obj + time_change
-        event = models.Events(contact_name=contact_name, user_name=user_name, activity=activity,
-                                                    date_time=new_time, person_id=person_id)
+        event = models.Events(
+            contact_name=contact_name,
+            user_name=user_name,
+            activity=activity,
+            date_time=new_time,
+            person_id=person_id,
+        )
         db.session.add(event)
     db.session.commit()
 
@@ -156,9 +162,13 @@ def get_user_events(person_id):
 
 # print(get_user_events(CURRENT_USERID))
 
+
 def get_next_reminder(person_id, contact_name):
-    events = db.session.query(models.Events).filter_by(person_id=person_id, contact_name=contact_name).order_by(
-    models.Events.date_time.asc())
+    events = (
+        db.session.query(models.Events)
+        .filter_by(person_id=person_id, contact_name=contact_name)
+        .order_by(models.Events.date_time.asc())
+    )
     event_dict = {}
     event_list = []
 
@@ -177,7 +187,9 @@ def get_next_reminder(person_id, contact_name):
     print(time)
     return time
 
+
 # get_next_reminder(CURRENT_USERID, "TestContact")
+
 
 def update_contact(contact_id, name, emails, phone_number):
     """
