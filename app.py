@@ -5,16 +5,18 @@
 Template Flask app
 """
 
-import os
 import datetime
+import os
+
 import requests
 from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
+
 def create_app():
-    ''' helper method to create app'''
+    """ helper method to create app"""
     appp = Flask(__name__, static_folder="./build/static")
     # Point SQLAlchemy to Heroku database
     appp.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -22,61 +24,92 @@ def create_app():
     appp.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     return appp
 
+
 app = create_app()
 from exts import db
 import models
+
 db.create_all()
 
-CURRENT_USERID = '11' #to store the id of current user (t o d o)
+CURRENT_USERID = "11"  # to store the id of current user (t o d o)
+
 
 def add_user(sub, name):
-    ''' helper method to add new user to database '''
+    """ helper method to add new user to database """
     temp = models.Person.query.filter_by(id=sub).first()
     if not temp:
-        #working with databsse
+        # working with databsse
         print("worked")
         new_user = models.Person(id=sub, username=name)
         db.session.add(new_user)
         db.session.commit()
+
+
 # add_user(CURRENT_USERID, "john")
 
+
 def add_contact(user_name, user_email, user_phone):
-    ''' helper method to add new contact to database '''
+    """ helper method to add new contact to database """
     # checking if contact exits in database by email
     temp = models.Contact.query.filter_by(emails=user_email).first()
 
     if not temp:
-        contact = models.Contact(name=user_name, emails=user_email,
-                                 phoneNumber=user_phone, person_id=CURRENT_USERID)
+        contact = models.Contact(
+            name=user_name,
+            emails=user_email,
+            phoneNumber=user_phone,
+            person_id=CURRENT_USERID,
+        )
         db.session.add(contact)
         db.session.commit()
 
 
 def get_user_username(id_num):
-    ''' helper method to retrieve username from database '''
+    """ helper method to retrieve username from database """
     temp = models.Person.query.filter_by(id=id_num).first()
-    #id_num - temp.id
-    #print(id_num)
+    # id_num - temp.id
+    # print(id_num)
     username = temp.username
     print(username)
 
+
 def get_contact_info(id_num):
-    ''' helper method to retrieve contact info from database '''
+    """ helper method to retrieve contact info from database """
     result = db.engine.execute("SELECT * FROM CONTACTS WHERE person_id = " + id_num)
-    print("CONTACT LIST FOR ID \'" + str(id_num) + "\'\n")
+    print("CONTACT LIST FOR ID '" + str(id_num) + "'\n")
     contacts = []
     for row in result:
         # print(r[0]) # Access by positional index
-        print("Contact Name: " + row['name']) # Access by column name as a string
-        r_dict = dict(row.items()) # convert to dict keyed by column names
+        print("Contact Name: " + row["name"])  # Access by column name as a string
+        r_dict = dict(row.items())  # convert to dict keyed by column names
         contacts.append(r_dict)
     # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
+
+# get_contact_info(CURRENT_USERID)
+
+
+def add_event_info(contact_name, user_name, activity, date_time, person_id):
+    """ helper method to add events to database """
+    # result = db.engine.execute("INSERT INTO events VALUES(" + str(contact_name) +  + ")")
+    event = models.Events(
+        contact_name=contact_name,
+        user_name=user_name,
+        activity=activity,
+        date_time=date_time,
+        person_id=person_id,
+    )
+    db.session.add(event)
+
+
 # print(get_contact_info(CURRENT_USERID))
 
-def add_event_info(contact_name, user_name, activity, date_time, person_id, frequency, amount):
-    ''' helper method to add events to database '''
+
+def add_event_info(
+    contact_name, user_name, activity, date_time, person_id, frequency, amount
+):
+    """ helper method to add events to database """
     if frequency == "single":
         days = 0
         amount = 1
@@ -88,14 +121,20 @@ def add_event_info(contact_name, user_name, activity, date_time, person_id, freq
         days = 14
     elif frequency == "monthly":
         days = 30
-    date_time_obj = datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S')
+    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
     for i in range(amount):
         time_change = datetime.timedelta(days=days * i)
         new_time = date_time_obj + time_change
-        event = models.Events(contact_name=contact_name, user_name=user_name, activity=activity,
-                                                    date_time=new_time, person_id=person_id)
+        event = models.Events(
+            contact_name=contact_name,
+            user_name=user_name,
+            activity=activity,
+            date_time=new_time,
+            person_id=person_id,
+        )
         db.session.add(event)
     db.session.commit()
+
 
 # This example creates event with the current utc time as the datetime
 # import datetime
@@ -106,30 +145,38 @@ def add_event_info(contact_name, user_name, activity, date_time, person_id, freq
 # add_event_info("TestContact", "admin", "shopping", "2021-04-20 04:20:00",
 #                               CURRENT_USERID, "monthly", 3)
 
+
 def get_user_events(person_id):
-    ''' helper method to get events from database '''
-    result = db.engine.execute("SELECT * FROM EVENTS WHERE person_id = " + person_id)
-    print("EVENTS LIST FOR ID \'" + str(person_id) + "\'\n")
+    """
+    Helper method to get events from database
+    """
+    result = models.Events.query.get(person_id)
+    print("EVENTS LIST FOR ID '" + str(person_id) + "'\n")
     contacts = []
     for row in result:
         # print(r[0]) # Access by positional index
         # print("Event Activity: " + row['name']) # Access by column name as a string
-        r_dict = dict(row.items()) # convert to dict keyed by column names
+        r_dict = dict(row.items())  # convert to dict keyed by column names
         contacts.append(r_dict)
     # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
+
 # print(get_user_events(CURRENT_USERID))
 
+
 def get_next_reminder(person_id, contact_name):
-    events = db.session.query(models.Events).filter_by(person_id=person_id, contact_name=contact_name).order_by(
-    models.Events.date_time.asc())
+    events = (
+        db.session.query(models.Events)
+        .filter_by(person_id=person_id, contact_name=contact_name)
+        .order_by(models.Events.date_time.asc())
+    )
     event_dict = {}
     event_list = []
-    
+
     for event in events:
         event_list.append(event.date_time)
-    # Accessing current time to get closet to date value    
+    # Accessing current time to get closet to date value
     time_now = datetime.datetime.utcnow()
     print("Time now: ", end="")
     print(time_now)
@@ -143,13 +190,20 @@ def get_next_reminder(person_id, contact_name):
     print(time)
     return time
 
+
 # get_next_reminder(CURRENT_USERID, "TestContact")
 
+
 def update_contact(contact_id, name, emails, phone_number):
-    ''' helper method to update contact info from database
-        IMPORTANT: MUST PASS CONTACT ID TO FIND CORRECT CONTACT TO CHANGE'''
-    db.engine.execute("UPDATE contacts SET name=\'" + name + "\', emails=\'" + emails
-                        + "\', \"phoneNumber\"=\'" + phone_number + "\' WHERE id = " + contact_id)
+    """
+    Helper method to update contact info from database
+    """
+    contact = models.Contact.query.get(contact_id)
+    contact.name = name
+    contact.emails = emails
+    contact.phoneNumber = phone_number
+    db.session.commit()
+
 
 # This will update contact information with given values
 # IMPORTANT: Must keep track of the user idea to update the correct value
@@ -157,31 +211,33 @@ def update_contact(contact_id, name, emails, phone_number):
 # update_contact("40", "JamesSmith", "newerEmail@gmail.com", "732-123-4567")
 
 # A route to return all of the contacts of current user
-@app.route('/api/v1/contacts/all', methods=['GET'])
+@app.route("/api/v1/contacts/all", methods=["GET"])
 def api_all():
-    '''
+    """
     Endpoint for sending all contacts for current user
-    '''
+    """
     return jsonify(get_contact_info(CURRENT_USERID))
 
+
 # A route to create or access a specific entry in our catalog based on request.
-@app.route('/api/v1/addContact', methods=['GET', 'POST'])
+@app.route("/api/v1/addContact", methods=["GET", "POST"])
 def api_id():
-    '''
+    """
     Endpoint for adding a new contact
-    '''
+    """
     print("here")
     # User wants to add new contact
-    if request.method == 'POST':
+    if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
-        name = request_data['name']
+        name = request_data["name"]
         email = request_data["email"]
         phone_number = request_data["phoneNumber"]
         add_contact(name, email, phone_number)
-        #return {'success': True} # Return success status if it worked
+        # return {'success': True} # Return success status if it worked
 
     return jsonify(get_contact_info(CURRENT_USERID))
+
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -217,6 +273,7 @@ def index(filename):
     Serves files from ./build
     """
     return send_from_directory("./build", filename)
+
 
 app.run(
     host=os.getenv("IP", "0.0.0.0"),
