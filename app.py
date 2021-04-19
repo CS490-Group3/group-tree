@@ -1,6 +1,6 @@
 # pylint: disable=no-member
 # pylint: disable=wrong-import-position
-# plint: disable=too-many-arguments
+# pylint: disable=too-many-arguments
 """
 Template Flask app
 """
@@ -156,7 +156,6 @@ def get_next_reminder(person_id, contact_name):
         .filter_by(person_id=person_id, contact_name=contact_name)
         .order_by(models.Events.date_time.asc())
     )
-    
     event_list = []
 
     for event in events:
@@ -165,8 +164,8 @@ def get_next_reminder(person_id, contact_name):
     time_now = datetime.datetime.utcnow()
     print("Time now: ", end="")
     print(time_now)
+    time = None
     # Obtaining closest date
-    
     for time in event_list:
         print(time)
         if time > time_now:
