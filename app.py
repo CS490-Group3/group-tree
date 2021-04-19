@@ -1,9 +1,11 @@
 # pylint: disable=no-member
 # pylint: disable=wrong-import-position
+# pylint: disable=too-many-arguments
 """
 Template Flask app
 """
 
+import datetime
 import os
 
 import requests
@@ -105,11 +107,118 @@ def get_contact_info(id_num):
         print("Contact Name: " + row["name"])  # Access by column name as a string
         r_dict = dict(row.items())  # convert to dict keyed by column names
         contacts.append(r_dict)
-
+    # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
 
 # get_contact_info(CURRENT_USERID)
+
+
+def add_event_info(
+    contact_name, user_name, activity, date_time, person_id, frequency, amount
+):
+    """ helper method to add events to database """
+    if frequency == "single":
+        days = 0
+        amount = 1
+    elif frequency == "daily":
+        days = 1
+    elif frequency == "weekly":
+        days = 7
+    elif frequency == "biweekly":
+        days = 14
+    elif frequency == "monthly":
+        days = 30
+    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
+    for i in range(amount):
+        time_change = datetime.timedelta(days=days * i)
+        new_time = date_time_obj + time_change
+        event = models.Events(
+            contact_name=contact_name,
+            user_name=user_name,
+            activity=activity,
+            date_time=new_time,
+            person_id=person_id,
+        )
+        db.session.add(event)
+    db.session.commit()
+
+
+# This example creates event with the current utc time as the datetime
+# import datetime
+# add_event_info("Contact1", "admin", "shopping", datetime.datetime.utcnow(), CURRENT_USERID)
+
+# This example creates event with an input utc time as the datetime
+# Also expects either single, daily, weekly, biweekly, or monthly for frequency, and the amount
+# add_event_info("TestContact", "admin", "shopping", "2021-04-20 04:20:00",
+#                               CURRENT_USERID, "monthly", 3)
+
+
+def get_user_events(person_id):
+    """
+    Helper method to get events from database
+    """
+    result = models.Events.query.get(person_id)
+    print("EVENTS LIST FOR ID '" + str(person_id) + "'\n")
+    contacts = []
+    for row in result:
+        # print(r[0]) # Access by positional index
+        # print("Event Activity: " + row['name']) # Access by column name as a string
+        r_dict = dict(row.items())  # convert to dict keyed by column names
+        contacts.append(r_dict)
+    # This returns a dictionary that contains key,value pairs of each data from database
+    return contacts
+
+
+# print(get_user_events(CURRENT_USERID))
+
+
+def get_next_reminder(person_id, contact_name):
+    """
+    Helper method to get events from database
+    """
+    events = (
+        db.session.query(models.Events)
+        .filter_by(person_id=person_id, contact_name=contact_name)
+        .order_by(models.Events.date_time.asc())
+    )
+    event_list = []
+
+    for event in events:
+        event_list.append(event.date_time)
+    # Accessing current time to get closest to date value
+    time_now = datetime.datetime.utcnow()
+    print("Time now: ", end="")
+    print(time_now)
+    time = None
+    # Obtaining closest date
+    for time in event_list:
+        print(time)
+        if time > time_now:
+            print("Next Reminder: ", end="")
+            break
+    print(time)
+    return time
+
+
+# get_next_reminder(CURRENT_USERID, "TestContact")
+
+
+def update_contact(contact_id, name, emails, phone_number):
+    """
+    Helper method to update contact info from database
+    """
+    contact = models.Contact.query.get(contact_id)
+    contact.name = name
+    contact.emails = emails
+    contact.phoneNumber = phone_number
+    db.session.commit()
+
+
+# This will update contact information with given values
+# IMPORTANT: Must keep track of the user idea to update the correct value
+# When passing contact info to React, must keep id value to send back to python later
+# update_contact("40", "JamesSmith", "newerEmail@gmail.com", "732-123-4567")
 
 # A route to return all of the contacts of current user
 @app.route("/api/v1/contacts/all", methods=["GET"])
