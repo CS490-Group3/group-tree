@@ -112,8 +112,10 @@ def add_event_info(contact_name, user_name, activity, date_time, person_id):
 
 
 def get_user_events(person_id):
-    """ helper method to get events from database """
-    result = db.engine.execute("SELECT * FROM EVENTS WHERE person_id = " + person_id)
+    """
+    Helper method to get events from database
+    """
+    result = models.Events.query.get(person_id)
     print("EVENTS LIST FOR ID '" + str(person_id) + "'\n")
     contacts = []
     for row in result:
@@ -129,18 +131,14 @@ def get_user_events(person_id):
 
 
 def update_contact(contact_id, name, emails, phone_number):
-    """helper method to update contact info from database
-    IMPORTANT: MUST PASS CONTACT ID TO FIND CORRECT CONTACT TO CHANGE"""
-    db.engine.execute(
-        "UPDATE contacts SET name='"
-        + name
-        + "', emails='"
-        + emails
-        + "', \"phoneNumber\"='"
-        + phone_number
-        + "' WHERE id = "
-        + contact_id
-    )
+    """
+    Helper method to update contact info from database
+    """
+    contact = models.Contact.query.get(contact_id)
+    contact.name = name
+    contact.emails = emails
+    contact.phoneNumber = phone_number
+    db.session.commit()
 
 
 # This will update contact information with given values
