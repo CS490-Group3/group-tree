@@ -181,10 +181,9 @@ def api_all_contacts():
     return json.dumps(get_contact_info(flask_login.current_user.id))
 
 
-# A route to create or access a specific entry in our catalog based on request.
 @app.route("/api/v1/addContact", methods=["GET", "POST"])
 @flask_login.login_required
-def api_id():
+def api_add_contact():
     """
     Endpoint for adding a new contact
     """
@@ -231,7 +230,10 @@ def login():
                 db.session.add(new_person)
                 db.session.commit()
 
-    return {}  # need to return something or Flask will raise error
+            user = User.query.get(user_id)
+            flask_login.login_user(user)
+
+    return ("", 204)  # empty response
 
 
 @app.route("/logout", methods=["POST"])
@@ -240,6 +242,9 @@ def logout():
     """
     Endpoint for logging out.
     """
+    flask_login.logout_user()
+
+    return ("", 204)  # empty response
 
 
 @app.route("/", defaults={"filename": "index.html"})

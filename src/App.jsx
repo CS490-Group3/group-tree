@@ -13,7 +13,7 @@ function App() {
 
   const onSuccess = (res) => {
     console.log('[Login Success] currentUser: ', res.profileObj);
-    setLoggedIn((prevLog) => !prevLog);
+    setLoggedIn(true);
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -25,7 +25,7 @@ function App() {
 
   const onLogoutSuccess = () => {
     console.log('Logout made successfully');
-    setLoggedIn((prevLog) => !prevLog);
+    fetch('/logout', { method: 'POST' }).then(() => setLoggedIn(false));
   };
 
   const onFailure = (res) => {
