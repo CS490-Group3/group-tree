@@ -3,6 +3,7 @@ import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import EVENT_DATA from '../assets/EventData';
 import ActivityOption from '../components/ActivityOption';
+import DateInformation from '../components/DateInformation';
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
@@ -41,6 +42,7 @@ export default function LandingPage() {
             <li className="list-group-item">Vestibulum at eros</li>
           </ul>
         </div>
+        <DateInformation />
       </div>
       <div className="container-form">
         <div className="item">
