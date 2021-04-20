@@ -6,18 +6,13 @@ Template Flask app
 """
 
 import datetime
+import json
 import os
 
+import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, send_from_directory, jsonify
-from flask_login import (
-    LoginManager,
-    login_required,
-    login_user,
-    logout_user,
-    UserMixin,
-)
+from flask import Flask, request, send_from_directory
 
 
 load_dotenv(find_dotenv())
@@ -35,7 +30,7 @@ def create_app():
 
 app = create_app()
 app.secret_key = os.getenv("FLASK_LOGIN_SECRET_KEY")
-login_manager = LoginManager(app)
+login_manager = flask_login.LoginManager(app)
 
 from exts import db
 import models
@@ -45,7 +40,7 @@ db.create_all()
 CURRENT_USERID = "11"  # to store the id of current user (t o d o)
 
 
-class User(UserMixin, models.Person):
+class User(flask_login.UserMixin, models.Person):
     """
     Class that Flask-Login needs for some obscure reason.
     """
@@ -56,7 +51,7 @@ def load_user(user_id):
     """
     `user_loader` callback needed by Flask-Login. Maps user ID to User object.
     """
-    return User.query.filter_by(id=user_id)
+    return User.query.get(user_id)
 
 
 def add_user(sub, name):
@@ -69,25 +64,6 @@ def add_user(sub, name):
         db.session.commit()
 
 
-# add_user(CURRENT_USERID, "john")
-
-
-def add_contact(user_name, user_email, user_phone):
-    """ helper method to add new contact to database """
-    # checking if contact exits in database by email
-    temp = models.Contact.query.filter_by(emails=user_email).first()
-
-    if not temp:
-        contact = models.Contact(
-            name=user_name,
-            emails=user_email,
-            phoneNumber=user_phone,
-            person_id=CURRENT_USERID,
-        )
-        db.session.add(contact)
-        db.session.commit()
-
-
 def get_user_username(id_num):
     """ helper method to retrieve username from database """
     temp = models.Person.query.filter_by(id=id_num).first()
@@ -95,23 +71,6 @@ def get_user_username(id_num):
     # print(id_num)
     username = temp.username
     print(username)
-
-
-def get_contact_info(id_num):
-    """ helper method to retrieve contact info from database """
-    result = db.engine.execute("SELECT * FROM CONTACTS WHERE person_id = " + id_num)
-    print("CONTACT LIST FOR ID '" + str(id_num) + "'\n")
-    contacts = []
-    for row in result:
-        # print(r[0]) # Access by positional index
-        print("Contact Name: " + row["name"])  # Access by column name as a string
-        r_dict = dict(row.items())  # convert to dict keyed by column names
-        contacts.append(r_dict)
-    # This returns a dictionary that contains key,value pairs of each data from database
-    return contacts
-
-
-# get_contact_info(CURRENT_USERID)
 
 
 def add_event_info(
@@ -144,16 +103,6 @@ def add_event_info(
     db.session.commit()
 
 
-# This example creates event with the current utc time as the datetime
-# import datetime
-# add_event_info("Contact1", "admin", "shopping", datetime.datetime.utcnow(), CURRENT_USERID)
-
-# This example creates event with an input utc time as the datetime
-# Also expects either single, daily, weekly, biweekly, or monthly for frequency, and the amount
-# add_event_info("TestContact", "admin", "shopping", "2021-04-20 04:20:00",
-#                               CURRENT_USERID, "monthly", 3)
-
-
 def get_user_events(person_id):
     """
     Helper method to get events from database
@@ -168,9 +117,6 @@ def get_user_events(person_id):
         contacts.append(r_dict)
     # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
-
-
-# print(get_user_events(CURRENT_USERID))
 
 
 def get_next_reminder(person_id, contact_name):
@@ -201,9 +147,6 @@ def get_next_reminder(person_id, contact_name):
     return time
 
 
-# get_next_reminder(CURRENT_USERID, "TestContact")
-
-
 def update_contact(contact_id, name, emails, phone_number):
     """
     Helper method to update contact info from database
@@ -215,38 +158,49 @@ def update_contact(contact_id, name, emails, phone_number):
     db.session.commit()
 
 
-# This will update contact information with given values
-# IMPORTANT: Must keep track of the user idea to update the correct value
-# When passing contact info to React, must keep id value to send back to python later
-# update_contact("40", "JamesSmith", "newerEmail@gmail.com", "732-123-4567")
+def get_contact_info(user_id) -> list:
+    """
+    Helper method to get a user's list of contacts
+    """
+    return [
+        {
+            "name": contact.name,
+            "emails": contact.emails,
+            "phoneNumber": contact.phoneNumber,
+        }
+        for contact in models.Contact.query.filter_by(person_id=user_id).all()
+    ]
 
-# A route to return all of the contacts of current user
+
 @app.route("/api/v1/contacts/all", methods=["GET"])
-def api_all():
+@flask_login.login_required
+def api_all_contacts():
     """
-    Endpoint for sending all contacts for current user
+    Endpoint for retreiving all contacts
     """
-    return jsonify(get_contact_info(CURRENT_USERID))
+    return json.dumps(get_contact_info(flask_login.current_user.id))
 
 
 # A route to create or access a specific entry in our catalog based on request.
 @app.route("/api/v1/addContact", methods=["GET", "POST"])
+@flask_login.login_required
 def api_id():
     """
     Endpoint for adding a new contact
     """
-    print("here")
-    # User wants to add new contact
     if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
-        name = request_data["name"]
-        email = request_data["email"]
-        phone_number = request_data["phoneNumber"]
-        add_contact(name, email, phone_number)
-        # return {'success': True} # Return success status if it worked
+        new_contact = models.Contact(
+            name=request_data["name"],
+            emails=request_data["email"],  # PLEASE rename this to `email`
+            phoneNumber=request_data["phoneNumber"],  # rename this to `phone_number`
+            person_id=flask_login.current_user.id,
+        )
+        db.session.add(new_contact)
+        db.session.commit()
 
-    return jsonify(get_contact_info(CURRENT_USERID))
+    return json.dumps(get_contact_info(flask_login.current_user.id))
 
 
 @app.route("/login", methods=["POST"])
@@ -277,19 +231,15 @@ def login():
                 db.session.add(new_person)
                 db.session.commit()
 
-            user = User.query.get(user_id)
-            login_user(user)
-
     return {}  # need to return something or Flask will raise error
 
 
 @app.route("/logout", methods=["POST"])
-@login_required
+@flask_login.login_required
 def logout():
     """
     Endpoint for logging out.
     """
-    logout_user()
 
 
 @app.route("/", defaults={"filename": "index.html"})
