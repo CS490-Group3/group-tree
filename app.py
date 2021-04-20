@@ -137,20 +137,30 @@ def get_next_reminder(person_id, contact_name):
 
     for event in events:
         event_list.append(event.date_time)
+
     # Accessing current time to get closest to date value
     time_now = datetime.datetime.utcnow()
-    print("Time now: ", end="")
+    # print("Time now: ", end="")
     print(time_now)
+    next_reminder = get_closest_date(time_now, event_list)
+    return next_reminder
+
+
+def get_closest_date(time_now, event_list):
+    """
+    Helper method to get the next closest date.
+    Needs an in ordered list of date from "smaller" dates.
+    Needs time now we don't get dates before current date.
+    """
     time = None
     # Obtaining closest date
     for time in event_list:
-        print(time)
         if time > time_now:
             print("Next Reminder: ", end="")
-            break
-    print(time)
-    return time
-
+            print(time)
+            return time
+    return "No Reminders"
+get_next_reminder("108692952751068368092", "TestContact")
 
 def update_contact(contact_id, name, emails, phone_number):
     """
