@@ -231,9 +231,10 @@ def login():
                 db.session.commit()
 
             user = User.query.get(user_id)
-            flask_login.login_user(user)
+            if flask_login.login_user(user):
+                return {"success": True}
 
-    return ("", 204)  # empty response
+    return {"success": False}
 
 
 @app.route("/logout", methods=["POST"])
@@ -242,9 +243,10 @@ def logout():
     """
     Endpoint for logging out.
     """
-    flask_login.logout_user()
+    if flask_login.logout_user():
+        return {"success": True}
 
-    return ("", 204)  # empty response
+    return {"success": False}
 
 
 @app.route("/", defaults={"filename": "index.html"})

@@ -11,27 +11,6 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 function App() {
   const [loggedIn, setLoggedIn] = useState(false); // initialize logged in status to fasle
 
-  const onSuccess = (res) => {
-    console.log('[Login Success] currentUser: ', res.profileObj);
-    setLoggedIn(true);
-    fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: res.tokenId }),
-    });
-  };
-
-  const onLogoutSuccess = () => {
-    console.log('Logout made successfully');
-    fetch('/logout', { method: 'POST' }).then(() => setLoggedIn(false));
-  };
-
-  const onFailure = (res) => {
-    console.log('[Login failed] res: ', res);
-  };
-
   if (loggedIn) {
     return (
       <div className="App">
@@ -50,7 +29,13 @@ function App() {
                     <GoogleLogout
                       clientId={clientId}
                       buttonText="Logout"
-                      onLogoutSuccess={onLogoutSuccess}
+                      onLogoutSuccess={() =>
+                        fetch('/logout', { method: 'POST' })
+                          .then((response) => response.json())
+                          .then((data) => {
+                            if (data.success === true) setLoggedIn(false);
+                          })
+                      }
                       style={{ marginTop: '100px' }}
                     />
                   </div>
@@ -73,8 +58,18 @@ function App() {
     <div>
       <GoogleLogin
         clientId={clientId}
-        onSuccess={onSuccess}
-        onFailure={onFailure}
+        onSuccess={(googleResponse) =>
+          fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: googleResponse.tokenId }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success === true) setLoggedIn(true);
+            })
+        }
+        onFailure={() => {}}
         cookiePolicy="single_host_origin"
         style={{ marginTop: '100px' }}
       />
