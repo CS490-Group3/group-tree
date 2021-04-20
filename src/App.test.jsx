@@ -1,11 +1,12 @@
-import React from 'react';
-
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
+import ContactBook from './pages/ContactBook';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('add new contact click function', () => {
+  const result = render(<ContactBook />);
+  const addnewBtnElement = screen.getByText('Add New Contact');
+  expect(addnewBtnElement).toBeInTheDocument();
+  const formElement = document.getElementById("Submit");
+  fireEvent.click(addnewBtnElement);
+  expect(addnewBtnElement).toBeInTheDocument();
 });

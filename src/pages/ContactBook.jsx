@@ -94,7 +94,7 @@ export default function ContactBook() {
 
       <div>
         <Modal open={open} onClose={onCloseModal} center>
-          <h2>Edit Contact</h2>
+          <h4>Enter Contact Information:</h4>
           <form onSubmit={handleSubmit(onSubmit)}>
             Name:
             <input
