@@ -12,7 +12,7 @@ import os
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, Response, jsonify, send_from_directory
+from flask import Flask, request, Response, send_from_directory
 
 
 load_dotenv(find_dotenv())
