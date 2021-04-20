@@ -12,7 +12,7 @@ import os
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, Response, jsonify, send_from_directory
 
 
 load_dotenv(find_dotenv())
@@ -251,7 +251,7 @@ def api_event():
         # For real DB, you would replace with a filter clause in SQLAlchemy
         results = get_event_info(request_data["user_name"], event_date)
 
-    return jsonify(results)
+    return json.dumps(results)
 
 
 @app.route("/login", methods=["POST"])

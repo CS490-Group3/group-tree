@@ -29,6 +29,12 @@ const EVENT_DATA = [
     date: '',
     activity: 'dancing',
   },
+  {
+    id: 5,
+    person: 'Kate',
+    date: '',
+    activity: 'shopping',
+  },
 ];
 
 export default EVENT_DATA;

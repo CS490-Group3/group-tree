@@ -7,6 +7,7 @@ import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
 
 // const BASE_URL = '/api/v1/events';
+const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Monthly'];
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
@@ -14,13 +15,15 @@ export default function LandingPage() {
   const [activityList, setList] = useState([]);
 
   // Store reference to input elements to access typed in values
-  // const idRef = useRef(null);
-  // const titleRef = useRef(null);
-  // const authorRef = useRef(null);
+  // const contactName = useRef(null);
+  // const activity = useRef(null);
+  // const activityDate = useRef(null);
+  // const freq = useRef(null);
+  // const numEvent = useRef(null);
 
   function onClickDay(date) {
-    console.log(date);
-    console.log(EVENT_DATA);
+    // console.log(date);
+    // console.log(EVENT_DATA);
     select(date);
   }
 
@@ -34,7 +37,7 @@ export default function LandingPage() {
     updateActivityList();
     // console.log('loaded!');
     // console.log(activityList);
-  });
+  }, []);
   /*
   function fetchBookByID() {
     const idValue = idRef.current.value;
@@ -76,12 +79,6 @@ export default function LandingPage() {
           <form>
             <div className="form-row">
               <div className="col center">
-                <label htmlFor="exampleTextarea">
-                  Amount
-                  <input type="text" className="form-control" placeholder="Person" />
-                </label>
-              </div>
-              <div className="col center">
                 <label htmlFor="example-date-input">
                   Date
                   <input
@@ -97,6 +94,30 @@ export default function LandingPage() {
               </div>
               <div className="col center">
                 <ContactOption />
+              </div>
+              <div className="col center">
+                <label htmlFor="exampleTextarea">
+                  Number of Events
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Exact number"
+                  />
+                </label>
+              </div>
+              <div className="col center">
+                <label htmlFor="exampleSelect1">
+                  Frequency
+                  <select
+                    className="form-control"
+                    id="exampleSelect1"
+                    placeholder="Activity"
+                  >
+                    {FREQUENCY.map((item) => (
+                      <option>{item}</option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <div className="col center">
                 <input
