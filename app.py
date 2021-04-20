@@ -91,8 +91,8 @@ def add_event_info(
         )
         db.session.add(event)
     db.session.commit()
-    
-    
+
+
 def get_number_days(frequency):
     """ helper method that returns the number of days based on input type """
     if frequency == "single":
@@ -106,7 +106,7 @@ def get_number_days(frequency):
     elif frequency == "monthly":
         days = 30
     return days
-    
+
 
 def get_user_events(person_id):
     """
@@ -206,41 +206,53 @@ def api_add_contact():
 
     return json.dumps(get_contact_info(flask_login.current_user.id))
 
+
 def get_event_info(user_name, datetime):
-    result = db.engine.execute("SELECT * FROM CONTACTS WHERE user_name = " + user_name + "AND date_time = " + datetime)
+    result = db.engine.execute(
+        "SELECT * FROM CONTACTS WHERE user_name = "
+        + user_name
+        + "AND date_time = "
+        + datetime
+    )
     info = []
     for row in result:
         r_dict = dict(row.items())  # convert to dict keyed by column names
         info.append(r_dict)
     # This returns a dictionary that contains key,value pairs of each data from database
-    return info 
-    
+    return info
+
+
 # A route to create or access a specific entry in our catalog based on request.
-@app.route('/api/v1/events', methods=['GET', 'POST'])
+@app.route("/api/v1/events", methods=["GET", "POST"])
 def api_event():
     # User wants to create a new event in the catalog
-    if request.method == 'POST':
+    if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
         add_event_info(
-            request_data['contact_name'], 
-            get_user_username(flask_login.current_user.id), 
-            request_data['activity'], 
-            request_data['date_time'], 
-            flask_login.current_user.id, 
-            request_data['frequency'],
-            request_data['amount']
-        )   
-        return {'success': True} # Return success status if it worked
+            request_data["contact_name"],
+            get_user_username(flask_login.current_user.id),
+            request_data["activity"],
+            request_data["date_time"],
+            flask_login.current_user.id,
+            request_data["frequency"],
+            request_data["amount"],
+        )
+        return {"success": True}  # Return success status if it worked
     else:
-        event_date = request.args.get('book_id', '')
+        event_date = request.args.get("book_id", "")
         if event_date is None:
-            return Response("Error: No date field provided. Please specify a date.", status=400)
-        event_date = datetime.datetime(event_date.year, event_date.month, event_date.day)
+            return Response(
+                "Error: No date field provided. Please specify a date.", status=400
+            )
+        event_date = datetime.datetime(
+            event_date.year, event_date.month, event_date.day
+        )
         # For real DB, you would replace with a filter clause in SQLAlchemy
-        results = get_event_info(request_data['user_name'], event_date)
-        
+        results = get_event_info(request_data["user_name"], event_date)
+
     return jsonify(results)
+
 
 @app.route("/login", methods=["POST"])
 def login():
