@@ -1,6 +1,8 @@
 # pylint: disable=no-member
 # pylint: disable=wrong-import-position
 # pylint: disable=too-many-arguments
+# pylint: disable=no-else-return
+
 """
 Template Flask app
 """
@@ -160,7 +162,10 @@ def get_closest_date(time_now, event_list):
             print(time)
             return time
     return "No Reminders"
+
+
 get_next_reminder("108692952751068368092", "TestContact")
+
 
 def update_contact(contact_id, name, emails, phone_number):
     """
@@ -217,12 +222,15 @@ def api_add_contact():
     return json.dumps(get_contact_info(flask_login.current_user.id))
 
 
-def get_event_info(user_name, datetime):
+def get_event_info(user_name, date_time):
+    """
+    Helper method to get event from selected date
+    """
     result = db.engine.execute(
         "SELECT * FROM CONTACTS WHERE user_name = "
         + user_name
         + "AND date_time = "
-        + datetime
+        + date_time
     )
     info = []
     for row in result:
@@ -235,6 +243,9 @@ def get_event_info(user_name, datetime):
 # A route to create or access a specific entry in our catalog based on request.
 @app.route("/api/v1/events", methods=["GET", "POST"])
 def api_event():
+    """
+    Endpoint for adding a new event and get event info
+    """
     # User wants to create a new event in the catalog
     if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
@@ -261,7 +272,7 @@ def api_event():
         # For real DB, you would replace with a filter clause in SQLAlchemy
         results = get_event_info(request_data["user_name"], event_date)
 
-    return json.dumps(results)
+        return json.dumps(results)
 
 
 @app.route("/login", methods=["POST"])
