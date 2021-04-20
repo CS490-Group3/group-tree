@@ -1,6 +1,8 @@
 # pylint: disable=no-member
 # pylint: disable=wrong-import-position
 # pylint: disable=too-many-arguments
+# pylint: disable=no-else-return
+
 """
 Template Flask app
 """
@@ -12,7 +14,7 @@ import os
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, Response, send_from_directory
 
 
 load_dotenv(find_dotenv())
@@ -160,7 +162,10 @@ def get_closest_date(time_now, event_list):
             print(time)
             return time
     return "No Reminders"
+
+
 get_next_reminder("108692952751068368092", "TestContact")
+
 
 def update_contact(contact_id, name, emails, phone_number):
     """
@@ -215,6 +220,59 @@ def api_add_contact():
         db.session.commit()
 
     return json.dumps(get_contact_info(flask_login.current_user.id))
+
+
+def get_event_info(user_name, date_time):
+    """
+    Helper method to get event from selected date
+    """
+    result = db.engine.execute(
+        "SELECT * FROM CONTACTS WHERE user_name = "
+        + user_name
+        + "AND date_time = "
+        + date_time
+    )
+    info = []
+    for row in result:
+        r_dict = dict(row.items())  # convert to dict keyed by column names
+        info.append(r_dict)
+    # This returns a dictionary that contains key,value pairs of each data from database
+    return info
+
+
+# A route to create or access a specific entry in our catalog based on request.
+@app.route("/api/v1/events", methods=["GET", "POST"])
+def api_event():
+    """
+    Endpoint for adding a new event and get event info
+    """
+    # User wants to create a new event in the catalog
+    if request.method == "POST":
+        # Gets the JSON object from the body of request sent by client
+        request_data = request.get_json()
+        add_event_info(
+            request_data["contact_name"],
+            get_user_username(flask_login.current_user.id),
+            request_data["activity"],
+            request_data["date_time"],
+            flask_login.current_user.id,
+            request_data["frequency"],
+            request_data["amount"],
+        )
+        return {"success": True}  # Return success status if it worked
+    else:
+        event_date = request.args.get("book_id", "")
+        if event_date is None:
+            return Response(
+                "Error: No date field provided. Please specify a date.", status=400
+            )
+        event_date = datetime.datetime(
+            event_date.year, event_date.month, event_date.day
+        )
+        # For real DB, you would replace with a filter clause in SQLAlchemy
+        results = get_event_info(request_data["user_name"], event_date)
+
+        return json.dumps(results)
 
 
 @app.route("/login", methods=["POST"])

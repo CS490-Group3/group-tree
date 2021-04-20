@@ -1,4 +1,4 @@
-''' helper file to prevent circular import issue'''
+""" helper file to prevent circular import issue"""
 
 import os
 from flask import Flask

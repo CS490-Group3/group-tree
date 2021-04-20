@@ -9,25 +9,31 @@ const EVENT_DATA = [
     id: 2,
     person: 'Adam',
     date: '',
-    activity: ['cooking'],
+    activity: 'cooking',
   },
   {
     id: 3,
     person: 'Alex',
     date: '',
-    activity: ['dancing'],
+    activity: 'dancing',
   },
   {
     id: 4,
     person: 'Tim',
     date: '',
-    activity: ['reading'],
+    activity: 'reading',
   },
   {
     id: 5,
     person: 'Kate',
     date: '',
-    activity: ['dancing'],
+    activity: 'dancing',
+  },
+  {
+    id: 5,
+    person: 'Kate',
+    date: '',
+    activity: 'shopping',
   },
 ];
 
