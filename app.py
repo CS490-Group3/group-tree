@@ -91,8 +91,8 @@ def add_event_info(
         )
         db.session.add(event)
     db.session.commit()
-    
-    
+
+
 def get_number_days(frequency):
     """ helper method that returns the number of days based on input type """
     if frequency == "single":
@@ -106,7 +106,6 @@ def get_number_days(frequency):
     elif frequency == "monthly":
         days = 30
     return days
-    
 
 
 def get_user_events(person_id):
