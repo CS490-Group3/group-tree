@@ -99,24 +99,24 @@ export default function ContactBook() {
             Name:
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Full Name"
               {...register('name', { required: true, maxLength: 80 })}
             />
             {errors.name && <p>Name is required.</p>}
             Email:
             <input
               type="text"
-              placeholder="Email"
+              placeholder="example@email.com"
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
             {errors.email && <p>Please enter valid email.</p>}
             Phone Number:
             <input
               type="tel"
-              placeholder="Mobile number"
-              {...register('phoneNumber', { required: true, maxLength: 12 })}
+              placeholder="123-456-7890"
+              {...register('phoneNumber', { required: true, minLength: 12 })}
             />
-            {errors.phoneNumber && <p>Plese Enter valid phone number</p>}
+            {errors.phoneNumber && <p>Plese enter phone number in format 123-456-7890</p>}
             <input type="submit" />
           </form>
         </Modal>
