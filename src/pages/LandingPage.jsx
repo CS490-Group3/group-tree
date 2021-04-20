@@ -7,11 +7,14 @@ import DateInformation from '../components/DateInformation';
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
+  const [selectedDate, select] = useState(new Date());
+  const [activityList, setList] = useState([]);
+
   function onClickDay(date) {
     console.log(date);
     console.log(EVENT_DATA);
+    select(date);
   }
-  const [activityList, setList] = useState([]);
 
   function updateActivityList() {
     /* Todo: clean activity data (change all to lowercase) before adding to database */
@@ -21,8 +24,8 @@ export default function LandingPage() {
 
   useEffect(() => {
     updateActivityList();
-    console.log('loaded!');
-    console.log(activityList);
+    // console.log('loaded!');
+    // console.log(activityList);
   });
 
   return (
@@ -33,7 +36,7 @@ export default function LandingPage() {
           <Calendar onChange={onChange} onClickDay={onClickDay} value={value} />
         </div>
         <div className="item">
-          <h3>Upcoming events</h3>
+          <h3>Upcoming events //Sprint 2</h3>
           <ul className="list-group">
             <li className="list-group-item ">Cras justo odio</li>
             <li className="list-group-item">Dapibus ac facilisis in</li>
@@ -42,7 +45,7 @@ export default function LandingPage() {
             <li className="list-group-item">Vestibulum at eros</li>
           </ul>
         </div>
-        <DateInformation />
+        <DateInformation date={selectedDate} />
       </div>
       <div className="container-form">
         <div className="item">
