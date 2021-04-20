@@ -4,11 +4,19 @@ import 'react-calendar/dist/Calendar.css';
 import EVENT_DATA from '../assets/EventData';
 import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
+import ContactOption from '../components/ContactOption';
+
+// const BASE_URL = '/api/v1/events';
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
+
+  // Store reference to input elements to access typed in values
+  // const idRef = useRef(null);
+  // const titleRef = useRef(null);
+  // const authorRef = useRef(null);
 
   function onClickDay(date) {
     console.log(date);
@@ -27,6 +35,22 @@ export default function LandingPage() {
     // console.log('loaded!');
     // console.log(activityList);
   });
+  /*
+  function fetchBookByID() {
+    const idValue = idRef.current.value;
+    const url = `${BASE_URL}?book_id=${idValue}`; // Add query parameter id, can add multiple with &
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        // Whatever you want to do with the data returned by server
+        setBooks(responseData);
+      });
+  } */
 
   return (
     <div className="landing">
@@ -53,7 +77,7 @@ export default function LandingPage() {
             <div className="form-row">
               <div className="col center">
                 <label htmlFor="exampleTextarea">
-                  Person
+                  Amount
                   <input type="text" className="form-control" placeholder="Person" />
                 </label>
               </div>
@@ -70,6 +94,9 @@ export default function LandingPage() {
               </div>
               <div className="col center">
                 <ActivityOption activityList={activityList} />
+              </div>
+              <div className="col center">
+                <ContactOption />
               </div>
               <div className="col center">
                 <input
