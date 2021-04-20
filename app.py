@@ -9,8 +9,16 @@ import datetime
 import os
 
 import requests
-from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv, find_dotenv
+from flask import Flask, request, send_from_directory, jsonify
+from flask_login import (
+    LoginManager,
+    login_required,
+    login_user,
+    logout_user,
+    UserMixin,
+)
+
 
 load_dotenv(find_dotenv())
 
@@ -26,6 +34,9 @@ def create_app():
 
 
 app = create_app()
+app.secret_key = os.getenv("FLASK_LOGIN_SECRET_KEY")
+login_manager = LoginManager(app)
+
 from exts import db
 import models
 
@@ -34,12 +45,25 @@ db.create_all()
 CURRENT_USERID = "11"  # to store the id of current user (t o d o)
 
 
+class User(UserMixin, models.Person):
+    """
+    Class that Flask-Login needs for some obscure reason.
+    """
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """
+    `user_loader` callback needed by Flask-Login. Maps user ID to User object.
+    """
+    return User.query.filter_by(id=user_id)
+
+
 def add_user(sub, name):
     """ helper method to add new user to database """
     temp = models.Person.query.filter_by(id=sub).first()
     if not temp:
-        # working with databsse
-        print("worked")
+        # working with database
         new_user = models.Person(id=sub, username=name)
         db.session.add(new_user)
         db.session.commit()
@@ -86,7 +110,9 @@ def get_contact_info(id_num):
     # This returns a dictionary that contains key,value pairs of each data from database
     return contacts
 
+
 # get_contact_info(CURRENT_USERID)
+
 
 def add_event_info(
     contact_name, user_name, activity, date_time, person_id, frequency, amount
@@ -226,9 +252,9 @@ def api_id():
 @app.route("/login", methods=["POST"])
 def login():
     """
-    Endpoint for authenticating with Google's login API.
+    Endpoint for logging in with Google's login API.
     """
-    request_data = request.get_json()
+    request_data = request.get_json(silent=True)
 
     if request_data:
         token = request_data.get("token")
@@ -238,16 +264,32 @@ def login():
             "https://www.googleapis.com/oauth2/v3/tokeninfo", {"id_token": token}
         )
 
-        if google_response:  # not error
+        if google_response:  # user has been authenticated
             profile = google_response.json()
             sub = profile["sub"]  # can use as primary key
             name = profile["name"]
-            email = profile["email"]
-            add_user(sub, name)
+            # email = profile["email"]
 
-        print(sub, name, email)
+            # add new user to database if not already there
+            user_id = str(sub)
+            if not models.Person.query.get(user_id):
+                new_person = models.Person(id=user_id, username=name)
+                db.session.add(new_person)
+                db.session.commit()
 
-    return {}
+            user = User.query.get(user_id)
+            login_user(user)
+
+    return {}  # need to return something or Flask will raise error
+
+
+@app.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    """
+    Endpoint for logging out.
+    """
+    logout_user()
 
 
 @app.route("/", defaults={"filename": "index.html"})
