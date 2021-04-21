@@ -82,7 +82,7 @@ def add_event_info(
     print(frequency)
     user_name = "admin"
     days = get_number_days(frequency)
-    
+
     date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d")
     for i in range(int(amount)):
         time_change = datetime.timedelta(days=days * i)
@@ -101,15 +101,15 @@ def add_event_info(
 def get_number_days(frequency):
     days = 1
     """ helper method that returns the number of days based on input type """
-    if frequency == 'Single':
+    if frequency == "Single":
         days = 0
-    elif frequency == 'Daily':
+    elif frequency == "Daily":
         days = 1
-    elif frequency == 'Weekly':
+    elif frequency == "Weekly":
         days = 7
-    elif frequency == 'Biweekly':
+    elif frequency == "Biweekly":
         days = 14
-    elif frequency == 'Monthly':
+    elif frequency == "Monthly":
         days = 30
     return days
 
@@ -166,6 +166,7 @@ def get_closest_date(time_now, event_list):
             print(time)
             return time
     return "No Reminders"
+
 
 def update_contact(contact_id, name, emails, phone_number):
     """
