@@ -127,6 +127,9 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
+                <ContactOption />
+              </div>
+              <div className="col center">
                 <input
                   className=" form-control btn btn-primary"
                   type="submit"
