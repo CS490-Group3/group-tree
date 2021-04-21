@@ -3,8 +3,6 @@ This file tests the function get_number_days from app.py
 """
 
 import datetime
-import os
-import sys
 import unittest
 
 from app.app import get_number_days, get_closest_date
