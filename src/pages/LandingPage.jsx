@@ -7,7 +7,7 @@ import DateInformation from '../components/DateInformation';
 // import ContactOption from '../components/ContactOption';
 
 const BASE_URL = '/api/v1/events';
-const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Monthly'];
+const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());

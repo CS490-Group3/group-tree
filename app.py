@@ -80,6 +80,7 @@ def add_event_info(
 ):
     """ helper method to add events to database """
     print(frequency)
+    user_name = "admin"
     days = get_number_days(frequency)
     
     date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d")
@@ -98,6 +99,7 @@ def add_event_info(
 
 
 def get_number_days(frequency):
+    days = 1
     """ helper method that returns the number of days based on input type """
     if frequency == 'Single':
         days = 0
@@ -248,12 +250,9 @@ def api_event():
     if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
-        print("here")
-        print(request_data["frequency"])
-        print(request_data["amount"])
         add_event_info(
             request_data["contact_name"],
-            get_user_username(flask_login.current_user.id),
+            "admin",
             request_data["activity"],
             request_data["date_time"],
             flask_login.current_user.id,
