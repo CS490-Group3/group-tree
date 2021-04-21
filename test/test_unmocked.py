@@ -9,8 +9,6 @@ import unittest
 
 from app.app import get_number_days, get_closest_date
 
-sys.path.append(os.path.abspath("../../"))
-
 
 KEY_INPUT = "input"
 KEY_EXPECTED = "expected"

@@ -27,9 +27,6 @@ flask_app.secret_key = os.getenv("FLASK_LOGIN_SECRET_KEY")
 login_manager = flask_login.LoginManager(flask_app)
 
 
-db.create_all()
-
-
 class User(flask_login.UserMixin, models.Person):
     """
     Class that Flask-Login needs for some obscure reason.
@@ -152,9 +149,6 @@ def get_closest_date(time_now, event_list):
     return "No Reminders"
 
 
-get_next_reminder("108692952751068368092", "TestContact")
-
-
 def update_contact(contact_id, name, emails, phone_number):
     """
     Helper method to update contact info from database
@@ -267,6 +261,7 @@ def index(filename):
 
 
 if __name__ == "__main__":
+    db.create_all()
     flask_app.run(
         host=os.getenv("IP", "0.0.0.0"),
         port=8081 if os.getenv("C9_PORT") else int(os.getenv("PORT", "8081")),
