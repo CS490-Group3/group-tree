@@ -15,32 +15,30 @@ export default function LandingPage() {
   const [activityList, setList] = useState([]);
 
   // Store reference to input elements to access typed in values
-  // const contactName = useRef(null);
   let activity = useRef(null);
-  // const activityDate = useRef(null);
-  // const freq = useRef(null);
-  // const numEvent = useRef(null);
+  let contactName = useRef(null);
+  const activityDate = useRef(null);
+  const freq = useRef(null);
+  const numEvent = useRef(null);
 
   function onSelectActivity(selection) {
     activity = selection;
     console.log(activity.current.value);
   }
   function onClickDay(date) {
-    // console.log(date);
-    // console.log(EVENT_DATA);
     select(date);
   }
-
+  function onSelectContact(selection) {
+    contactName = selection;
+    console.log(contactName.current.value);
+  }
   function updateActivityList() {
-    /* Todo: clean activity data (change all to lowercase) before adding to database */
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
     setList(unique);
   }
 
   useEffect(() => {
     updateActivityList();
-    // console.log('loaded!');
-    // console.log(activityList);
   }, []);
   /*
   function fetchBookByID() {
@@ -72,8 +70,6 @@ export default function LandingPage() {
             <li className="list-group-item ">Cras justo odio</li>
             <li className="list-group-item">Dapibus ac facilisis in</li>
             <li className="list-group-item">Morbi leo risus</li>
-            <li className="list-group-item">Porta ac consectetur ac</li>
-            <li className="list-group-item">Vestibulum at eros</li>
           </ul>
         </div>
         <DateInformation date={selectedDate} />
@@ -86,6 +82,7 @@ export default function LandingPage() {
                 <label htmlFor="example-date-input">
                   Date
                   <input
+                    ref={activityDate}
                     className="form-control"
                     type="date"
                     placeholder="Date"
@@ -100,7 +97,7 @@ export default function LandingPage() {
                 />
               </div>
               <div className="col center">
-                <ContactOption />
+                <ContactOption onSelectContact={onSelectContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
@@ -109,6 +106,7 @@ export default function LandingPage() {
                     type="text"
                     className="form-control"
                     placeholder="Exact number"
+                    ref={numEvent}
                   />
                 </label>
               </div>
@@ -119,6 +117,7 @@ export default function LandingPage() {
                     className="form-control"
                     id="exampleSelect1"
                     placeholder="Activity"
+                    ref={freq}
                   >
                     {FREQUENCY.map((item) => (
                       <option>{item}</option>
