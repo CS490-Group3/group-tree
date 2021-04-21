@@ -69,13 +69,13 @@ class ClosestDateTestCase(unittest.TestCase):
     def setUp(self):
         """ method to create setup for unit tests """
         date_time_now = datetime.datetime.strptime(
-            "2021-04-20 22:59:40", "%Y-%m-%d %H:%M:%S"
+            "2021-04-20", "%Y-%m-%d"
         )
         date_time_param1 = datetime.datetime.strptime(
-            "2021-04-20 04:20:00", "%Y-%m-%d %H:%M:%S"
+            "2021-04-20", "%Y-%m-%d"
         )
         date_time_param2 = datetime.datetime.strptime(
-            "2021-05-20 04:20:00", "%Y-%m-%d %H:%M:%S"
+            "2021-05-20", "%Y-%m-%d"
         )
         self.success_test_params = [
             {
