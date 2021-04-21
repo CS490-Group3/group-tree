@@ -20,7 +20,7 @@ load_dotenv(find_dotenv())
 
 def create_app():
     """ helper method to create app"""
-    appp = Flask(__name__, static_folder="./build/static")
+    appp = Flask(__name__, static_folder="../build/static")
     # Point SQLAlchemy to Heroku database
     appp.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     # Gets rid of a warning
@@ -160,7 +160,10 @@ def get_closest_date(time_now, event_list):
             print(time)
             return time
     return "No Reminders"
+
+
 get_next_reminder("108692952751068368092", "TestContact")
+
 
 def update_contact(contact_id, name, emails, phone_number):
     """
@@ -268,9 +271,9 @@ def logout():
 @app.route("/<path:filename>")
 def index(filename):
     """
-    Serves files from ./build
+    Serves files from ../build
     """
-    return send_from_directory("./build", filename)
+    return send_from_directory("../build", filename)
 
 
 app.run(
