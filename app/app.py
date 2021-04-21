@@ -18,22 +18,14 @@ from flask import Flask, request, send_from_directory
 load_dotenv(find_dotenv())
 
 
-def create_app():
-    """ helper method to create app"""
-    appp = Flask(__name__, static_folder="../build/static")
-    # Point SQLAlchemy to Heroku database
-    appp.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-    # Gets rid of a warning
-    appp.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    return appp
-
-
-app = create_app()
-app.secret_key = os.getenv("FLASK_LOGIN_SECRET_KEY")
-login_manager = flask_login.LoginManager(app)
+flask_app = Flask(__name__, static_folder="../build/static")
+flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+flask_app.secret_key = os.getenv("FLASK_LOGIN_SECRET_KEY")
+login_manager = flask_login.LoginManager(flask_app)
 
 from exts import db
-import models
+import models as models
 
 db.create_all()
 
@@ -190,7 +182,7 @@ def get_contact_info(user_id) -> list:
     ]
 
 
-@app.route("/api/v1/contacts/all", methods=["GET"])
+@flask_app.route("/api/v1/contacts/all", methods=["GET"])
 @flask_login.login_required
 def api_all_contacts():
     """
@@ -199,7 +191,7 @@ def api_all_contacts():
     return json.dumps(get_contact_info(flask_login.current_user.id))
 
 
-@app.route("/api/v1/addContact", methods=["GET", "POST"])
+@flask_app.route("/api/v1/addContact", methods=["GET", "POST"])
 @flask_login.login_required
 def api_add_contact():
     """
@@ -220,7 +212,7 @@ def api_add_contact():
     return json.dumps(get_contact_info(flask_login.current_user.id))
 
 
-@app.route("/login", methods=["POST"])
+@flask_app.route("/login", methods=["POST"])
 def login():
     """
     Endpoint for logging in with Google's login API.
@@ -255,7 +247,7 @@ def login():
     return {"success": False}
 
 
-@app.route("/logout", methods=["POST"])
+@flask_app.route("/logout", methods=["POST"])
 @flask_login.login_required
 def logout():
     """
@@ -267,8 +259,8 @@ def logout():
     return {"success": False}
 
 
-@app.route("/", defaults={"filename": "index.html"})
-@app.route("/<path:filename>")
+@flask_app.route("/", defaults={"filename": "index.html"})
+@flask_app.route("/<path:filename>")
 def index(filename):
     """
     Serves files from ../build
@@ -276,7 +268,7 @@ def index(filename):
     return send_from_directory("../build", filename)
 
 
-app.run(
+flask_app.run(
     host=os.getenv("IP", "0.0.0.0"),
     port=8081 if os.getenv("C9_PORT") else int(os.getenv("PORT", "8081")),
 )
