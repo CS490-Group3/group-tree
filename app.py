@@ -99,8 +99,8 @@ def add_event_info(
 
 
 def get_number_days(frequency):
+    """helper method that returns the number of days based on input type"""
     days = 1
-    """ helper method that returns the number of days based on input type """
     if frequency == "Single":
         days = 0
     elif frequency == "Daily":
