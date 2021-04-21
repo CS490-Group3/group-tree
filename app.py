@@ -163,10 +163,6 @@ def get_closest_date(time_now, event_list):
             return time
     return "No Reminders"
 
-
-get_next_reminder("108692952751068368092", "TestContact")
-
-
 def update_contact(contact_id, name, emails, phone_number):
     """
     Helper method to update contact info from database
