@@ -37,7 +37,6 @@ class Events(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     contact_name = db.Column(db.String(30), nullable=False)
-    user_name = db.Column(db.String(30), nullable=False)
     activity = db.Column(db.String(30), nullable=False)
     date_time = db.Column(db.DateTime(), default=datetime.datetime.now, nullable=False)
     person_id = db.Column(db.String(30), db.ForeignKey("person.id"), nullable=False)
