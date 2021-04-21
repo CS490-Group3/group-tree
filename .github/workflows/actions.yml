@@ -3,7 +3,7 @@ name: GitHub Actions CI
 on: [push, pull_request]
 
 jobs:
-  pylint:
+  server:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,9 +17,10 @@ jobs:
           python3 -m pip install --requirement requirements.txt
           python3 -m pip install pylint
       - name: Analyzing Python files with pylint
-        run: |
-          python3 -m pylint $(find ./ -type f | grep '\.py$' | xargs)
-  eslint:
+        run: python3 -m pylint app test
+      - name: Run unit tests
+        run: python3 -m unittest
+  client:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,8 +29,8 @@ jobs:
         with:
           node-version: '14'
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
       - name: Analyzing JS files with eslint
-        run: |
-          npx eslint src/ --ext js,jsx
+        run: npx eslint src/ --ext js,jsx
+      - name: Run unit tests
+        run: npm run test
