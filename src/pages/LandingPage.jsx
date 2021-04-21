@@ -14,26 +14,30 @@ export default function LandingPage() {
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
   const [createStatus, setCreateStatus] = useState(false);
+  const [selectedActivity, setActivity] = useState(null);
+  const [selectedcontactName, setContact] = useState('');
 
   // Store reference to input elements to access typed in values
 
-  let activityRef = useRef(null);
-  let contactNameRef = useRef(null);
+  // const activityRef = useRef(null);
+  // const contactNameRef = useRef(null);
   const activityDateRef = useRef(null);
   const freqRef = useRef(null);
   const numEventRef = useRef(null);
 
-
   function onSelectActivity(selection) {
-    activityRef = selection;
-    console.log(activityRef.current.value);
+    // activityRef.current = selection;
+    setActivity(selection.current.value);
+    console.log(selection.current.value);
   }
   function onClickDay(date) {
     select(date);
   }
   function onSelectContact(selection) {
-    contactNameRef = selection;
-    console.log(contactNameRef.current.value);
+    // contactNameRef.current = selection;
+    // console.log(contactNameRef.current.value);
+    setContact(selection.current.value);
+    console.log(selection.current.value);
   }
   function updateActivityList() {
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
@@ -59,14 +63,30 @@ export default function LandingPage() {
         setBooks(responseData);
       });
   } */
+  /* function getCircularReplacer() {
+    const seen = new WeakSet();
+    return (key, val) => {
+      if (typeof val === 'object' && val !== null) {
+        if (!seen.has(val)) {
+          seen.add(val);
+        }
+      }
+      return val;
+    };
+  } */
+
   function createEvent() {
     setCreateStatus(false);
-    const activity = activityRef.current.value;
-    const contactName = contactNameRef.current.value;
+    // const activity = activityRef.current.value;
+    // const contactName = contactNameRef.current.value;
+    const activity = selectedActivity;
+    const contactName = selectedcontactName;
+    // const contactName = contactNameRef.current.value;
     const activityDate = activityDateRef.current.value;
     const freq = freqRef.current.value;
     const numEvent = numEventRef.current.value;
 
+    console.log('here');
     const data = JSON.stringify({
       activity,
       contact_name: contactName,
@@ -163,7 +183,7 @@ export default function LandingPage() {
                   value="Add new event"
                   onClick={createEvent}
                 />
-                {createStatus ? 'Successfully created book!' : null}
+                {createStatus ? 'Successfully created events!' : null}
               </div>
             </div>
           </form>

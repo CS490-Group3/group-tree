@@ -29,7 +29,7 @@ export default function ContactOption(prop) {
         setContacts(responseData);
       });
   }, []);
-  
+
   return (
     <label htmlFor="exampleSelect1">
       Contact

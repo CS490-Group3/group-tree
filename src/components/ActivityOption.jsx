@@ -18,7 +18,9 @@ function ActivityOption(prop) {
         ref={selectedActivity}
       >
         {activityList.map((activity) => (
-          <option>{activity[0].toUpperCase() + activity.substring(1)}</option>
+          <option value={activity}>
+            {activity[0].toUpperCase() + activity.substring(1)}
+          </option>
         ))}
       </select>
     </label>

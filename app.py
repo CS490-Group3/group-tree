@@ -246,18 +246,21 @@ def api_event():
     if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
+        print("here")
+        print(request_data["frequency"])
+        print(request_data["amount"])
         add_event_info(
             request_data["contact_name"],
             get_user_username(flask_login.current_user.id),
             request_data["activity"],
-            request_data["activity_date"],
+            request_data["date_time"],
             flask_login.current_user.id,
             request_data["frequency"],
             request_data["amount"],
         )
         return {"success": True}  # Return success status if it worked
     else:
-        event_date = request.args.get("book_id", "")
+        event_date = request.args.get("event_id", "")
         if event_date is None:
             return Response(
                 "Error: No date field provided. Please specify a date.", status=400
