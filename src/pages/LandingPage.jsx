@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import EVENT_DATA from '../assets/EventData';
-import ActivityOption from '../components/ActivityOption';
+// import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
 
@@ -14,22 +14,23 @@ export default function LandingPage() {
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
   const [createStatus, setCreateStatus] = useState(false);
-  const [selectedActivity, setActivity] = useState(null);
+  // const [selectedActivity, setActivity] = useState(null);
   const [selectedcontactName, setContact] = useState('');
 
   // Store reference to input elements to access typed in values
 
-  // const activityRef = useRef(null);
+  const activityRef = useRef(null);
   // const contactNameRef = useRef(null);
   const activityDateRef = useRef(null);
   const freqRef = useRef(null);
   const numEventRef = useRef(null);
 
+  /*
   function onSelectActivity(selection) {
     // activityRef.current = selection;
-    setActivity(selection.current.value);
+    // setActivity(selection.current.value);
     console.log(selection.current.value);
-  }
+  } */
   function onClickDay(date) {
     select(date);
   }
@@ -79,7 +80,7 @@ export default function LandingPage() {
     setCreateStatus(false);
     // const activity = activityRef.current.value;
     // const contactName = contactNameRef.current.value;
-    const activity = selectedActivity;
+    const activity = activityRef.current.value;
     const contactName = selectedcontactName;
     // const contactName = contactNameRef.current.value;
     const activityDate = activityDateRef.current.value;
@@ -142,10 +143,21 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption
-                  activityList={activityList}
-                  onSelectActivity={onSelectActivity}
-                />
+                <label htmlFor="exampleSelect1">
+                  Activity
+                  <select
+                    className="form-control"
+                    id="exampleSelect1"
+                    placeholder="Activity"
+                    ref={activityRef}
+                  >
+                    {activityList.map((activity) => (
+                      <option value={activity}>
+                        {activity[0].toUpperCase() + activity.substring(1)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <div className="col center">
                 <ContactOption onSelectContact={onSelectContact} />
