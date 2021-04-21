@@ -18,7 +18,7 @@ jobs:
           python3 -m pip install pylint
       - name: Analyzing Python files with pylint
         run: |
-          python3 -m pylint $(find ./ -type f | grep '\.py$' | xargs)
+          pylint app
   eslint:
     runs-on: ubuntu-latest
     steps:
