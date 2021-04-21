@@ -2,7 +2,7 @@
 # pylint: disable=too-few-public-methods
 """This file creates our database with contacts and persons"""
 import datetime
-from exts import db
+from app.exts import db
 
 
 class Person(db.Model):

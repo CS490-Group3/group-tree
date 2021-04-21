@@ -1,5 +1,4 @@
 # pylint: disable=no-member
-# pylint: disable=wrong-import-position
 # pylint: disable=too-many-arguments
 """
 Template Flask app
@@ -14,6 +13,9 @@ import requests
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, request, send_from_directory
 
+from app.exts import db
+import app.models as models
+
 
 load_dotenv(find_dotenv())
 
@@ -24,12 +26,8 @@ flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 flask_app.secret_key = os.getenv("FLASK_LOGIN_SECRET_KEY")
 login_manager = flask_login.LoginManager(flask_app)
 
-from exts import db
-import models as models
 
 db.create_all()
-
-CURRENT_USERID = "11"  # to store the id of current user (t o d o)
 
 
 class User(flask_login.UserMixin, models.Person):
@@ -268,7 +266,8 @@ def index(filename):
     return send_from_directory("../build", filename)
 
 
-flask_app.run(
-    host=os.getenv("IP", "0.0.0.0"),
-    port=8081 if os.getenv("C9_PORT") else int(os.getenv("PORT", "8081")),
-)
+if __name__ == "__main__":
+    flask_app.run(
+        host=os.getenv("IP", "0.0.0.0"),
+        port=8081 if os.getenv("C9_PORT") else int(os.getenv("PORT", "8081")),
+    )
