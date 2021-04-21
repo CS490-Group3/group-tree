@@ -254,7 +254,7 @@ def api_event():
             request_data["contact_name"],
             get_user_username(flask_login.current_user.id),
             request_data["activity"],
-            request_data["date_time"],
+            request_data["activity_date"],
             flask_login.current_user.id,
             request_data["frequency"],
             request_data["amount"],

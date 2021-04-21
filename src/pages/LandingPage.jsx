@@ -6,31 +6,32 @@ import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
 
-// const BASE_URL = '/api/v1/events';
+const BASE_URL = '/api/v1/events';
 const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Monthly'];
 
 export default function LandingPage() {
   const [value, onChange] = useState(new Date());
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
+  const [createStatus, setCreateStatus] = useState(false);
 
   // Store reference to input elements to access typed in values
-  let activity = useRef(null);
-  let contactName = useRef(null);
-  const activityDate = useRef(null);
-  const freq = useRef(null);
-  const numEvent = useRef(null);
+  let activityRef = useRef(null);
+  let contactNameRef = useRef(null);
+  const activityDateRef = useRef(null);
+  const freqRef = useRef(null);
+  const numEventRef = useRef(null);
 
   function onSelectActivity(selection) {
-    activity = selection;
-    console.log(activity.current.value);
+    activityRef = selection;
+    console.log(activityRef.current.value);
   }
   function onClickDay(date) {
     select(date);
   }
   function onSelectContact(selection) {
-    contactName = selection;
-    console.log(contactName.current.value);
+    contactNameRef = selection;
+    console.log(contactNameRef.current.value);
   }
   function updateActivityList() {
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
@@ -56,6 +57,34 @@ export default function LandingPage() {
         setBooks(responseData);
       });
   } */
+  function createEvent() {
+    setCreateStatus(false);
+    const activity = activityRef.current.value;
+    const contactName = contactNameRef.current.value;
+    const activityDate = activityDateRef.current.value;
+    const freq = freqRef.current.value;
+    const numEvent = numEventRef.current.value;
+
+    const data = JSON.stringify({
+      activity,
+      contact_name: contactName,
+      date_time: activityDate,
+      frequency: freq,
+      amount: numEvent,
+    });
+    fetch(BASE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data, // No query parameter, for POST we put in body
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        // Whatever you want to do with the data returned by server
+        setCreateStatus(responseData.success);
+      });
+  }
 
   return (
     <div className="landing">
@@ -82,7 +111,7 @@ export default function LandingPage() {
                 <label htmlFor="example-date-input">
                   Date
                   <input
-                    ref={activityDate}
+                    ref={activityDateRef}
                     className="form-control"
                     type="date"
                     placeholder="Date"
@@ -106,7 +135,7 @@ export default function LandingPage() {
                     type="text"
                     className="form-control"
                     placeholder="Exact number"
-                    ref={numEvent}
+                    ref={numEventRef}
                   />
                 </label>
               </div>
@@ -117,7 +146,7 @@ export default function LandingPage() {
                     className="form-control"
                     id="exampleSelect1"
                     placeholder="Activity"
-                    ref={freq}
+                    ref={freqRef}
                   >
                     {FREQUENCY.map((item) => (
                       <option>{item}</option>
@@ -130,7 +159,9 @@ export default function LandingPage() {
                   className=" form-control btn btn-primary"
                   type="submit"
                   value="Add new event"
+                  onClick={createEvent}
                 />
+                {createStatus ? 'Successfully created book!' : null}
               </div>
             </div>
           </form>
