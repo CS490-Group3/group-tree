@@ -83,7 +83,7 @@ def add_event_info(
         )
         print("here")
         db.session.add(event)
-        
+
     db.session.commit()
 
 
