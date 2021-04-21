@@ -79,9 +79,12 @@ def add_event_info(
     contact_name, user_name, activity, date_time, person_id, frequency, amount
 ):
     """ helper method to add events to database """
+    print(frequency)
+    user_name = "admin"
     days = get_number_days(frequency)
-    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
-    for i in range(amount):
+
+    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d")
+    for i in range(int(amount)):
         time_change = datetime.timedelta(days=days * i)
         new_time = date_time_obj + time_change
         event = models.Events(
@@ -96,16 +99,17 @@ def add_event_info(
 
 
 def get_number_days(frequency):
-    """ helper method that returns the number of days based on input type """
-    if frequency == "single":
+    """helper method that returns the number of days based on input type"""
+    days = 1
+    if frequency == "Single":
         days = 0
-    elif frequency == "daily":
+    elif frequency == "Daily":
         days = 1
-    elif frequency == "weekly":
+    elif frequency == "Weekly":
         days = 7
-    elif frequency == "biweekly":
+    elif frequency == "Biweekly":
         days = 14
-    elif frequency == "monthly":
+    elif frequency == "Monthly":
         days = 30
     return days
 
@@ -162,6 +166,7 @@ def get_closest_date(time_now, event_list):
             print(time)
             return time
     return "No Reminders"
+
 
 def update_contact(contact_id, name, emails, phone_number):
     """
@@ -248,7 +253,7 @@ def api_event():
         request_data = request.get_json()
         add_event_info(
             request_data["contact_name"],
-            get_user_username(flask_login.current_user.id),
+            "admin",
             request_data["activity"],
             request_data["date_time"],
             flask_login.current_user.id,
@@ -257,7 +262,7 @@ def api_event():
         )
         return {"success": True}  # Return success status if it worked
     else:
-        event_date = request.args.get("book_id", "")
+        event_date = request.args.get("event_id", "")
         if event_date is None:
             return Response(
                 "Error: No date field provided. Please specify a date.", status=400
