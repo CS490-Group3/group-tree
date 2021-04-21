@@ -67,7 +67,7 @@ def add_event_info(
 ):
     """ helper method to add events to database """
     days = get_number_days(frequency)
-    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
+    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d")
     for i in range(amount):
         time_change = datetime.timedelta(days=days * i)
         new_time = date_time_obj + time_change
