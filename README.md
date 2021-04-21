@@ -37,7 +37,7 @@ After correctly setting the environment variables, build and run the project. Th
 
 ```sh
 npm run build
-python3 app.py
+python3 -m app.app
 ```
 
 ## Setup
