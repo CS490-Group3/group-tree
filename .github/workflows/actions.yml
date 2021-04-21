@@ -18,7 +18,7 @@ jobs:
           python3 -m pip install pylint
       - name: Analyzing Python files with pylint
         run: |
-          pylint app
+          pylint app test
   eslint:
     runs-on: ubuntu-latest
     steps:
