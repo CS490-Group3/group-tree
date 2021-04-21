@@ -17,7 +17,7 @@ from flask import Flask, request, Response, send_from_directory
 
 from app.exts import db
 import app.models as models
-
+from app.models import Events
 
 load_dotenv(find_dotenv())
 
@@ -74,14 +74,16 @@ def add_event_info(
     for i in range(int(amount)):
         time_change = datetime.timedelta(days=days * i)
         new_time = date_time_obj + time_change
-        event = models.Events(
+        event = Events(
             contact_name=contact_name,
             user_name=user_name,
             activity=activity,
             date_time=new_time,
             person_id=person_id,
         )
+        print("here")
         db.session.add(event)
+        
     db.session.commit()
 
 
@@ -235,6 +237,7 @@ def api_event():
     """
     # User wants to create a new event in the catalog
     if request.method == "POST":
+        print("yes")
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
         add_event_info(
@@ -248,6 +251,7 @@ def api_event():
         )
         return {"success": True}  # Return success status if it worked
     else:
+        print("no")
         event_date = request.args.get("event_id", "")
         if event_date is None:
             return Response(

@@ -103,7 +103,6 @@ export default function LandingPage() {
     const freq = freqRef.current.value;
     const numEvent = numEventRef.current.value;
 
-    console.log('here');
     const data = JSON.stringify({
       activity,
       contact_name: contactName,
@@ -111,6 +110,7 @@ export default function LandingPage() {
       frequency: freq,
       amount: numEvent,
     });
+    console.log('here');
     fetch(BASE_URL, {
       method: 'POST',
       headers: {
@@ -118,7 +118,10 @@ export default function LandingPage() {
       },
       body: data, // No query parameter, for POST we put in body
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+        console.log('res');
+      })
       .then((responseData) => {
         // Whatever you want to do with the data returned by server
         setCreateStatus(responseData.success);
@@ -215,9 +218,6 @@ export default function LandingPage() {
                     ))}
                   </select>
                 </label>
-              </div>
-              <div className="col center">
-                <ContactOption />
               </div>
               <div className="col center">
                 <input
