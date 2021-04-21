@@ -79,9 +79,11 @@ def add_event_info(
     contact_name, user_name, activity, date_time, person_id, frequency, amount
 ):
     """ helper method to add events to database """
+    print(frequency)
     days = get_number_days(frequency)
-    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
-    for i in range(amount):
+    
+    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d")
+    for i in range(int(amount)):
         time_change = datetime.timedelta(days=days * i)
         new_time = date_time_obj + time_change
         event = models.Events(
@@ -97,15 +99,15 @@ def add_event_info(
 
 def get_number_days(frequency):
     """ helper method that returns the number of days based on input type """
-    if frequency == "single":
+    if frequency == 'Single':
         days = 0
-    elif frequency == "daily":
+    elif frequency == 'Daily':
         days = 1
-    elif frequency == "weekly":
+    elif frequency == 'Weekly':
         days = 7
-    elif frequency == "biweekly":
+    elif frequency == 'Biweekly':
         days = 14
-    elif frequency == "monthly":
+    elif frequency == 'Monthly':
         days = 30
     return days
 
