@@ -118,10 +118,7 @@ export default function LandingPage() {
       },
       body: data, // No query parameter, for POST we put in body
     })
-      .then((response) => {
-        response.json();
-        console.log('res');
-      })
+      .then((response) => response.json())
       .then((responseData) => {
         // Whatever you want to do with the data returned by server
         setCreateStatus(responseData.success);
@@ -220,12 +217,13 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
-                <input
-                  className=" form-control btn btn-primary"
-                  type="submit"
-                  value="Add new event"
+                {/* eslint-disable */}
+                <button
+                  className=" btn btn-info"
+                  type="button"
                   onClick={createEvent}
-                />
+                >
+                Add new event</button>
                 {createStatus ? 'Successfully created events!' : null}
               </div>
             </div>
