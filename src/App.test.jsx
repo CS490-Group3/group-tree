@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import App from './App';
+import React, { render, screen, fireEvent } from '@testing-library/react';
+
 import ContactBook from './pages/ContactBook';
 
 test('add new contact click function', () => {
