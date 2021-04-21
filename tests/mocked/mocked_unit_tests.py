@@ -1,6 +1,6 @@
 # pylint: disable=wrong-import-position
 # pylint: disable=assignment-from-no-return
-# pylint: disable=assignment-from-no-return-pass
+# pylint: disable=unnecessary-pass
 '''
     unit_tests.py
     This file tests the functions add_user & get_user_username from app.py
