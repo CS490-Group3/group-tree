@@ -16,11 +16,13 @@ export default function LandingPage() {
   const [createStatus, setCreateStatus] = useState(false);
 
   // Store reference to input elements to access typed in values
+
   let activityRef = useRef(null);
   let contactNameRef = useRef(null);
   const activityDateRef = useRef(null);
   const freqRef = useRef(null);
   const numEventRef = useRef(null);
+
 
   function onSelectActivity(selection) {
     activityRef = selection;
