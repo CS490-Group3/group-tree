@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import EVENT_DATA from '../assets/EventData';
@@ -16,11 +16,15 @@ export default function LandingPage() {
 
   // Store reference to input elements to access typed in values
   // const contactName = useRef(null);
-  // const activity = useRef(null);
+  let activity = useRef(null);
   // const activityDate = useRef(null);
   // const freq = useRef(null);
   // const numEvent = useRef(null);
 
+  function onSelectActivity(selection) {
+    activity = selection;
+    console.log(activity.current.value);
+  }
   function onClickDay(date) {
     // console.log(date);
     // console.log(EVENT_DATA);
@@ -90,7 +94,10 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption activityList={activityList} />
+                <ActivityOption
+                  activityList={activityList}
+                  onSelectActivity={onSelectActivity}
+                />
               </div>
               <div className="col center">
                 <ContactOption />
