@@ -103,7 +103,6 @@ export default function LandingPage() {
     const freq = freqRef.current.value;
     const numEvent = numEventRef.current.value;
 
-    console.log('here');
     const data = JSON.stringify({
       activity,
       contact_name: contactName,
@@ -111,6 +110,7 @@ export default function LandingPage() {
       frequency: freq,
       amount: numEvent,
     });
+    console.log('here');
     fetch(BASE_URL, {
       method: 'POST',
       headers: {
@@ -217,15 +217,13 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
-                <ContactOption />
-              </div>
-              <div className="col center">
-                <input
-                  className=" form-control btn btn-primary"
-                  type="submit"
-                  value="Add new event"
+                {/* eslint-disable */}
+                <button
+                  className=" btn btn-info"
+                  type="button"
                   onClick={createEvent}
-                />
+                >
+                Add new event</button>
                 {createStatus ? 'Successfully created events!' : null}
               </div>
             </div>
