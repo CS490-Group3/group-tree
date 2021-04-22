@@ -78,15 +78,15 @@ def add_event_info(
 def get_number_days(frequency):
     """helper method that returns the number of days based on input type"""
     days = 1
-    if frequency == "Single":
+    if frequency == "single":
         days = 0
-    elif frequency == "Daily":
+    elif frequency == "daily":
         days = 1
-    elif frequency == "Weekly":
+    elif frequency == "weekly":
         days = 7
-    elif frequency == "Biweekly":
+    elif frequency == "biweekly":
         days = 14
-    elif frequency == "Monthly":
+    elif frequency == "monthly":
         days = 30
     return days
 
