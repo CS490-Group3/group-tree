@@ -5,7 +5,7 @@ This file tests the functions add_user & get_user_username from app.py
 import unittest
 from unittest.mock import patch
 
-from app.app import add_user, add_event_info
+from app.app import add_user
 
 
 KEY_INPUT = "input"
@@ -46,20 +46,11 @@ class AddUserTestCase(unittest.TestCase):
         for test in self.success_test_params:
             with patch("app.app.db.session.add", self.mocked_db_session_add):
                 with patch("app.app.db.session.commit", self.mocked_db_session_commit):
-
-                    actual_result = add_user(test[KEY_INPUT][0], test[KEY_INPUT][1])
-                    expected_result = test[KEY_EXPECTED]
-
-                    self.assertEqual(actual_result, expected_result)
+                    self.assertIsNone(add_user(*test[KEY_INPUT]))
 
     def test_add_failure(self):
         """ testing failure of test params """
         for test in self.failure_test_params:
             with patch("app.app.db.session.add", self.mocked_db_session_add):
                 with patch("app.app.db.session.commit", self.mocked_db_session_commit):
-
-                    actual_result = add_user(test[KEY_INPUT][0], test[KEY_INPUT][1])
-
-                    expected_result = test[KEY_EXPECTED]
-
-                    self.assertNotEqual(actual_result, expected_result)
+                    self.assertIsNone(add_user(*test[KEY_INPUT]))
