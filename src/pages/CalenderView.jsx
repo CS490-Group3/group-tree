@@ -9,7 +9,7 @@ import ContactOption from '../components/ContactOption';
 const BASE_URL = '/api/v1/events';
 const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
 
-export default function LandingPage() {
+export default function CalenderView() {
   const [value, onChange] = useState(new Date());
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
