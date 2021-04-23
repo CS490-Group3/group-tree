@@ -22,13 +22,19 @@ function App() {
                 <h1 id="title">GroupTree</h1>
               </li>
               <li>
-                <Link to="/tree-view">TreeView</Link>
+                <Link to="/tree-view">
+                  <i className="fab fa-pagelines fa-2x" />
+                </Link>
               </li>
               <li>
-                <Link to="/calender-view">CalenderView</Link>
+                <Link to="/calender-view">
+                  <i className="far fa-calendar-alt fa-2x" />
+                </Link>
               </li>
               <li>
-                <Link to="/contact-book">ContactBook</Link>
+                <Link to="/contact-book">
+                  <i className="fas fa-user-friends fa-2x" />
+                </Link>
               </li>
               <li>
                 <GoogleLogout
