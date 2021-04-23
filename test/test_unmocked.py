@@ -38,13 +38,10 @@ class NumberDaysTestCase(unittest.TestCase):
         """
         for test in self.success_test_params:
             actual_result = get_number_days(test[KEY_INPUT])
-            print(actual_result)
             expected_result = test[KEY_EXPECTED]
-            print(expected_result)
 
             self.assertEqual(actual_result, expected_result)
             self.assertEqual(type(actual_result), type(expected_result))
-            # self.assertEqual(type(actual_result[0][1]), type(expected_result[1]))
 
     def test_number_days_failure(self):
         """
@@ -52,10 +49,8 @@ class NumberDaysTestCase(unittest.TestCase):
         """
         for test in self.failure_test_params:
             actual_result = get_number_days(test[KEY_INPUT])
-            print(actual_result)
 
             expected_result = test[KEY_EXPECTED]
-            print(expected_result)
 
             self.assertNotEqual(actual_result, expected_result)
             self.assertNotEqual(type(actual_result), type(expected_result))
@@ -68,15 +63,9 @@ class ClosestDateTestCase(unittest.TestCase):
 
     def setUp(self):
         """ method to create setup for unit tests """
-        date_time_now = datetime.datetime.strptime(
-            "2021-04-20", "%Y-%m-%d"
-        )
-        date_time_param1 = datetime.datetime.strptime(
-            "2021-04-20", "%Y-%m-%d"
-        )
-        date_time_param2 = datetime.datetime.strptime(
-            "2021-05-20", "%Y-%m-%d"
-        )
+        date_time_now = datetime.datetime.strptime("2021-04-20", "%Y-%m-%d")
+        date_time_param1 = datetime.datetime.strptime("2021-04-20", "%Y-%m-%d")
+        date_time_param2 = datetime.datetime.strptime("2021-05-20", "%Y-%m-%d")
         self.success_test_params = [
             {
                 KEY_INPUT: [date_time_now, [date_time_param1, date_time_param2]],
@@ -109,13 +98,10 @@ class ClosestDateTestCase(unittest.TestCase):
         """
         for test in self.success_test_params:
             actual_result = get_closest_date(test[KEY_INPUT][0], test[KEY_INPUT][1])
-            print(actual_result)
             expected_result = test[KEY_EXPECTED]
-            print(expected_result)
 
             self.assertEqual(actual_result, expected_result)
             self.assertEqual(type(actual_result), type(expected_result))
-            # self.assertEqual(type(actual_result[0][1]), type(expected_result[1]))
 
     def test_closest_date_failure(self):
         """
@@ -123,9 +109,7 @@ class ClosestDateTestCase(unittest.TestCase):
         """
         for test in self.failure_test_params:
             actual_result = get_closest_date(test[KEY_INPUT][0], test[KEY_INPUT][1])
-            print(actual_result)
             expected_result = test[KEY_EXPECTED]
-            print(expected_result)
 
             self.assertNotEqual(actual_result, expected_result)
             self.assertNotEqual(type(actual_result), type(expected_result))
