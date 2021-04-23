@@ -16,41 +16,41 @@ function App() {
     <div className="App">
       {loggedIn === true ? (
         <Router>
-          <nav>
-            <ul>
-              <li>
-                <h1 id="title">GroupTree</h1>
-              </li>
-              <li>
-                <Link to="/tree-view">
-                  <i className="fab fa-pagelines fa-2x" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/calender-view">
-                  <i className="far fa-calendar-alt fa-2x" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact-book">
-                  <i className="fas fa-user-friends fa-2x" />
-                </Link>
-              </li>
-              <li>
-                <GoogleLogout
-                  clientId={clientId}
-                  buttonText="Logout"
-                  onLogoutSuccess={() =>
-                    fetch('/logout', { method: 'POST' })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        if (data.success === true) setLoggedIn(false);
-                      })
-                  }
-                  style={{ marginTop: '100px' }}
-                />
-              </li>
-            </ul>
+          <nav className="navbar navbar-expand-lg bg-light">
+            <h1 id="title">GroupTree</h1>
+            <div className="collapse navbar-collapse">
+              <ul className="nav navbar-nav ml-auto" id="nav-bar">
+                <li className="nav-item">
+                  <Link to="/tree-view">
+                    <i className="fab fa-pagelines fa-2x" />
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/calender-view">
+                    <i className="fas fa-calendar-alt fa-2x" />
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/contact-book">
+                    <i className="fas fa-user-friends fa-2x" />
+                  </Link>
+                </li>
+                <li>
+                  <GoogleLogout
+                    clientId={clientId}
+                    buttonText="Logout"
+                    onLogoutSuccess={() =>
+                      fetch('/logout', { method: 'POST' })
+                        .then((response) => response.json())
+                        .then((data) => {
+                          if (data.success === true) setLoggedIn(false);
+                        })
+                    }
+                    style={{ marginTop: '100px' }}
+                  />
+                </li>
+              </ul>
+            </div>
           </nav>
           {/* A <Switch> looks through its children <Route>s and renders the first one
           that matches the current URL. */}
