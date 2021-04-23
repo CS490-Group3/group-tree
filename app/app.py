@@ -1,6 +1,5 @@
 # pylint: disable=no-member
 # pylint: disable=too-many-arguments
-# pylint: disable=no-else-return
 
 """
 Template Flask app
@@ -53,20 +52,10 @@ def add_user(sub, name):
         db.session.commit()
 
 
-def get_user_username(id_num):
-    """ helper method to retrieve username from database """
-    temp = models.Person.query.filter_by(id=id_num).first()
-    # id_num - temp.id
-    # print(id_num)
-    username = temp.username
-    print(username)
-
-
 def add_event_info(
     contact_name, user_name, activity, date_time, person_id, frequency, amount
 ):
     """ helper method to add events to database """
-    print(frequency)
     user_name = "admin"
     days = get_number_days(frequency)
 
@@ -90,15 +79,15 @@ def add_event_info(
 def get_number_days(frequency):
     """helper method that returns the number of days based on input type"""
     days = 1
-    if frequency == "Single":
+    if frequency == "single":
         days = 0
-    elif frequency == "Daily":
+    elif frequency == "daily":
         days = 1
-    elif frequency == "Weekly":
+    elif frequency == "weekly":
         days = 7
-    elif frequency == "Biweekly":
+    elif frequency == "biweekly":
         days = 14
-    elif frequency == "Monthly":
+    elif frequency == "monthly":
         days = 30
     return days
 
@@ -108,11 +97,8 @@ def get_user_events(person_id):
     Helper method to get events from database
     """
     result = models.Events.query.get(person_id)
-    print("EVENTS LIST FOR ID '" + str(person_id) + "'\n")
     contacts = []
     for row in result:
-        # print(r[0]) # Access by positional index
-        # print("Event Activity: " + row['name']) # Access by column name as a string
         r_dict = dict(row.items())  # convert to dict keyed by column names
         contacts.append(r_dict)
     # This returns a dictionary that contains key,value pairs of each data from database
@@ -135,8 +121,6 @@ def get_next_reminder(person_id, contact_name):
 
     # Accessing current time to get closest to date value
     time_now = datetime.datetime.utcnow()
-    # print("Time now: ", end="")
-    print(time_now)
     next_reminder = get_closest_date(time_now, event_list)
     return next_reminder
 
@@ -151,8 +135,6 @@ def get_closest_date(time_now, event_list):
     # Obtaining closest date
     for time in event_list:
         if time > time_now:
-            print("Next Reminder: ", end="")
-            print(time)
             return time
     return "No Reminders"
 
@@ -250,6 +232,7 @@ def api_event():
             request_data["amount"],
         )
         return {"success": True}  # Return success status if it worked
+<<<<<<< HEAD
     else:
         print("no")
         event_date = request.args.get("event_id", "")
@@ -259,11 +242,19 @@ def api_event():
             )
         event_date = datetime.datetime(
             event_date.year, event_date.month, event_date.day
-        )
-        # For real DB, you would replace with a filter clause in SQLAlchemy
-        results = get_event_info(request_data["user_name"], event_date)
+=======
 
-        return json.dumps(results)
+    event_date = request.args.get("event_id", "")
+    if event_date is None:
+        return Response(
+            "Error: No date field provided. Please specify a date.", status=400
+>>>>>>> e698868f86e9689a627f7b10c752c1fef357d39b
+        )
+    event_date = datetime.datetime(event_date.year, event_date.month, event_date.day)
+    # For real DB, you would replace with a filter clause in SQLAlchemy
+    results = get_event_info(request_data["user_name"], event_date)
+
+    return json.dumps(results)
 
 
 @flask_app.route("/login", methods=["POST"])
