@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import LandingPage from './pages/LandingPage';
+import TreePage from './pages/TreePage';
+import CalenderView from './pages/CalenderView';
 import ContactBook from './pages/ContactBook';
 import './css/App.css';
 
@@ -18,10 +19,16 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/landing">Landing</Link>
+                <h1 id="title">GroupTree</h1>
               </li>
               <li>
-                <Link to="/contact-book">Contact Book</Link>
+                <Link to="/tree-page">TreePage</Link>
+              </li>
+              <li>
+                <Link to="/calender-view">CalenderView</Link>
+              </li>
+              <li>
+                <Link to="/contact-book">ContactBook</Link>
               </li>
               <li>
                 <GoogleLogout
@@ -42,7 +49,8 @@ function App() {
           {/* A <Switch> looks through its children <Route>s and renders the first one
           that matches the current URL. */}
           <Switch>
-            <Route exact path="/landing" component={LandingPage} />
+            <Route exact path="/tree-page" component={TreePage} />
+            <Route exact path="/calender-view" component={CalenderView} />
             <Route path="/contact-book" exact component={ContactBook} />
           </Switch>
         </Router>
