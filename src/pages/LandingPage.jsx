@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import EVENT_DATA from '../assets/EventData';
-// import ActivityOption from '../components/ActivityOption';
+import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
-// import ContactOption from '../components/ContactOption';
+import ContactOption from '../components/ContactOption';
 
 const BASE_URL = '/api/v1/events';
 const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
@@ -14,35 +14,25 @@ export default function LandingPage() {
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
   const [createStatus, setCreateStatus] = useState(false);
-  const [contacts, setContacts] = useState([]);
-
-  // const [selectedActivity, setActivity] = useState(null);
-  // const [selectedcontactName, setContact] = useState('');
 
   // Store reference to input elements to access typed in values
 
-  const activityRef = useRef(null);
-  const contactNameRef = useRef(null);
+  let activityRef = useRef(null);
+  let contactNameRef = useRef(null);
   const activityDateRef = useRef(null);
   const freqRef = useRef(null);
   const numEventRef = useRef(null);
 
-  /*
   function onSelectActivity(selection) {
-    // activityRef.current = selection;
-    // setActivity(selection.current.value);
-    console.log(selection.current.value);
-  } */
+    activityRef = selection;
+  }
   function onClickDay(date) {
     select(date);
   }
-  /*
+
   function onSelectContact(selection) {
-    // contactNameRef.current = selection;
-    // console.log(contactNameRef.current.value);
-    setContact(selection.current.value);
-    console.log(selection.current.value);
-  } */
+    contactNameRef = selection;
+  }
   function updateActivityList() {
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
     setList(unique);
@@ -50,19 +40,6 @@ export default function LandingPage() {
 
   useEffect(() => {
     updateActivityList();
-    window
-      .fetch('/api/v1/contacts/all', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(
-        (response) => response.json(), // Convert to json
-      )
-      .then((responseData) => {
-        setContacts(responseData);
-      });
   }, []);
   /*
   function fetchBookByID() {
@@ -80,25 +57,11 @@ export default function LandingPage() {
         setBooks(responseData);
       });
   } */
-  /* function getCircularReplacer() {
-    const seen = new WeakSet();
-    return (key, val) => {
-      if (typeof val === 'object' && val !== null) {
-        if (!seen.has(val)) {
-          seen.add(val);
-        }
-      }
-      return val;
-    };
-  } */
 
   function createEvent() {
     setCreateStatus(false);
-    // const activity = activityRef.current.value;
-    // const contactName = contactNameRef.current.value;
     const activity = activityRef.current.value;
     const contactName = contactNameRef.current.value;
-    // const contactName = contactNameRef.current.value;
     const activityDate = activityDateRef.current.value;
     const freq = freqRef.current.value;
     const numEvent = numEventRef.current.value;
@@ -120,7 +83,6 @@ export default function LandingPage() {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        // Whatever you want to do with the data returned by server
         setCreateStatus(responseData.success);
       });
   }
@@ -159,36 +121,13 @@ export default function LandingPage() {
                 </label>
               </div>
               <div className="col center">
-                <label htmlFor="exampleSelect1">
-                  Activity
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    placeholder="Activity"
-                    ref={activityRef}
-                  >
-                    {activityList.map((activity) => (
-                      <option value={activity}>
-                        {activity[0].toUpperCase() + activity.substring(1)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <ActivityOption
+                  activityList={activityList}
+                  onSelectActivity={onSelectActivity}
+                />
               </div>
               <div className="col center">
-                <label htmlFor="exampleSelect1">
-                  Contact
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    placeholder="Activity"
-                    ref={contactNameRef}
-                  >
-                    {contacts.map((person) => (
-                      <option>{person.name}</option>
-                    ))}
-                  </select>
-                </label>
+                <ContactOption onSelectContact={onSelectContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
