@@ -69,6 +69,7 @@ function ContactBook() {
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone Number</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -77,7 +78,7 @@ function ContactBook() {
               name={c.name}
               email={c.email}
               phone={c.phone}
-              onClick={() =>
+              onConfirmDelete={() =>
                 fetch(`/api/v1/contacts?id=${c.id}`, {
                   method: 'DELETE',
                 }).then(() =>
