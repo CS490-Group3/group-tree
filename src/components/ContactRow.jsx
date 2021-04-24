@@ -12,7 +12,7 @@ function ContactRow(props) {
       <td>
         <button
           onClick={() => {
-            if (confirm(`Delete ${name}?`)) onConfirmDelete(); // eslint-disable-line no-alert
+            if (confirm(`Delete ${name}?`)) onConfirmDelete(); // eslint-disable-line no-alert, no-restricted-globals
           }}
           type="button"
         >
