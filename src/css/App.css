@@ -37,13 +37,28 @@
   }
 }
 
-#title {
-  color: pink;
+#nav {
+  padding: 1rem 7rem;
+  background-color: #5b8a72;
+  color: white;
+
 }
 
 #nav-bar li {
   padding: 14px 30px;
 }
+
+ul.nav a:hover { 
+  color: #bfcba8 !important; 
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
 
 /*
 

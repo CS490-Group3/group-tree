@@ -16,9 +16,20 @@ function App() {
     <div className="App">
       {loggedIn === true ? (
         <Router>
-          <nav className="navbar navbar-expand-lg bg-light">
+          <nav className="navbar navbar-expand-lg" id="nav">
             <h1 id="title">GroupTree</h1>
-            <div className="collapse navbar-collapse">
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon" />
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="nav navbar-nav ml-auto" id="nav-bar">
                 <li className="nav-item">
                   <Link to="/tree-view">
@@ -56,7 +67,6 @@ function App() {
           that matches the current URL. */}
           <Switch>
             <Route exact path="/tree-view" component={TreeView} />
-
             <Route exact path="/calender-view" component={CalenderView} />
             <Route path="/contact-book" exact component={ContactBook} />
           </Switch>
