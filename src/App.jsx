@@ -16,8 +16,8 @@ function App() {
     <div className="App">
       {loggedIn === true ? (
         <Router>
-          <nav className="navbar navbar-expand-lg" id="nav">
-            <h1 id="title">GroupTree</h1>
+          <nav className="navbar navbar-expand-md" id="nav">
+            <h1 classnName="navbar-brand">GroupTree</h1>
             <button
               className="navbar-toggler"
               type="button"
@@ -27,26 +27,26 @@ function App() {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon" />
+              <i className="fas fa-align-justify fa-2x" />
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="nav navbar-nav ml-auto" id="nav-bar">
-                <li className="nav-item">
+                <li className="nav-item px-4">
                   <Link to="/tree-view">
                     <i className="fab fa-pagelines fa-2x" />
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item px-4">
                   <Link to="/calender-view">
                     <i className="fas fa-calendar-alt fa-2x" />
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item px-4">
                   <Link to="/contact-book">
                     <i className="fas fa-user-friends fa-2x" />
                   </Link>
                 </li>
-                <li>
+                <li lassName="nav-item px-4">
                   <GoogleLogout
                     clientId={clientId}
                     buttonText="Logout"
