@@ -31,22 +31,22 @@ function App() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="nav navbar-nav ml-auto" id="nav-bar">
-                <li className="nav-item px-4">
+                <li className="nav-item px-4 py-2">
                   <Link to="/tree-view">
                     <i className="fab fa-pagelines fa-2x" />
                   </Link>
                 </li>
-                <li className="nav-item px-4">
+                <li className="nav-item px-4 py-2">
                   <Link to="/calender-view">
                     <i className="fas fa-calendar-alt fa-2x" />
                   </Link>
                 </li>
-                <li className="nav-item px-4">
+                <li className="nav-item px-4 py-2">
                   <Link to="/contact-book">
                     <i className="fas fa-user-friends fa-2x" />
                   </Link>
                 </li>
-                <li lassName="nav-item px-4">
+                <li className="nav-item px-4 py-2">
                   <GoogleLogout
                     clientId={clientId}
                     buttonText="Logout"

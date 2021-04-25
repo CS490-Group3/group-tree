@@ -3,17 +3,21 @@
 }
 
 /* navbar */
+.navbar-brand{
+  font-size: 5rem;
+  color: white;
+}
 #nav {
-  padding: 1rem 7rem;
+  padding: 0.8rem 7rem;
   background-color: #5b8a72;
   color: white;
 }
 
-#nav a:hover { 
+#nav-bar a:hover { 
   color: #bfcba8 !important; 
 }
 
-#nav li a {
+#nav-bar li a {
   color: white;
 }
 
