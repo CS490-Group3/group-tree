@@ -3,7 +3,7 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import TreeView from './pages/TreeView';
-import CalenderView from './pages/CalenderView';
+import CalendarView from './pages/CalendarView';
 import ContactBook from './pages/ContactBook';
 import './css/App.css';
 
@@ -37,7 +37,7 @@ function App() {
                   </Link>
                 </li>
                 <li className="nav-item px-4 py-2">
-                  <Link to="/calender-view">
+                  <Link to="/calendar-view">
                     <i className="fas fa-calendar-alt fa-2x" />
                   </Link>
                 </li>
@@ -67,7 +67,7 @@ function App() {
           that matches the current URL. */}
           <Switch>
             <Route exact path="/tree-view" component={TreeView} />
-            <Route exact path="/calender-view" component={CalenderView} />
+            <Route exact path="/calendar-view" component={CalendarView} />
             <Route path="/contact-book" exact component={ContactBook} />
           </Switch>
         </Router>
