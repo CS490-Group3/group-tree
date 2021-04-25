@@ -135,7 +135,7 @@ def get_closest_date(time_now, event_list):
     for time in event_list:
         if time > time_now:
             return time
-    return "No Reminders"
+    return "No Event"
 
 
 def update_contact(contact_id, name, emails, phone_number):
