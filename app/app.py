@@ -159,6 +159,7 @@ def get_contact_info(user_id) -> list:
             "name": contact.name,
             "email": contact.emails,
             "phone": contact.phoneNumber,
+            "nextEvent": "5 Days"
         }
         for contact in models.Contact.query.filter_by(person_id=user_id).all()
     ]
