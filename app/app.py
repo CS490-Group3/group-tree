@@ -104,7 +104,7 @@ def get_user_events(person_id):
     return contacts
 
 
-def get_next_reminder(person_id, contact_name):
+def get_next_event(person_id, contact_name):
     """
     Helper method to get events from database
     """
@@ -151,18 +151,23 @@ def update_contact(contact_id, name, emails, phone_number):
 
 def get_contact_info(user_id) -> list:
     """
-    Helper method to get a user's list of contacts
+    Helper method to get a user's list of contacts 
+    and also add a next event occurance for each contact
     """
-    return [
-        {
-            "id": contact.id,
+    all_contacts = []
+    for contact in models.Contact.query.filter_by(person_id=user_id).all():
+        nextEvent = get_next_event(user_id, contact.name)   #TODO after events table is set
+        print(nextEvent)
+        d = {
             "name": contact.name,
             "email": contact.emails,
             "phone": contact.phoneNumber,
-            "nextEvent": "5 Days"
+            "nextEvent": str(nextEvent)  #dummy data for now
         }
-        for contact in models.Contact.query.filter_by(person_id=user_id).all()
-    ]
+        
+        all_contacts.append(d)
+        
+    return all_contacts
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE"])
