@@ -155,12 +155,31 @@ def get_contact_info(user_id) -> list:
     """
     return [
         {
+            "id": contact.id,
             "name": contact.name,
-            "emails": contact.emails,
-            "phoneNumber": contact.phoneNumber,
+            "email": contact.emails,
+            "phone": contact.phoneNumber,
         }
         for contact in models.Contact.query.filter_by(person_id=user_id).all()
     ]
+
+
+@flask_app.route("/api/v1/contacts", methods=["DELETE"])
+@flask_login.login_required
+def api_delete_contact():
+    """
+    Endpoint for API calls regarding contact books.
+    """
+    if request.method == "DELETE":
+        contact_id = request.args.get("id")
+        contact = models.Contact.query.get(contact_id)
+
+        # check if the contact exists and belongs to the user
+        if contact is not None and contact.person_id == flask_login.current_user.id:
+            db.session.delete(contact)
+            db.session.commit()
+            return ("", 204)
+    return ("", 404)
 
 
 @flask_app.route("/api/v1/contacts/all", methods=["GET"])
@@ -181,10 +200,11 @@ def api_add_contact():
     if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
+        print("ADD CONTACT", request_data)
         new_contact = models.Contact(
             name=request_data["name"],
-            emails=request_data["email"],  # PLEASE rename this to `email`
-            phoneNumber=request_data["phoneNumber"],  # rename this to `phone_number`
+            emails=request_data["email"],
+            phoneNumber=request_data["phone"],
             person_id=flask_login.current_user.id,
         )
         db.session.add(new_contact)
