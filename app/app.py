@@ -148,9 +148,16 @@ def get_closest_date(time_now, event_list):
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
 @flask_login.login_required
-def api_delete_contact():
+def api_contacts():
     """
-    Endpoint for API calls regarding contact books.
+    Endpoint for API calls regarding contact books. The functionality is dependent on the
+    HTTP method.
+
+    `DELETE` - Delete a contact given the contact ID
+
+    `GET` - Get a list of all the user's contacts in JSON
+
+    `POST` - Add a new contact
     """
     if request.method == "DELETE":
         contact_id = request.args.get("id")
