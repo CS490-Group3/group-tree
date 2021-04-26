@@ -73,7 +73,7 @@ class ClosestDateTestCase(unittest.TestCase):
             },
             {
                 KEY_INPUT: [date_time_now, [date_time_param1]],
-                KEY_EXPECTED: "No Events",
+                KEY_EXPECTED: "No Event",
             },
             {
                 KEY_INPUT: [date_time_now, [date_time_param2]],
@@ -83,7 +83,7 @@ class ClosestDateTestCase(unittest.TestCase):
         self.failure_test_params = [
             {
                 KEY_INPUT: [date_time_now, [date_time_param1, date_time_param2]],
-                KEY_EXPECTED: "No Events",
+                KEY_EXPECTED: "No Event",
             },
             {
                 KEY_INPUT: [date_time_now, [date_time_param1]],
