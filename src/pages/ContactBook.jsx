@@ -60,6 +60,7 @@ function ContactBook() {
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone Number</th>
+            <th scope="col">Next Event</th>
             <th scope="col">Options</th>
           </tr>
         </thead>
@@ -69,6 +70,7 @@ function ContactBook() {
               name={c.name}
               email={c.email}
               phone={c.phone}
+              nextEvent={c.nextEvent}
               onConfirmDelete={() =>
                 fetch(`${BASE_URL}?id=${c.id}`, {
                   method: 'DELETE',

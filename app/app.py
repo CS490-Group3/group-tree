@@ -104,9 +104,10 @@ def get_user_events(person_id):
     return contacts
 
 
-def get_next_reminder(person_id, contact_name):
+def get_next_event(person_id, contact_name):
     """
-    Helper method to get events from database
+    Helper method to get events from database to get next upcoming event for a given contact_name
+    returns days from today or "No event" if no event scheduled for a given contact_name
     """
     events = (
         db.session.query(models.Events)
@@ -120,8 +121,15 @@ def get_next_reminder(person_id, contact_name):
 
     # Accessing current time to get closest to date value
     time_now = datetime.datetime.utcnow()
-    next_reminder = get_closest_date(time_now, event_list)
-    return next_reminder
+    next_event = get_closest_date(time_now, event_list)
+
+    if next_event == "No Event":
+        return next_event
+
+    # get days from right now
+    temp = next_event.date() - time_now.date()
+    days = temp.days
+    return str(days) + " days"
 
 
 def get_closest_date(time_now, event_list):
@@ -135,7 +143,7 @@ def get_closest_date(time_now, event_list):
     for time in event_list:
         if time > time_now:
             return time
-    return "No Reminders"
+    return "No Event"
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
