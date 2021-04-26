@@ -163,14 +163,14 @@ def get_contact_info(user_id) -> list:
     """
     all_contacts = []
     for contact in models.Contact.query.filter_by(person_id=user_id).all():
-        nextEvent = get_next_event(user_id, contact.name)
-        d = {
+        next_event = get_next_event(user_id, contact.name)
+        contact_info = {
             "name": contact.name,
             "email": contact.emails,
             "phone": contact.phoneNumber,
-            "nextEvent": nextEvent
+            "nextEvent": next_event
         }
-        all_contacts.append(d)
+        all_contacts.append(contact_info)
 
     return all_contacts
 
