@@ -120,9 +120,14 @@ def get_next_event(person_id, contact_name):
 
     # Accessing current time to get closest to date value
     time_now = datetime.datetime.utcnow()
-    next_reminder = get_closest_date(time_now, event_list)
-    return next_reminder
-
+    next_event = get_closest_date(time_now, event_list)
+    
+    if next_event == "No Event":
+        return next_event
+        
+    temp = next_event.date() - time_now.date()
+    days = temp.days
+    return str(days) + " days"
 
 def get_closest_date(time_now, event_list):
     """
@@ -157,12 +162,11 @@ def get_contact_info(user_id) -> list:
     all_contacts = []
     for contact in models.Contact.query.filter_by(person_id=user_id).all():
         nextEvent = get_next_event(user_id, contact.name)   #TODO after events table is set
-        print(nextEvent)
         d = {
             "name": contact.name,
             "email": contact.emails,
             "phone": contact.phoneNumber,
-            "nextEvent": str(nextEvent)  #dummy data for now
+            "nextEvent": nextEvent  #dummy data for now
         }
         
         all_contacts.append(d)
