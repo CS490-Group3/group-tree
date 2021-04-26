@@ -138,33 +138,7 @@ def get_closest_date(time_now, event_list):
     return "No Reminders"
 
 
-def update_contact(contact_id, name, emails, phone_number):
-    """
-    Helper method to update contact info from database
-    """
-    contact = models.Contact.query.get(contact_id)
-    contact.name = name
-    contact.emails = emails
-    contact.phoneNumber = phone_number
-    db.session.commit()
-
-
-def get_contact_info(user_id) -> list:
-    """
-    Helper method to get a user's list of contacts
-    """
-    return [
-        {
-            "id": contact.id,
-            "name": contact.name,
-            "email": contact.emails,
-            "phone": contact.phoneNumber,
-        }
-        for contact in models.Contact.query.filter_by(person_id=user_id).all()
-    ]
-
-
-@flask_app.route("/api/v1/contacts", methods=["DELETE"])
+@flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
 @flask_login.login_required
 def api_delete_contact():
     """
@@ -178,29 +152,25 @@ def api_delete_contact():
         if contact is not None and contact.person_id == flask_login.current_user.id:
             db.session.delete(contact)
             db.session.commit()
-            return ("", 204)
-    return ("", 404)
 
-
-@flask_app.route("/api/v1/contacts/all", methods=["GET"])
-@flask_login.login_required
-def api_all_contacts():
-    """
-    Endpoint for retreiving all contacts
-    """
-    return json.dumps(get_contact_info(flask_login.current_user.id))
-
-
-@flask_app.route("/api/v1/addContact", methods=["GET", "POST"])
-@flask_login.login_required
-def api_add_contact():
-    """
-    Endpoint for adding a new contact
-    """
+            return ("", 204)  # No Content
+        return ("", 404)  # Not Found
+    if request.method == "GET":
+        return json.dumps(
+            [
+                {
+                    "id": contact.id,
+                    "name": contact.name,
+                    "email": contact.emails,
+                    "phone": contact.phoneNumber,
+                }
+                for contact in models.Contact.query.filter_by(
+                    person_id=flask_login.current_user.id
+                ).all()
+            ]
+        )
     if request.method == "POST":
-        # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
-        print("ADD CONTACT", request_data)
         new_contact = models.Contact(
             name=request_data["name"],
             emails=request_data["email"],
@@ -210,7 +180,9 @@ def api_add_contact():
         db.session.add(new_contact)
         db.session.commit()
 
-    return json.dumps(get_contact_info(flask_login.current_user.id))
+        return ("", 204)  # No Content
+
+    return ("", 405)  # Method Not Allowed
 
 
 def get_event_info(user_name, date_time):
@@ -268,7 +240,7 @@ def login():
     """
     Endpoint for logging in with Google's login API.
     """
-    request_data = request.get_json(silent=True)
+    request_data = request.get_json()
 
     if request_data:
         token = request_data.get("token")
