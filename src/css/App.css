@@ -2,69 +2,30 @@
   text-align: center !important
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* navbar */
+.navbar-brand{
+  font-size: 5rem;
+  color: white;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+#nav {
+  padding: 0.8rem 7rem;
+  background-color: #5b8a72;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#nav-bar a:hover { 
+  color: #bfcba8 !important; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-#title {
+#nav-bar li a {
   color: white;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
+.fa-align-justify {
   color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
 }
 
-li a:hover {
-  background-color: #111;
-}
-
+/* calander view*/
 .container {
   display: flex;
   display: grid;

@@ -4,10 +4,12 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useForm } from 'react-hook-form';
 
+import ContactRow from '../components/ContactRow';
+
 /* eslint-disable react/jsx-props-no-spreading */
 /* const BASE_URL = '/api/v1/contacts'; */
 
-export default function ContactBook() {
+function ContactBook() {
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -21,47 +23,33 @@ export default function ContactBook() {
 
   // Fetch all contacts when you first load the page
   useEffect(() => {
-    window
-      .fetch('/api/v1/contacts/all', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(
-        (response) => response.json(), // Convert to json
-      )
-      .then((responseData) => {
-        setContacts(responseData);
-      });
+    fetch('/api/v1/contacts/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setContacts(data));
   }, []);
 
   function addContact(contact) {
-    // setCreateStatus(false);
-
-    const data = JSON.stringify({
-      name: contact.name,
-      email: contact.email,
-      phoneNumber: contact.phoneNumber,
-    });
-    window
-      .fetch('/api/v1/addContact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: data, // No query parameter, for POST we put in body
-      })
+    fetch('/api/v1/addContact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+      }),
+    })
       .then((response) => response.json())
-      .then((responseData) => {
-        setContacts(responseData);
-        // setCreateStatus(responseData.success);
-      });
+      .then((data) => setContacts(data));
   }
 
   function onSubmit(data) {
-    console.log(data);
-    // setContacts((copyContacts) => [...copyContacts, data]);
     addContact(data);
   }
 
@@ -79,15 +67,27 @@ export default function ContactBook() {
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone Number</th>
+            <th scope="col">Next Event</th>
+            <th scope="col">Options</th>
           </tr>
         </thead>
         <tbody>
           {contacts.map((c) => (
-            <tr>
-              <th>{c.name}</th>
-              <td>{c.emails}</td>
-              <td>{c.phoneNumber}</td>
-            </tr>
+            <ContactRow
+              name={c.name}
+              email={c.email}
+              phone={c.phone}
+              nextEvent={c.nextEvent}
+              onConfirmDelete={() =>
+                fetch(`/api/v1/contacts?id=${c.id}`, {
+                  method: 'DELETE',
+                }).then(() =>
+                  fetch('/api/v1/contacts/all', { method: 'GET' })
+                    .then((response) => response.json())
+                    .then((data) => setContacts(data)),
+                )
+              }
+            />
           ))}
         </tbody>
       </table>
@@ -114,9 +114,9 @@ export default function ContactBook() {
             <input
               type="tel"
               placeholder="123-456-7890"
-              {...register('phoneNumber', { required: true, minLength: 12 })}
+              {...register('phone', { required: true, minLength: 12 })}
             />
-            {errors.phoneNumber && <p>Plese enter phone number in format 123-456-7890</p>}
+            {errors.phone && <p>Plese enter phone number in format 123-456-7890</p>}
             <input type="submit" />
           </form>
         </Modal>
@@ -124,3 +124,5 @@ export default function ContactBook() {
     </div>
   );
 }
+
+export default ContactBook;
