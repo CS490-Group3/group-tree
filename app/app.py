@@ -106,7 +106,8 @@ def get_user_events(person_id):
 
 def get_next_event(person_id, contact_name):
     """
-    Helper method to get events from database
+    Helper method to get events from database to get next upcoming event for a given contact_name
+    returns days from today or "No event" if no event scheduled for a given contact_name
     """
     events = (
         db.session.query(models.Events)
@@ -121,10 +122,11 @@ def get_next_event(person_id, contact_name):
     # Accessing current time to get closest to date value
     time_now = datetime.datetime.utcnow()
     next_event = get_closest_date(time_now, event_list)
-    
+
     if next_event == "No Event":
         return next_event
-        
+
+    # get days from right now
     temp = next_event.date() - time_now.date()
     days = temp.days
     return str(days) + " days"
@@ -156,21 +158,20 @@ def update_contact(contact_id, name, emails, phone_number):
 
 def get_contact_info(user_id) -> list:
     """
-    Helper method to get a user's list of contacts 
+    Helper method to get a user's list of contacts
     and also add a next event occurance for each contact
     """
     all_contacts = []
     for contact in models.Contact.query.filter_by(person_id=user_id).all():
-        nextEvent = get_next_event(user_id, contact.name)   #TODO after events table is set
+        nextEvent = get_next_event(user_id, contact.name)
         d = {
             "name": contact.name,
             "email": contact.emails,
             "phone": contact.phoneNumber,
-            "nextEvent": nextEvent  #dummy data for now
+            "nextEvent": nextEvent
         }
-        
         all_contacts.append(d)
-        
+
     return all_contacts
 
 
