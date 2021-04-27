@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import ContactRow from '../components/ContactRow';
 
 /* eslint-disable react/jsx-props-no-spreading */
-/* const BASE_URL = '/api/v1/contacts'; */
+const BASE_URL = '/api/v1/contacts';
 
 function ContactBook() {
   const [open, setOpen] = useState(false);
@@ -21,37 +21,30 @@ function ContactBook() {
     formState: { errors },
   } = useForm();
 
-  // Fetch all contacts when you first load the page
-  useEffect(() => {
-    fetch('/api/v1/contacts/all', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+  const fetchContacts = () => {
+    fetch(BASE_URL, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => setContacts(data));
-  }, []);
+  };
 
-  function addContact(contact) {
-    fetch('/api/v1/addContact', {
+  const addContact = (contact) => {
+    fetch(BASE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name: contact.name,
-        email: contact.email,
-        phone: contact.phone,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => setContacts(data));
-  }
+      body: JSON.stringify(contact),
+    }).then(fetchContacts);
+  };
 
-  function onSubmit(data) {
+  const onSubmit = (data) => {
     addContact(data);
-  }
+  };
+
+  // Fetch all contacts when you first load the page
+  useEffect(() => {
+    fetchContacts();
+  }, []);
 
   return (
     <div>
@@ -79,13 +72,9 @@ function ContactBook() {
               phone={c.phone}
               nextEvent={c.nextEvent}
               onConfirmDelete={() =>
-                fetch(`/api/v1/contacts?id=${c.id}`, {
+                fetch(`${BASE_URL}?id=${c.id}`, {
                   method: 'DELETE',
-                }).then(() =>
-                  fetch('/api/v1/contacts/all', { method: 'GET' })
-                    .then((response) => response.json())
-                    .then((data) => setContacts(data)),
-                )
+                }).then(fetchContacts)
               }
             />
           ))}

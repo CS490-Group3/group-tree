@@ -131,6 +131,7 @@ def get_next_event(person_id, contact_name):
     days = temp.days
     return str(days) + " days"
 
+
 def get_closest_date(time_now, event_list):
     """
     Helper method to get the next closest date.
@@ -145,41 +146,18 @@ def get_closest_date(time_now, event_list):
     return "No Event"
 
 
-def update_contact(contact_id, name, emails, phone_number):
-    """
-    Helper method to update contact info from database
-    """
-    contact = models.Contact.query.get(contact_id)
-    contact.name = name
-    contact.emails = emails
-    contact.phoneNumber = phone_number
-    db.session.commit()
-
-
-def get_contact_info(user_id) -> list:
-    """
-    Helper method to get a user's list of contacts
-    and also add a next event occurance for each contact
-    """
-    all_contacts = []
-    for contact in models.Contact.query.filter_by(person_id=user_id).all():
-        next_event = get_next_event(user_id, contact.name)
-        contact_info = {
-            "name": contact.name,
-            "email": contact.emails,
-            "phone": contact.phoneNumber,
-            "nextEvent": next_event
-        }
-        all_contacts.append(contact_info)
-
-    return all_contacts
-
-
-@flask_app.route("/api/v1/contacts", methods=["DELETE"])
+@flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
 @flask_login.login_required
-def api_delete_contact():
+def api_contacts():
     """
-    Endpoint for API calls regarding contact books.
+    Endpoint for API calls regarding contact books. The functionality is dependent on the
+    HTTP method.
+
+    `DELETE` - Delete a contact given the contact ID
+
+    `GET` - Get a list of all the user's contacts in JSON
+
+    `POST` - Add a new contact
     """
     if request.method == "DELETE":
         contact_id = request.args.get("id")
@@ -189,29 +167,25 @@ def api_delete_contact():
         if contact is not None and contact.person_id == flask_login.current_user.id:
             db.session.delete(contact)
             db.session.commit()
-            return ("", 204)
-    return ("", 404)
 
-
-@flask_app.route("/api/v1/contacts/all", methods=["GET"])
-@flask_login.login_required
-def api_all_contacts():
-    """
-    Endpoint for retreiving all contacts
-    """
-    return json.dumps(get_contact_info(flask_login.current_user.id))
-
-
-@flask_app.route("/api/v1/addContact", methods=["GET", "POST"])
-@flask_login.login_required
-def api_add_contact():
-    """
-    Endpoint for adding a new contact
-    """
+            return ("", 204)  # No Content
+        return ("", 404)  # Not Found
+    if request.method == "GET":
+        return json.dumps(
+            [
+                {
+                    "id": contact.id,
+                    "name": contact.name,
+                    "email": contact.emails,
+                    "phone": contact.phoneNumber,
+                }
+                for contact in models.Contact.query.filter_by(
+                    person_id=flask_login.current_user.id
+                ).all()
+            ]
+        )
     if request.method == "POST":
-        # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
-        print("ADD CONTACT", request_data)
         new_contact = models.Contact(
             name=request_data["name"],
             emails=request_data["email"],
@@ -221,7 +195,9 @@ def api_add_contact():
         db.session.add(new_contact)
         db.session.commit()
 
-    return json.dumps(get_contact_info(flask_login.current_user.id))
+        return ("", 204)  # No Content
+
+    return ("", 405)  # Method Not Allowed
 
 
 def get_event_info(user_name, date_time):
@@ -279,7 +255,7 @@ def login():
     """
     Endpoint for logging in with Google's login API.
     """
-    request_data = request.get_json(silent=True)
+    request_data = request.get_json()
 
     if request_data:
         token = request_data.get("token")
