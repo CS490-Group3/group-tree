@@ -15,7 +15,7 @@ class Person(db.Model):
     __tablename__ = "person"
 
     id = db.Column(db.String(30), primary_key=True)
-    username = db.Column(db.String(30), nullable=False)
+    name = db.Column(db.String(30), nullable=False)
 
     contacts = db.relationship("Contact", backref="person", lazy=True)
 

@@ -193,7 +193,7 @@ def login():
             # add new user to database if not already there
             user_id = str(sub)
             if not models.Person.query.get(user_id):
-                new_person = models.Person(id=user_id, username=name)
+                new_person = models.Person(id=user_id, name=name)
                 db.session.add(new_person)
                 db.session.commit()
 
