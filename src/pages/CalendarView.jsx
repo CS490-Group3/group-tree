@@ -139,7 +139,7 @@ export default function CalendarView() {
       </div>
       <div className="container-form">
         <div className="item">
-          <form>
+          <form className="container-fluid">
             <div className="form-row">
               <div className="col center">
                 <label htmlFor="example-date-input">
