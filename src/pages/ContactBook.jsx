@@ -47,52 +47,59 @@ function ContactBook() {
   }, []);
 
   return (
-    <div>
-      <h2 className="text-center">Contact Book</h2>
-      <div className="text-right">
-        <button onClick={onOpenModal} type="button" className="add-button">
-          Add New Contact
-        </button>
+    <div className="contact-book">
+      <div className="p-md-5 mx-md-5">
+        <h2 className="text-center">Contact Book</h2>
+        <div className="text-right">
+          <button onClick={onOpenModal} type="button" className="add-button">
+            Add New Contact
+          </button>
+        </div>
+        <table className="table table-hover text-left">
+          <thead className="">
+            <tr className="">
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Next Event</th>
+              <th scope="col" className="clear">
+                DELETE
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map((c) => (
+              <ContactRow
+                name={c.name}
+                email={c.email}
+                phone={c.phone}
+                nextEvent={c.nextEvent}
+                onConfirmDelete={() =>
+                  fetch(`${BASE_URL}?id=${c.id}`, {
+                    method: 'DELETE',
+                  }).then(fetchContacts)
+                }
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
-      <table className="table table-hover">
-        <thead>
-          <tr className="table-success">
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Next Event</th>
-            <th scope="col">Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.map((c) => (
-            <ContactRow
-              name={c.name}
-              email={c.email}
-              phone={c.phone}
-              nextEvent={c.nextEvent}
-              onConfirmDelete={() =>
-                fetch(`${BASE_URL}?id=${c.id}`, {
-                  method: 'DELETE',
-                }).then(fetchContacts)
-              }
-            />
-          ))}
-        </tbody>
-      </table>
 
       <div>
         <Modal open={open} onClose={onCloseModal} center>
           <h4>Enter Contact Information:</h4>
           <form onSubmit={handleSubmit(onSubmit)}>
             Name:
+            <br />
             <input
               type="text"
               placeholder="Full Name"
               {...register('name', { required: true, maxLength: 80 })}
             />
+            <br />
             {errors.name && <p>Name is required.</p>}
             Email:
+            <br />
             <input
               type="text"
               placeholder="example@email.com"
