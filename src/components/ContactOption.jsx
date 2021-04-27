@@ -3,31 +3,25 @@ import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 
 /* eslint-disable react/jsx-props-no-spreading */
-/* const BASE_URL = '/api/v1/contacts'; */
+const BASE_URL = '/api/v1/contacts';
 
-export default function ContactOption(prop) {
+function ContactOption(props) {
   const [contacts, setContacts] = useState([]);
   const selectedContact = useRef(null);
 
-  function handleChange() {
-    prop.onSelectContact(selectedContact);
-  }
+  const handleChange = () => {
+    props.onSelectContact(selectedContact);
+  };
+
+  const fetchContacts = () => {
+    fetch(BASE_URL, { method: 'GET' })
+      .then((response) => response.json())
+      .then((data) => setContacts(data));
+  };
 
   // Fetch all contacts when you first load the page
   useEffect(() => {
-    window
-      .fetch('/api/v1/contacts/all', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(
-        (response) => response.json(), // Convert to json
-      )
-      .then((responseData) => {
-        setContacts(responseData);
-      });
+    fetchContacts();
   }, []);
 
   return (
@@ -47,3 +41,5 @@ export default function ContactOption(prop) {
     </label>
   );
 }
+
+export default ContactOption;
