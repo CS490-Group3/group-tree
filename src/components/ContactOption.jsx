@@ -13,10 +13,9 @@ export default function ContactOption(prop) {
     prop.onSelectContact(selectedContact);
   }
 
-  // Fetch all contacts when you first load the page
   useEffect(() => {
     window
-      .fetch('/api/v1/contacts/all', {
+      .fetch('/api/v1/contacts', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
