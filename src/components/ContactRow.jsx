@@ -23,7 +23,7 @@ function ContactRow(props) {
           type="button"
           className="delete-button"
         >
-          <i className="fas fa-user-minus" />
+          <i className="fas fa-user-minus 3x" />
         </button>
       </td>
     </tr>
