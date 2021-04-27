@@ -6,18 +6,24 @@ function ContactRow(props) {
 
   return (
     <tr>
-      <th>{name}</th>
-      <td>{email}</td>
-      <td>{phone}</td>
-      <td>{nextEvent}</td>
-      <td>
+      <th>
+        <p>
+          <i className="fas fa-user-circle fa-2x" />
+          &nbsp;&nbsp;&nbsp;{name}
+        </p>
+      </th>
+      <td className="align-middle">{email}</td>
+      <td className="align-middle">{phone}</td>
+      <td className="align-middle">{nextEvent}5 days</td>
+      <td className="align-middle">
         <button
           onClick={() => {
             if (confirm(`Delete ${name}?`)) onConfirmDelete(); // eslint-disable-line no-alert, no-restricted-globals
           }}
           type="button"
+          className="delete-button"
         >
-          DELETE
+          <i className="fas fa-user-minus 3x" />
         </button>
       </td>
     </tr>
