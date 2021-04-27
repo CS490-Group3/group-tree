@@ -12,10 +12,10 @@ function ContactRow(props) {
           &nbsp;&nbsp;&nbsp;{name}
         </p>
       </th>
-      <td>{email}</td>
-      <td>{phone}</td>
-      <td>{nextEvent}</td>
-      <td>
+      <td className="align-middle">{email}</td>
+      <td className="align-middle">{phone}</td>
+      <td className="align-middle">{nextEvent}5 days</td>
+      <td className="align-middle">
         <button
           onClick={() => {
             if (confirm(`Delete ${name}?`)) onConfirmDelete(); // eslint-disable-line no-alert, no-restricted-globals
