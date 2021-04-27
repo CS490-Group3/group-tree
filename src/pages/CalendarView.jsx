@@ -14,7 +14,8 @@ export default function CalendarView() {
   const [selectedDate, select] = useState(new Date());
   const [activityList, setList] = useState([]);
   const [createStatus, setCreateStatus] = useState(false);
-
+  const [selectedActivity, setActivity] = useState('');
+  const [selectedContact, setContact] = useState('');
   // Store reference to input elements to access typed in values
 
   let activityRef = useRef(null);
@@ -25,6 +26,8 @@ export default function CalendarView() {
 
   function onSelectActivity(selection) {
     activityRef = selection;
+    console.log(activityRef);
+    setActivity(selection.current.value);
   }
   function onClickDay(date) {
     select(date);
@@ -32,6 +35,8 @@ export default function CalendarView() {
 
   function onSelectContact(selection) {
     contactNameRef = selection;
+    console.log(contactNameRef);
+    setContact(selection.current.value);
   }
   function updateActivityList() {
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
@@ -60,8 +65,12 @@ export default function CalendarView() {
 
   function createEvent() {
     setCreateStatus(false);
-    const activity = activityRef.current.value;
-    const contactName = contactNameRef.current.value;
+    console.log('here');
+    // console.log(activityRef.current.value);
+    // const activity = activityRef.current.value;
+    const activity = selectedActivity;
+    // const contactName = contactNameRef.current.value;
+    const contactName = selectedContact;
     const activityDate = activityDateRef.current.value;
     const freq = freqRef.current.value;
     const numEvent = numEventRef.current.value;

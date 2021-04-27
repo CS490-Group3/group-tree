@@ -2,7 +2,6 @@ import React from 'react';
 
 function DateInformation(prop) {
   const { date } = prop;
-  const [dateInfo, setInfo] = useState(null);
   const months = [
     'January',
     'February',
@@ -17,10 +16,6 @@ function DateInformation(prop) {
     'November',
     'December',
   ];
-
-  useEffect(() => {
-    
-  }, []);
 
   return (
     <div className="item border">
