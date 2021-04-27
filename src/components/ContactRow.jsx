@@ -6,7 +6,12 @@ function ContactRow(props) {
 
   return (
     <tr>
-      <th>{name}</th>
+      <th>
+        <p>
+          <i className="fas fa-user-circle fa-2x" />
+          {name}
+        </p>
+      </th>
       <td>{email}</td>
       <td>{phone}</td>
       <td>{nextEvent}</td>
@@ -16,6 +21,7 @@ function ContactRow(props) {
             if (confirm(`Delete ${name}?`)) onConfirmDelete(); // eslint-disable-line no-alert, no-restricted-globals
           }}
           type="button"
+          className="delete-button"
         >
           DELETE
         </button>

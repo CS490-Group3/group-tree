@@ -1,7 +1,15 @@
-.edit-button {
+.delete-button {
     display: none;
 }
 
-tr:hover .edit-button {
+tr:hover .delete-button {
     display: block;
 }
+
+
+
+form {
+    width: 300px;
+    height: 350px;
+}
+
