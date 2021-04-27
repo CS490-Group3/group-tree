@@ -195,7 +195,7 @@ export default function CalendarView() {
               {createStatus ?
                 <div className="col center">
                   <div class="alert alert-success" role="alert">
-                    This is a success alert—check it out!
+                    Successfully added events!
                   </div> 
                 </div>  : null 
                 }
@@ -203,7 +203,7 @@ export default function CalendarView() {
                   null : 
                   <div className="col center">
                   <div class="alert alert-danger" role="alert">
-                    This is a danger alert—check it out! 
+                    Error creating a new event
                     <ul class="list-group">
                       {error.map((msg) => (
                         <li class="list-group-item">{msg}
