@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 
@@ -6,11 +8,12 @@ import 'react-responsive-modal/styles.css';
 const BASE_URL = '/api/v1/contacts';
 
 function ContactOption(props) {
+  const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
   const selectedContact = useRef(null);
 
   const handleChange = () => {
-    props.onSelectContact(selectedContact);
+    onSelectContact(selectedContact);
   };
 
   const fetchContacts = () => {
@@ -41,5 +44,9 @@ function ContactOption(props) {
     </label>
   );
 }
+
+ContactOption.propTypes = {
+  onSelectContact: PropTypes.func.isRequired,
+};
 
 export default ContactOption;
