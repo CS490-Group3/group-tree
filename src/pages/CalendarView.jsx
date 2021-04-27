@@ -16,6 +16,8 @@ export default function CalendarView() {
   const [createStatus, setCreateStatus] = useState(false);
   const [selectedActivity, setActivity] = useState('');
   const [selectedContact, setContact] = useState('');
+  const [error, setError] = useState([]);
+
   // Store reference to input elements to access typed in values
 
   let activityRef = useRef(null);
@@ -63,13 +65,14 @@ export default function CalendarView() {
       });
   } */
 
+  function isEmpty(s) {
+    return s.length === 0;
+  }
+
   function createEvent() {
     setCreateStatus(false);
-    console.log('here');
-    // console.log(activityRef.current.value);
-    // const activity = activityRef.current.value;
+
     const activity = selectedActivity;
-    // const contactName = contactNameRef.current.value;
     const contactName = selectedContact;
     const activityDate = activityDateRef.current.value;
     const freq = freqRef.current.value;
@@ -82,18 +85,39 @@ export default function CalendarView() {
       frequency: freq,
       amount: numEvent,
     });
-    console.log('here');
-    fetch(BASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: data, // No query parameter, for POST we put in body
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        setCreateStatus(responseData.success);
-      });
+    const errorMsg = [];
+
+    // Handle input validation
+    if (isEmpty(activity)) {
+      errorMsg.push('Activity is not selected');
+    }
+    if (isEmpty(contactName)) {
+      errorMsg.push('Contact Name is not selected');
+    }
+    if (isEmpty(activityDate)) {
+      errorMsg.push('Activity Date is not selected');
+    }
+    if (isEmpty(freq)) {
+      errorMsg.push('Frequency is not selected');
+    }
+    if (isEmpty(numEvent)) {
+      errorMsg.push('Number of Events is not selected');
+    }
+    setError(errorMsg);
+
+    if (error.length !== 0) {
+      fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data, // No query parameter, for POST we put in body
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          setCreateStatus(responseData.success);
+        });
+    }
   }
 
   return (
@@ -115,7 +139,7 @@ export default function CalendarView() {
       </div>
       <div className="container-form">
         <div className="item">
-          <form>
+          <form className="container-fluid">
             <div className="form-row">
               <div className="col center">
                 <label htmlFor="example-date-input">
@@ -152,12 +176,7 @@ export default function CalendarView() {
               <div className="col center">
                 <label htmlFor="exampleSelect1">
                   Frequency
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    placeholder="Activity"
-                    ref={freqRef}
-                  >
+                  <select className="form-control" id="exampleSelect1" ref={freqRef}>
                     {FREQUENCY.map((item) => (
                       <option>{item}</option>
                     ))}
@@ -172,8 +191,28 @@ export default function CalendarView() {
                   onClick={createEvent}
                 >
                 Add new event</button>
-                {createStatus ? 'Successfully created events!' : null}
               </div>
+              {createStatus ?
+                <div className="col center">
+                  <div class="alert alert-success" role="alert">
+                    Successfully added events!
+                  </div> 
+                </div>  : null 
+                }
+                {error.length === 0 ?
+                  null : 
+                  <div className="col center">
+                  <div class="alert alert-danger" role="alert">
+                    Error creating a new event
+                    <ul class="list-group">
+                      {error.map((msg) => (
+                        <li class="list-group-item">{msg}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  </div>
+                }
             </div>
           </form>
         </div>
