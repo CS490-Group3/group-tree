@@ -6,10 +6,23 @@ tr:hover .delete-button {
     display: block;
 }
 
+.clear{
+    color: white;
+}
 
+.contact-book {
+    padding: 50rem;
+}
 
 form {
     width: 300px;
     height: 350px;
+}
+
+@media only screen and (min-width: 1200px) {
+  .contact-book {
+    background-color: white;
+    padding: 0;
+  }
 }
 

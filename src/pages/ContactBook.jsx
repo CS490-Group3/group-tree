@@ -47,22 +47,24 @@ function ContactBook() {
   }, []);
 
   return (
-    <div>
-      <div className="contact-book p-md-5 mx-md-5">
+    <div className="contact-book">
+      <div className="p-md-5 mx-md-5">
         <h2 className="text-center">Contact Book</h2>
         <div className="text-right">
           <button onClick={onOpenModal} type="button" className="add-button">
             Add New Contact
           </button>
         </div>
-        <table className="table table-hover">
-          <thead>
+        <table className="table table-hover text-left">
+          <thead className="">
             <tr className="">
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Phone Number</th>
               <th scope="col">Next Event</th>
-              <th scope="col"> </th>
+              <th scope="col" className="clear">
+                DELETE
+              </th>
             </tr>
           </thead>
           <tbody>

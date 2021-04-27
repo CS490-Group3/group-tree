@@ -9,7 +9,7 @@ function ContactRow(props) {
       <th>
         <p>
           <i className="fas fa-user-circle fa-2x" />
-          {name}
+          &nbsp;&nbsp;&nbsp;{name}
         </p>
       </th>
       <td>{email}</td>
@@ -23,7 +23,7 @@ function ContactRow(props) {
           type="button"
           className="delete-button"
         >
-          DELETE
+          <i className="fas fa-user-minus" />
         </button>
       </td>
     </tr>
