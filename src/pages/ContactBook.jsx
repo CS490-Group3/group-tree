@@ -93,7 +93,7 @@ function ContactBook() {
 
       <div className="bg-primary">
         <Modal open={open} onClose={onCloseModal} center id="model-special">
-          <form onSubmit={handleSubmit(onSubmit)} className="form">
+          <form onSubmit={handleSubmit(onSubmit)} className="contact-form">
             <h4 className="modal-title w-100 font-weight-bold">
               Enter Contact Information:
             </h4>
@@ -104,6 +104,7 @@ function ContactBook() {
               placeholder="Full Name"
               {...register('name', { required: true, maxLength: 80 })}
             />
+            <br />
             {errors.name && <p>Name is required.</p>}
             <i className="fas fa-envelope prefix grey-text fa-2x align-middle" />
             <input
@@ -112,6 +113,7 @@ function ContactBook() {
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
             {errors.email && <p>Please enter valid email.</p>}
+            <br />
             <i className="fas fa-phone-square-alt fa-2x align-middle" />
             <input
               type="text"

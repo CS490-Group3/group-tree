@@ -56,29 +56,27 @@ tr:hover .delete-button {
   color: #fff;
 }
 
-.form {
-    padding: 3rem 4rem 3rem 3rem;
-    margin: 0;
+.contact-form {
+    padding: 3rem;
 }
 
-.form input {
-    border:none;
-    border-bottom: 1px solid white;
-    padding: 5px 10px;
-    outline: none;
-
-}
-
-input[type=text] {
+.contact-form input[type=text] {
   width: 80%;
   padding: 12px 20px;
   margin: 8px 8px;
+  border: none;
 }
 
-input[type=submit] {
-  width: 90%;
+.contact-form input[type=text]:focus {
+    border: none;
+    outline: none;
+}
+
+.contact-form input[type=submit] {
+  width: 80%;
   padding: 12px 20px;
-  margin: 8px 8px;
+  margin: 10px 8px 8px 40px;
+  
 }
 
 .fa-phone-square-alt {
