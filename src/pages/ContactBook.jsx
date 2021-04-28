@@ -48,7 +48,7 @@ function ContactBook() {
 
   return (
     <div className="contact-book">
-      <div className="p-md-5 mx-md-5">
+      <div>
         <h2 className="text-center">Contact Book</h2>
         <div className="text-right">
           <button onClick={onOpenModal} type="button" className="add-button">
@@ -56,8 +56,8 @@ function ContactBook() {
           </button>
         </div>
         <table className="table table-hover text-left">
-          <thead className="">
-            <tr className="">
+          <thead>
+            <tr>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Phone Number</th>

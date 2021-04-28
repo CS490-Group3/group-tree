@@ -1,3 +1,7 @@
+.contact-book {
+    padding: 0 15rem;
+  }
+
 .delete-button {
     display: none;
     background-color: white; /* Green */
@@ -41,24 +45,27 @@ tr:hover .delete-button {
     color: white;
 }
 
-.contact-book {
-    padding: 50rem;
-}
-
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #5b8a72;
   color: white;
 }
+
+/* Add new contact form */
+
 
 form {
     width: 300px;
     height: 350px;
 }
 
-@media only screen and (min-width: 1200px) {
+
+
+
+
+
+@media only screen and (max-width: 1200px) {
   .contact-book {
-    background-color: white;
-    padding: 0;
+    padding: 1rem;
   }
 }
 
