@@ -74,29 +74,23 @@ def get_closest_date(time_now, event_list):
 @flask_login.login_required
 def api_contacts():
     """
-    Endpoint for API calls regarding contact books. The functionality is dependent on the
-    HTTP method.
-
-    `DELETE` - Delete a contact given the contact ID
-
-    `GET` - Get a list of all the user's contacts in JSON
-
-    `POST` - Add a new contact
+    Endpoint for API calls regarding contacts. The functionality is dependent on the HTTP
+    method.
     """
     user = flask_login.current_user
-
+    # delete a contact given the contact ID
     if request.method == "DELETE":
         contact_id = request.args.get("id")
         contact = models.Contact.query.get(contact_id)
 
         # check if the contact exists and belongs to the user
-        if contact is not None and contact.person == user:
+        if contact is not None and contact.person.id == user.id:
             db.session.delete(contact)
             db.session.commit()
 
             return ("", 204)  # No Content
         return ("", 404)  # Not Found
-
+    # get a list of the user's contacts
     if request.method == "GET":
         return json.dumps(
             [
@@ -109,7 +103,7 @@ def api_contacts():
                 for contact in user.contacts
             ]
         )
-
+    # add a new contact
     if request.method == "POST":
         request_data = request.get_json()
         new_contact = models.Contact(
@@ -127,17 +121,45 @@ def api_contacts():
 
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
+@flask_login.login_required
 def api_event():
     """
-    Endpoint for adding a new event and get event info
+    Endpoint for API calls regarding events. The functionality is dependent on the HTTP
+    method.
     """
-    # User wants to create a new event in the catalog
+    user = flask_login.current_user
+    # get a dictionary partitioned by contact where each entry is a list of events
+    if request.method == "GET":
+        return {
+            contact.id: [
+                {
+                    "id": event.id,
+                    "activity": event.activity,
+                    "time": event.time,
+                    "period": event.period,
+                }
+                for event in contact.events
+            ]
+            for contact in user.contacts
+        }
+    # add a new event
     if request.method == "POST":
         request_data = request.get_json()
-        # new_event = models.Event()
-        print("/api/v1/events POST", request_data)
+        print(request_data)
+        new_event = models.Event(
+            activity=request_data["activity"],
+            time=request_data["time"],
+            period=request_data["period"],
+            contact_id=int(request_data["contact_id"]),
+        )
+        # check if the contact exists and belongs to the user
+        contact = models.Contact.query.get(new_event.contact_id)
+        if contact is not None and contact.person.id == user.id:
+            db.session.add(new_event)
+            db.session.commit()
 
-        return ("", 204)  # No Content
+            return ("", 204)  # No Content
+        return ("", 404)  # Not Found
 
     return ("", 405)  # Method Not Allowed
 
