@@ -6,6 +6,8 @@ Template Flask app
 
 import json
 import os
+from datetime import datetime, timedelta, timezone
+from typing import Union
 
 import flask_login
 import requests
@@ -68,6 +70,36 @@ def get_closest_date(time_now, event_list):
         if time > time_now:
             return time
     return "No Event"
+
+
+def get_next_occurrence(event: models.Event) -> Union[datetime, None]:
+    """
+    Gets the next occurrence of an event based on the most recent completion time.
+
+    A completed nonrecurring event will never have a next occurrence, hence `None` would
+    be returned.
+    """
+    now = datetime.now(timezone.utc)
+    if event.complete_time is not None and event.complete_time > now:
+        raise ValueError(f"event {event.id} was completed in the future")
+
+    if event.period is None:  # the event is nonrecurring
+        if event.complete_time is None:
+            return event.start_time
+        return None
+
+    # the event is recurring
+    if now < event.start_time:  # but has not occurred yet
+        return event.start_time
+
+    # calculate the event's most recent occurrence in the past
+    period = timedelta(seconds=event.period)
+    diff = event.start_time - now
+    most_recent = event.start_time + (diff - diff % period)
+
+    if event.complete_time is None or event.complete_time < most_recent:
+        return most_recent
+    return most_recent + period
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
@@ -135,7 +167,7 @@ def api_event():
                 {
                     "id": event.id,
                     "activity": event.activity,
-                    "time": event.time,
+                    "start_time": event.start_time,
                     "period": event.period,
                 }
                 for event in contact.events
@@ -148,7 +180,7 @@ def api_event():
         print(request_data)
         new_event = models.Event(
             activity=request_data["activity"],
-            time=request_data["time"],
+            start_time=request_data["start_time"],
             period=request_data["period"],
             contact_id=int(request_data["contact_id"]),
         )
