@@ -22,14 +22,14 @@
 
 .add-button {
     background-color: #5b8a72; /* Green */
-  border: none;
-  color: white;
-  padding: 10px 16px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
 .add-button:hover {
@@ -69,14 +69,21 @@ tr:hover .delete-button {
 
 .contact-form input[type=text]:focus {
     border: none;
+    border-bottom: 2px solid white;
     outline: none;
 }
 
 .contact-form input[type=submit] {
-  width: 80%;
-  padding: 12px 20px;
-  margin: 10px 8px 8px 40px;
-  
+    width: 80%;
+    padding: 12px 20px;
+    margin: 10px 8px 8px 40px;
+    border: none;
+}
+
+.contact-form input[type=submit]:hover {
+    background-color: #bfcba8; /* Green */
+    color: black;
+    border: none;
 }
 
 .fa-phone-square-alt {
