@@ -52,17 +52,17 @@ tr:hover .delete-button {
 
 /* Add new contact form */
 
-
-form {
-    width: 300px;
-    height: 350px;
+.special_modal .modal-content {
+  background-color: #000;
+  color: #fff;
 }
 
+.form {
+    padding: 2rem;
+    margin: 0;
+}
 
-
-
-
-
+/* Responsive design */
 @media only screen and (max-width: 1200px) {
   .contact-book {
     padding: 1rem;

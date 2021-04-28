@@ -19,6 +19,7 @@ function ContactBook() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const fetchContacts = () => {
@@ -39,6 +40,11 @@ function ContactBook() {
 
   const onSubmit = (data) => {
     addContact(data);
+    reset({
+      name: '',
+      email: '',
+      phone: '',
+    });
   };
 
   // Fetch all contacts when you first load the page
