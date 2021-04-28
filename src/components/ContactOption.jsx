@@ -16,7 +16,6 @@ function ContactOption(props) {
       .then((data) => setContacts(data));
   };
 
-  // Fetch all contacts when you first load the page
   useEffect(() => {
     fetchContacts();
   }, []);

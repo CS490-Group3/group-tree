@@ -16,6 +16,8 @@ export default function CalendarView() {
   const [createStatus, setCreateStatus] = useState(false);
   const [selectedActivity, setActivity] = useState('');
   const [selectedContact, setSelectedContact] = useState(null);
+  const [error, setError] = useState([]);
+
   // Store reference to input elements to access typed in values
 
   const activityDateRef = useRef(null);
@@ -38,22 +40,46 @@ export default function CalendarView() {
     updateActivityList();
   }, []);
 
+  function isEmpty(s) {
+    return s.length === 0;
+  }
+
   function createEvent() {
     setCreateStatus(false);
-    const activityDate = activityDateRef.current.value;
+    const errorMsg = [];
 
-    fetch(BASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        activity: selectedActivity,
-        time: activityDate,
-        period: null,
-        contact_id: selectedContact,
-      }),
-    });
+    // Handle input validation
+    if (selectedActivity === null) {
+      errorMsg.push('Activity is not selected');
+    }
+    if (selectedContact === null) {
+      errorMsg.push('Contact is not selected');
+    }
+    if (isEmpty(activityDateRef.current.value)) {
+      errorMsg.push('Activity Date is not selected');
+    }
+    if (isEmpty(freqRef.current.value)) {
+      errorMsg.push('Frequency is not selected');
+    }
+    if (isEmpty(numEventRef.current.value)) {
+      errorMsg.push('Number of Events is not selected');
+    }
+    setError(errorMsg);
+
+    if (error.length !== 0) {
+      fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          activity: selectedActivity,
+          time: activityDateRef.current.value,
+          period: null,
+          contact_id: selectedContact,
+        }),
+      });
+    }
   }
 
   return (
@@ -75,7 +101,7 @@ export default function CalendarView() {
       </div>
       <div className="container-form">
         <div className="item">
-          <form>
+          <form className="container-fluid">
             <div className="form-row">
               <div className="col center">
                 <label htmlFor="example-date-input">
@@ -112,12 +138,7 @@ export default function CalendarView() {
               <div className="col center">
                 <label htmlFor="exampleSelect1">
                   Frequency
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    placeholder="Activity"
-                    ref={freqRef}
-                  >
+                  <select className="form-control" id="exampleSelect1" ref={freqRef}>
                     {FREQUENCY.map((item) => (
                       <option value={item}>{item}</option>
                     ))}
@@ -125,12 +146,29 @@ export default function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                {/* eslint-disable */}
                 <button className=" btn btn-info" type="button" onClick={createEvent}>
                   Add new event
                 </button>
-                {createStatus ? 'Successfully created events!' : null}
               </div>
+              {createStatus ? (
+                <div className="col center">
+                  <div className="alert alert-success" role="alert">
+                    Successfully added events!
+                  </div>
+                </div>
+              ) : null}
+              {error.length === 0 ? null : (
+                <div className="col center">
+                  <div className="alert alert-danger" role="alert">
+                    Error creating a new event
+                    <ul className="list-group">
+                      {error.map((msg) => (
+                        <li className="list-group-item">{msg}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
           </form>
         </div>
