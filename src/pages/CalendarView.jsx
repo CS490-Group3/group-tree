@@ -18,15 +18,11 @@ export default function CalendarView() {
   const [selectedContact, setSelectedContact] = useState(null);
   // Store reference to input elements to access typed in values
 
-  let activityRef = useRef(null);
-  let contactNameRef = useRef(null);
   const activityDateRef = useRef(null);
   const freqRef = useRef(null);
   const numEventRef = useRef(null);
 
   function onSelectActivity(selection) {
-    activityRef = selection;
-    console.log(activityRef);
     setActivity(selection.current.value);
   }
   function onClickDay(date) {
@@ -44,10 +40,7 @@ export default function CalendarView() {
 
   function createEvent() {
     setCreateStatus(false);
-    const activity = selectedActivity;
     const activityDate = activityDateRef.current.value;
-    const freq = freqRef.current.value;
-    const numEvent = numEventRef.current.value;
 
     fetch(BASE_URL, {
       method: 'POST',
@@ -55,7 +48,7 @@ export default function CalendarView() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        activity,
+        activity: selectedActivity,
         time: activityDate,
         period: null,
         contact_id: selectedContact,

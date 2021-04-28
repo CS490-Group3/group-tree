@@ -4,7 +4,6 @@
 Template Flask app
 """
 
-import datetime
 import json
 import os
 
@@ -139,6 +138,8 @@ def api_event():
         print("/api/v1/events POST", request_data)
 
         return ("", 204)  # No Content
+
+    return ("", 405)  # Method Not Allowed
 
 
 @flask_app.route("/login", methods=["POST"])
