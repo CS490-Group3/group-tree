@@ -85,10 +85,10 @@ function ContactBook() {
         </table>
       </div>
 
-      <div>
-        <Modal open={open} onClose={onCloseModal} center>
-          <h4>Enter Contact Information:</h4>
-          <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="modal-outer">
+        <Modal className="special_modal" open={open} onClose={onCloseModal} center>
+          <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <h4>Enter Contact Information:</h4>
             Name:
             <br />
             <input
@@ -113,7 +113,7 @@ function ContactBook() {
               {...register('phone', { required: true, minLength: 12 })}
             />
             {errors.phone && <p>Plese enter phone number in format 123-456-7890</p>}
-            <input type="submit" />
+            <input type="submit" onClick={onCloseModal} />
           </form>
         </Modal>
       </div>
