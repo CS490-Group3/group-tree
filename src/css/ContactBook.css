@@ -51,16 +51,41 @@ tr:hover .delete-button {
 }
 
 /* Add new contact form */
-
-.special_modal .modal-content {
-  background-color: #000;
+.react-responsive-modal-modal {
+  background-color: #5b8a72 !important; 
   color: #fff;
 }
 
 .form {
-    padding: 2rem;
+    padding: 3rem 4rem 3rem 3rem;
     margin: 0;
 }
+
+.form input {
+    border:none;
+    border-bottom: 1px solid white;
+    padding: 5px 10px;
+    outline: none;
+
+}
+
+input[type=text] {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 8px;
+}
+
+input[type=submit] {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 8px;
+}
+
+.fa-phone-square-alt {
+    width: 32px;
+    height: 32px;
+}
+
 
 /* Responsive design */
 @media only screen and (max-width: 1200px) {

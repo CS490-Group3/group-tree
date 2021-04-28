@@ -91,35 +91,35 @@ function ContactBook() {
         </table>
       </div>
 
-      <div className="modal-outer">
-        <Modal className="special_modal" open={open} onClose={onCloseModal} center>
+      <div className="bg-primary">
+        <Modal open={open} onClose={onCloseModal} center id="model-special">
           <form onSubmit={handleSubmit(onSubmit)} className="form">
-            <h4>Enter Contact Information:</h4>
-            Name:
+            <h4 className="modal-title w-100 font-weight-bold">
+              Enter Contact Information:
+            </h4>
             <br />
+            <i className="fas fa-user-alt fa-2x align-middle" />
             <input
               type="text"
               placeholder="Full Name"
               {...register('name', { required: true, maxLength: 80 })}
             />
-            <br />
             {errors.name && <p>Name is required.</p>}
-            Email:
-            <br />
+            <i className="fas fa-envelope prefix grey-text fa-2x align-middle" />
             <input
               type="text"
               placeholder="example@email.com"
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
             {errors.email && <p>Please enter valid email.</p>}
-            Phone Number:
+            <i className="fas fa-phone-square-alt fa-2x align-middle" />
             <input
-              type="tel"
+              type="text"
               placeholder="123-456-7890"
               {...register('phone', { required: true, minLength: 12 })}
             />
             {errors.phone && <p>Plese enter phone number in format 123-456-7890</p>}
-            <input type="submit" onClick={onCloseModal} />
+            <input className="form-submit" type="submit" />
           </form>
         </Modal>
       </div>
