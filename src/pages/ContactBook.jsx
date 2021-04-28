@@ -45,6 +45,7 @@ function ContactBook() {
       email: '',
       phone: '',
     });
+    setOpen(false);
   };
 
   // Fetch all contacts when you first load the page
