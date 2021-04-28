@@ -1,30 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function DateInformation(prop) {
-  const { date } = prop;
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
+function DateInformation(props) {
+  const { date } = props;
 
   return (
     <div className="item border">
       <h3>Click on a date to view information</h3>
-      <p className="lead">
-        {date.getDate()} - {months[date.getMonth()]} - {date.getFullYear()}
-      </p>
+      <p className="lead">{date !== null ? 'TODO' : null}</p>
     </div>
   );
 }
+
+DateInformation.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+};
 
 export default DateInformation;

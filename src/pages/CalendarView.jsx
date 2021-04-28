@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import EVENT_DATA from '../assets/EventData';
 import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
@@ -9,61 +8,27 @@ import ContactOption from '../components/ContactOption';
 const BASE_URL = '/api/v1/events';
 const FREQUENCY = ['Once', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
 
-export default function CalendarView() {
-  const [value, onChange] = useState(new Date());
-  const [selectedDate, select] = useState(new Date());
-  const [activityList, setList] = useState([]);
+function CalendarView() {
+  const [value, setValue] = useState(new Date());
   const [createStatus, setCreateStatus] = useState(false);
-  const [selectedActivity, setActivity] = useState('');
+  const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [multiplier, setMultiplier] = useState(null);
+  const [selectedFreq, setSelectedFreq] = useState(null);
   const [error, setError] = useState([]);
-
-  // Store reference to input elements to access typed in values
-
-  const activityDateRef = useRef(null);
-  const freqRef = useRef(null);
-  const numEventRef = useRef(null);
-
-  function onSelectActivity(selection) {
-    setActivity(selection.current.value);
-  }
-  function onClickDay(date) {
-    select(date);
-  }
-
-  function updateActivityList() {
-    const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
-    setList(unique);
-  }
-
-  useEffect(() => {
-    updateActivityList();
-  }, []);
-
-  function isEmpty(s) {
-    return s.length === 0;
-  }
 
   function createEvent() {
     setCreateStatus(false);
     const errorMsg = [];
 
     // Handle input validation
-    if (selectedActivity === null) {
-      errorMsg.push('Activity is not selected');
-    }
-    if (selectedContact === null) {
-      errorMsg.push('Contact is not selected');
-    }
-    if (isEmpty(activityDateRef.current.value)) {
-      errorMsg.push('Activity Date is not selected');
-    }
-    if (isEmpty(freqRef.current.value)) {
-      errorMsg.push('Frequency is not selected');
-    }
-    if (isEmpty(numEventRef.current.value)) {
-      errorMsg.push('Number of Events is not selected');
-    }
+    if (selectedActivity === null) errorMsg.push('Activity is not selected');
+    if (selectedContact === null) errorMsg.push('Contact is not selected');
+    if (selectedDate === null) errorMsg.push('Activity Date is not selected');
+    if (multiplier === null) errorMsg.push('Number of Times is not selected');
+    if (selectedFreq === null) errorMsg.push('Frequency is not selected');
+
     setError(errorMsg);
 
     if (error.length !== 0) {
@@ -74,7 +39,7 @@ export default function CalendarView() {
         },
         body: JSON.stringify({
           activity: selectedActivity,
-          time: activityDateRef.current.value,
+          time: selectedDate,
           period: null,
           contact_id: selectedContact,
         }),
@@ -87,7 +52,7 @@ export default function CalendarView() {
       <div className="container">
         <div className="item">
           <h3>Calendar View</h3>
-          <Calendar onChange={onChange} onClickDay={onClickDay} value={value} />
+          <Calendar onChange={setValue} onClickDay={() => {}} value={value} />
         </div>
         <div className="item">
           <h3>Upcoming events //Sprint 2</h3>
@@ -107,38 +72,39 @@ export default function CalendarView() {
                 <label htmlFor="example-date-input">
                   Date
                   <input
-                    ref={activityDateRef}
                     className="form-control"
                     type="date"
                     placeholder="Date"
                     id="example-date-input"
+                    onChange={(event) => setSelectedDate(event.target.value)}
                   />
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption
-                  activityList={activityList}
-                  onSelectActivity={onSelectActivity}
-                />
+                <ActivityOption onSelectActivity={setSelectedActivity} />
               </div>
               <div className="col center">
-                <ContactOption onSelectContact={(id) => setSelectedContact(id)} />
+                <ContactOption onSelectContact={setSelectedContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
-                  Number of Events
+                  Number of Times
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Exact number"
-                    ref={numEventRef}
+                    placeholder="#"
+                    onChange={(event) => setMultiplier(event.target.value)}
                   />
                 </label>
               </div>
               <div className="col center">
                 <label htmlFor="exampleSelect1">
                   Frequency
-                  <select className="form-control" id="exampleSelect1" ref={freqRef}>
+                  <select
+                    className="form-control"
+                    id="exampleSelect1"
+                    onChange={(event) => setSelectedFreq(event.target.value)}
+                  >
                     {FREQUENCY.map((item) => (
                       <option value={item}>{item}</option>
                     ))}
@@ -176,3 +142,5 @@ export default function CalendarView() {
     </div>
   );
 }
+
+export default CalendarView;
