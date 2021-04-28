@@ -19,6 +19,7 @@ function ContactBook() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const fetchContacts = () => {
@@ -39,6 +40,12 @@ function ContactBook() {
 
   const onSubmit = (data) => {
     addContact(data);
+    reset({
+      name: '',
+      email: '',
+      phone: '',
+    });
+    setOpen(false);
   };
 
   // Fetch all contacts when you first load the page
@@ -48,7 +55,7 @@ function ContactBook() {
 
   return (
     <div className="contact-book">
-      <div className="p-md-5 mx-md-5">
+      <div>
         <h2 className="text-center">Contact Book</h2>
         <div className="text-right">
           <button onClick={onOpenModal} type="button" className="add-button">
@@ -56,8 +63,8 @@ function ContactBook() {
           </button>
         </div>
         <table className="table table-hover text-left">
-          <thead className="">
-            <tr className="">
+          <thead>
+            <tr>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Phone Number</th>
@@ -85,12 +92,14 @@ function ContactBook() {
         </table>
       </div>
 
-      <div>
-        <Modal open={open} onClose={onCloseModal} center>
-          <h4>Enter Contact Information:</h4>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            Name:
+      <div className="bg-primary">
+        <Modal open={open} onClose={onCloseModal} center id="model-special">
+          <form onSubmit={handleSubmit(onSubmit)} className="contact-form">
+            <h4 className="modal-title w-100 font-weight-bold">
+              Enter Contact Information:
+            </h4>
             <br />
+            <i className="fas fa-user-alt fa-2x align-middle" />
             <input
               type="text"
               placeholder="Full Name"
@@ -98,22 +107,22 @@ function ContactBook() {
             />
             <br />
             {errors.name && <p>Name is required.</p>}
-            Email:
-            <br />
+            <i className="fas fa-envelope prefix grey-text fa-2x align-middle" />
             <input
               type="text"
               placeholder="example@email.com"
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
             {errors.email && <p>Please enter valid email.</p>}
-            Phone Number:
+            <br />
+            <i className="fas fa-phone-square-alt fa-2x align-middle" />
             <input
-              type="tel"
+              type="text"
               placeholder="123-456-7890"
               {...register('phone', { required: true, minLength: 12 })}
             />
             {errors.phone && <p>Plese enter phone number in format 123-456-7890</p>}
-            <input type="submit" />
+            <input className="form-submit" type="submit" />
           </form>
         </Modal>
       </div>
