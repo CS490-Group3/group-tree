@@ -1,12 +1,12 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function ActivityOption(prop) {
-  const { activityList } = prop;
-  const selectedActivity = useRef(null);
+import EVENT_DATA from '../assets/EventData';
 
-  function handleChange() {
-    prop.onSelectActivity(selectedActivity);
-  }
+function ActivityOption(props) {
+  const { onSelectActivity } = props;
+  const activityList = [...new Set(EVENT_DATA.map((item) => item.activity))];
+
   return (
     <label htmlFor="exampleSelect1">
       Activity
@@ -14,8 +14,7 @@ function ActivityOption(prop) {
         className="form-control"
         id="exampleSelect1"
         placeholder="Activity"
-        onChange={handleChange}
-        ref={selectedActivity}
+        onChange={(event) => onSelectActivity(event.target.value)}
       >
         {activityList.map((activity) => (
           <option value={activity}>
@@ -26,5 +25,9 @@ function ActivityOption(prop) {
     </label>
   );
 }
+
+ActivityOption.propTypes = {
+  onSelectActivity: PropTypes.func.isRequired,
+};
 
 export default ActivityOption;

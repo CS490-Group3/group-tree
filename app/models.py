@@ -1,47 +1,50 @@
 # pylint: disable=no-member
 # pylint: disable=too-few-public-methods
-"""This file creates our database with contacts and persons"""
-import datetime
+"""
+This module contains database models needed for the application
+"""
+
 from app.exts import db
 
 
 class Person(db.Model):
-    """This class creates persons table"""
+    """
+    Model for person table
+    """
 
     __tablename__ = "person"
 
     id = db.Column(db.String(30), primary_key=True)
-    username = db.Column(db.String(30), nullable=False)
-    contacts = db.relationship("Contact", backref="person", lazy=True)
+    name = db.Column(db.String(30), nullable=False)
 
-    def __repr__(self):
-        return "<User %r>" % self.username
+    contacts = db.relationship("Contact", backref="person", lazy=True)
 
 
 class Contact(db.Model):
-    """This class creates contacts table"""
+    """
+    Model for contact table
+    """
 
-    __tablename__ = "contacts"
+    __tablename__ = "contact"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
-    emails = db.Column(db.String(30), nullable=False)
-    phoneNumber = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(30), nullable=False)
+    phone = db.Column(db.String(30), nullable=False)
     person_id = db.Column(db.String(30), db.ForeignKey("person.id"), nullable=False)
 
+    events = db.relationship("Event", backref="contact", lazy=True)
 
-class Events(db.Model):
-    """This class creates events table"""
 
-    __tablename__ = "events"
+class Event(db.Model):
+    """
+    Model for event table
+    """
+
+    __tablename__ = "event"
 
     id = db.Column(db.Integer, primary_key=True)
-    contact_name = db.Column(db.String(30), nullable=False)
-    user_name = db.Column(db.String(30), nullable=False)
     activity = db.Column(db.String(30), nullable=False)
-    date_time = db.Column(db.DateTime(), default=datetime.datetime.now, nullable=False)
-    person_id = db.Column(db.String(30), db.ForeignKey("person.id"), nullable=False)
-    user_name = db.Column(db.String(30), nullable=False)
-
-    def __repr__(self):
-        return "<Contact %r>" % self.name
+    time = db.Column(db.DateTime(), nullable=False)
+    period = db.Column(db.Integer, nullable=True)
+    contact_id = db.Column(db.Integer, db.ForeignKey("contact.id"), nullable=False)

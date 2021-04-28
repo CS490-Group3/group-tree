@@ -1,32 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 
-/* eslint-disable react/jsx-props-no-spreading */
-/* const BASE_URL = '/api/v1/contacts'; */
+const BASE_URL = '/api/v1/contacts';
 
-export default function ContactOption(prop) {
+function ContactOption(props) {
+  const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
-  const selectedContact = useRef(null);
 
-  function handleChange() {
-    prop.onSelectContact(selectedContact);
-  }
+  const fetchContacts = () => {
+    fetch(BASE_URL, { method: 'GET' })
+      .then((response) => response.json())
+      .then((data) => setContacts(data));
+  };
 
   useEffect(() => {
-    window
-      .fetch('/api/v1/contacts', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(
-        (response) => response.json(), // Convert to json
-      )
-      .then((responseData) => {
-        setContacts(responseData);
-      });
+    fetchContacts();
   }, []);
 
   return (
@@ -36,13 +27,18 @@ export default function ContactOption(prop) {
         className="form-control"
         id="exampleSelect1"
         placeholder="Activity"
-        onChange={handleChange}
-        ref={selectedContact}
+        onChange={(event) => onSelectContact(event.target.value)}
       >
-        {contacts.map((person) => (
-          <option>{person.name}</option>
+        {contacts.map((contact) => (
+          <option value={contact.id}>{contact.name}</option>
         ))}
       </select>
     </label>
   );
 }
+
+ContactOption.propTypes = {
+  onSelectContact: PropTypes.func.isRequired,
+};
+
+export default ContactOption;

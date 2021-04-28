@@ -1,18 +1,16 @@
 # pylint: disable=no-member
-# pylint: disable=too-many-arguments
 
 """
 Template Flask app
 """
 
-import datetime
 import json
 import os
 
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, Response, send_from_directory
+from flask import Flask, request, send_from_directory
 
 from app.exts import db
 import app.models as models
@@ -42,39 +40,6 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-def add_user(sub, name):
-    """ helper method to add new user to database """
-    temp = models.Person.query.filter_by(id=sub).first()
-    if not temp:
-        # working with database
-        new_user = models.Person(id=sub, username=name)
-        db.session.add(new_user)
-        db.session.commit()
-
-
-def add_event_info(
-    contact_name, user_name, activity, date_time, person_id, frequency, amount
-):
-    """ helper method to add events to database """
-    user_name = "admin"
-    days = get_number_days(frequency)
-
-    date_time_obj = datetime.datetime.strptime(date_time, "%Y-%m-%d")
-    for i in range(int(amount)):
-        time_change = datetime.timedelta(days=days * i)
-        new_time = date_time_obj + time_change
-        event = models.Events(
-            contact_name=contact_name,
-            user_name=user_name,
-            activity=activity,
-            date_time=new_time,
-            person_id=person_id,
-        )
-        db.session.add(event)
-
-    db.session.commit()
-
-
 def get_number_days(frequency):
     """helper method that returns the number of days based on input type"""
     days = 1
@@ -89,47 +54,6 @@ def get_number_days(frequency):
     elif frequency == "monthly":
         days = 30
     return days
-
-
-def get_user_events(person_id):
-    """
-    Helper method to get events from database
-    """
-    result = models.Events.query.get(person_id)
-    contacts = []
-    for row in result:
-        r_dict = dict(row.items())  # convert to dict keyed by column names
-        contacts.append(r_dict)
-    # This returns a dictionary that contains key,value pairs of each data from database
-    return contacts
-
-
-def get_next_event(person_id, contact_name):
-    """
-    Helper method to get events from database to get next upcoming event for a given contact_name
-    returns days from today or "No event" if no event scheduled for a given contact_name
-    """
-    events = (
-        db.session.query(models.Events)
-        .filter_by(person_id=person_id, contact_name=contact_name)
-        .order_by(models.Events.date_time.asc())
-    )
-    event_list = []
-
-    for event in events:
-        event_list.append(event.date_time)
-
-    # Accessing current time to get closest to date value
-    time_now = datetime.datetime.utcnow()
-    next_event = get_closest_date(time_now, event_list)
-
-    if next_event == "No Event":
-        return next_event
-
-    # get days from right now
-    temp = next_event.date() - time_now.date()
-    days = temp.days
-    return str(days) + " days"
 
 
 def get_closest_date(time_now, event_list):
@@ -150,47 +74,43 @@ def get_closest_date(time_now, event_list):
 @flask_login.login_required
 def api_contacts():
     """
-    Endpoint for API calls regarding contact books. The functionality is dependent on the
-    HTTP method.
-
-    `DELETE` - Delete a contact given the contact ID
-
-    `GET` - Get a list of all the user's contacts in JSON
-
-    `POST` - Add a new contact
+    Endpoint for API calls regarding contacts. The functionality is dependent on the HTTP
+    method.
     """
+    user = flask_login.current_user
+    # delete a contact given the contact ID
     if request.method == "DELETE":
         contact_id = request.args.get("id")
         contact = models.Contact.query.get(contact_id)
 
         # check if the contact exists and belongs to the user
-        if contact is not None and contact.person_id == flask_login.current_user.id:
+        if contact is not None and contact.person.id == user.id:
             db.session.delete(contact)
             db.session.commit()
 
             return ("", 204)  # No Content
         return ("", 404)  # Not Found
+    # get a list of the user's contacts
     if request.method == "GET":
         return json.dumps(
             [
                 {
                     "id": contact.id,
                     "name": contact.name,
-                    "email": contact.emails,
-                    "phone": contact.phoneNumber,
+                    "email": contact.email,
+                    "phone": contact.phone,
                 }
-                for contact in models.Contact.query.filter_by(
-                    person_id=flask_login.current_user.id
-                ).all()
+                for contact in user.contacts
             ]
         )
+    # add a new contact
     if request.method == "POST":
         request_data = request.get_json()
         new_contact = models.Contact(
             name=request_data["name"],
-            emails=request_data["email"],
-            phoneNumber=request_data["phone"],
-            person_id=flask_login.current_user.id,
+            email=request_data["email"],
+            phone=request_data["phone"],
+            person_id=user.id,
         )
         db.session.add(new_contact)
         db.session.commit()
@@ -200,54 +120,48 @@ def api_contacts():
     return ("", 405)  # Method Not Allowed
 
 
-def get_event_info(user_name, date_time):
-    """
-    Helper method to get event from selected date
-    """
-    result = db.engine.execute(
-        "SELECT * FROM CONTACTS WHERE user_name = "
-        + user_name
-        + "AND date_time = "
-        + date_time
-    )
-    info = []
-    for row in result:
-        r_dict = dict(row.items())  # convert to dict keyed by column names
-        info.append(r_dict)
-    # This returns a dictionary that contains key,value pairs of each data from database
-    return info
-
-
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
+@flask_login.login_required
 def api_event():
     """
-    Endpoint for adding a new event and get event info
+    Endpoint for API calls regarding events. The functionality is dependent on the HTTP
+    method.
     """
-    # User wants to create a new event in the catalog
+    user = flask_login.current_user
+    # get a dictionary partitioned by contact where each entry is a list of events
+    if request.method == "GET":
+        return {
+            contact.id: [
+                {
+                    "id": event.id,
+                    "activity": event.activity,
+                    "time": event.time,
+                    "period": event.period,
+                }
+                for event in contact.events
+            ]
+            for contact in user.contacts
+        }
+    # add a new event
     if request.method == "POST":
-        # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
-        add_event_info(
-            request_data["contact_name"],
-            "admin",
-            request_data["activity"],
-            request_data["date_time"],
-            flask_login.current_user.id,
-            request_data["frequency"],
-            request_data["amount"],
+        print(request_data)
+        new_event = models.Event(
+            activity=request_data["activity"],
+            time=request_data["time"],
+            period=request_data["period"],
+            contact_id=int(request_data["contact_id"]),
         )
-        return {"success": True}  # Return success status if it worked
+        # check if the contact exists and belongs to the user
+        contact = models.Contact.query.get(new_event.contact_id)
+        if contact is not None and contact.person.id == user.id:
+            db.session.add(new_event)
+            db.session.commit()
 
-    event_date = request.args.get("event_id", "")
-    if event_date is None:
-        return Response(
-            "Error: No date field provided. Please specify a date.", status=400
-        )
-    event_date = datetime.datetime(event_date.year, event_date.month, event_date.day)
-    # For real DB, you would replace with a filter clause in SQLAlchemy
-    results = get_event_info(request_data["user_name"], event_date)
+            return ("", 204)  # No Content
+        return ("", 404)  # Not Found
 
-    return json.dumps(results)
+    return ("", 405)  # Method Not Allowed
 
 
 @flask_app.route("/login", methods=["POST"])
@@ -274,7 +188,7 @@ def login():
             # add new user to database if not already there
             user_id = str(sub)
             if not models.Person.query.get(user_id):
-                new_person = models.Person(id=user_id, username=name)
+                new_person = models.Person(id=user_id, name=name)
                 db.session.add(new_person)
                 db.session.commit()
 
