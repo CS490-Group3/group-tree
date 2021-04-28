@@ -7,7 +7,7 @@ import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
 
 const BASE_URL = '/api/v1/events';
-const FREQUENCY = ['Single', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
+const FREQUENCY = ['Once', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
 
 export default function CalendarView() {
   const [value, onChange] = useState(new Date());
@@ -15,7 +15,7 @@ export default function CalendarView() {
   const [activityList, setList] = useState([]);
   const [createStatus, setCreateStatus] = useState(false);
   const [selectedActivity, setActivity] = useState('');
-  const [selectedContact, setContact] = useState('');
+  const [selectedContact, setSelectedContact] = useState(null);
   // Store reference to input elements to access typed in values
 
   let activityRef = useRef(null);
@@ -33,11 +33,6 @@ export default function CalendarView() {
     select(date);
   }
 
-  function onSelectContact(selection) {
-    contactNameRef = selection;
-    console.log(contactNameRef);
-    setContact(selection.current.value);
-  }
   function updateActivityList() {
     const unique = [...new Set(EVENT_DATA.map((item) => item.activity))]; // [ 'A', 'B']
     setList(unique);
@@ -46,54 +41,26 @@ export default function CalendarView() {
   useEffect(() => {
     updateActivityList();
   }, []);
-  /*
-  function fetchBookByID() {
-    const idValue = idRef.current.value;
-    const url = `${BASE_URL}?book_id=${idValue}`; // Add query parameter id, can add multiple with &
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        // Whatever you want to do with the data returned by server
-        setBooks(responseData);
-      });
-  } */
 
   function createEvent() {
     setCreateStatus(false);
-    console.log('here');
-    // console.log(activityRef.current.value);
-    // const activity = activityRef.current.value;
     const activity = selectedActivity;
-    // const contactName = contactNameRef.current.value;
-    const contactName = selectedContact;
     const activityDate = activityDateRef.current.value;
     const freq = freqRef.current.value;
     const numEvent = numEventRef.current.value;
 
-    const data = JSON.stringify({
-      activity,
-      contact_name: contactName,
-      date_time: activityDate,
-      frequency: freq,
-      amount: numEvent,
-    });
-    console.log('here');
     fetch(BASE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: data, // No query parameter, for POST we put in body
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        setCreateStatus(responseData.success);
-      });
+      body: JSON.stringify({
+        activity,
+        time: activityDate,
+        period: null,
+        contact_id: selectedContact,
+      }),
+    });
   }
 
   return (
@@ -106,7 +73,7 @@ export default function CalendarView() {
         <div className="item">
           <h3>Upcoming events //Sprint 2</h3>
           <ul className="list-group">
-            <li className="list-group-item ">Cras justo odio</li>
+            <li className="list-group-item">Cras justo odio</li>
             <li className="list-group-item">Dapibus ac facilisis in</li>
             <li className="list-group-item">Morbi leo risus</li>
           </ul>
@@ -136,7 +103,7 @@ export default function CalendarView() {
                 />
               </div>
               <div className="col center">
-                <ContactOption onSelectContact={onSelectContact} />
+                <ContactOption onSelectContact={(id) => setSelectedContact(id)} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
@@ -159,19 +126,16 @@ export default function CalendarView() {
                     ref={freqRef}
                   >
                     {FREQUENCY.map((item) => (
-                      <option>{item}</option>
+                      <option value={item}>{item}</option>
                     ))}
                   </select>
                 </label>
               </div>
               <div className="col center">
                 {/* eslint-disable */}
-                <button
-                  className=" btn btn-info"
-                  type="button"
-                  onClick={createEvent}
-                >
-                Add new event</button>
+                <button className=" btn btn-info" type="button" onClick={createEvent}>
+                  Add new event
+                </button>
                 {createStatus ? 'Successfully created events!' : null}
               </div>
             </div>

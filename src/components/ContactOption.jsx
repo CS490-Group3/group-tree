@@ -1,20 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 
-/* eslint-disable react/jsx-props-no-spreading */
 const BASE_URL = '/api/v1/contacts';
 
 function ContactOption(props) {
   const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
-  const selectedContact = useRef(null);
-
-  const handleChange = () => {
-    onSelectContact(selectedContact);
-  };
 
   const fetchContacts = () => {
     fetch(BASE_URL, { method: 'GET' })
@@ -34,11 +28,10 @@ function ContactOption(props) {
         className="form-control"
         id="exampleSelect1"
         placeholder="Activity"
-        onChange={handleChange}
-        ref={selectedContact}
+        onChange={(event) => onSelectContact(event.target.value)}
       >
-        {contacts.map((person) => (
-          <option>{person.name}</option>
+        {contacts.map((contact) => (
+          <option value={contact.id}>{contact.name}</option>
         ))}
       </select>
     </label>

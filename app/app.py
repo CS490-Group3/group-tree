@@ -11,7 +11,7 @@ import os
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, Response, send_from_directory
+from flask import Flask, request, send_from_directory
 
 from app.exts import db
 import app.models as models
@@ -91,7 +91,7 @@ def api_contacts():
         contact = models.Contact.query.get(contact_id)
 
         # check if the contact exists and belongs to the user
-        if contact is not None and contact.person_id == user.id:
+        if contact is not None and contact.person == user:
             db.session.delete(contact)
             db.session.commit()
 
@@ -127,24 +127,6 @@ def api_contacts():
     return ("", 405)  # Method Not Allowed
 
 
-def get_event_info(user_name, date_time):
-    """
-    Helper method to get event from selected date
-    """
-    result = db.engine.execute(
-        "SELECT * FROM CONTACTS WHERE user_name = "
-        + user_name
-        + "AND date_time = "
-        + date_time
-    )
-    info = []
-    for row in result:
-        r_dict = dict(row.items())  # convert to dict keyed by column names
-        info.append(r_dict)
-    # This returns a dictionary that contains key,value pairs of each data from database
-    return info
-
-
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 def api_event():
     """
@@ -152,21 +134,11 @@ def api_event():
     """
     # User wants to create a new event in the catalog
     if request.method == "POST":
-        # Gets the JSON object from the body of request sent by client
         request_data = request.get_json()
+        # new_event = models.Event()
+        print("/api/v1/events POST", request_data)
 
-        return {"success": True}  # Return success status if it worked
-
-    event_date = request.args.get("event_id", "")
-    if event_date is None:
-        return Response(
-            "Error: No date field provided. Please specify a date.", status=400
-        )
-    event_date = datetime.datetime(event_date.year, event_date.month, event_date.day)
-    # For real DB, you would replace with a filter clause in SQLAlchemy
-    results = get_event_info(request_data["user_name"], event_date)
-
-    return json.dumps(results)
+        return ("", 204)  # No Content
 
 
 @flask_app.route("/login", methods=["POST"])
