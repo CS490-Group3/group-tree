@@ -2,45 +2,68 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const BASE_URL = '/api/v1/events';
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 function DateInformation(props) {
-  const { date } = props;
+  const { fullDate } = props;
+  const [selectedDate, setSelectedDate] = useState(fullDate);
+
   const [infomation, setInfomation] = useState(null);
 
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
+  function formatDate() {
+    const year = selectedDate.getFullYear();
+    let month = selectedDate.getMonth() + 1;
+    let date = selectedDate.getDate();
+
+    if (date < 10) {
+      date = `0${date}`;
+    }
+    if (month < 10) {
+      month = `0${month}`;
+    }
+
+    const time = [year, month, date];
+    return time.join('-');
+  }
 
   const fetchDateInfo = () => {
-    fetch(BASE_URL, { method: 'GET' })
+    const formattedDate = formatDate();
+    const url = `${BASE_URL}?date=${formattedDate}`;
+    setInfomation(null);
+    fetch(url, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setInfomation(data);
-        console.log(infomation);
+        if (data !== null) {
+          setInfomation(data);
+        }
       });
   };
-
+  
+  // Only fetch info when prop fullDate changes = when a user clicks on a date
   useEffect(() => {
+    setSelectedDate(fullDate);
     fetchDateInfo();
-  }, []);
+  }, [fullDate]);
 
   return (
     <div className="item border">
       <h3>Click on a date to view information</h3>
       <p className="lead">
-        {date === null ? 'TODO' : date.getDate()} - {months[date.getMonth()]} -{' '}
-        {date.getFullYear()}
+        {fullDate === null ? 'TODO' : fullDate.getDate()} - {months[fullDate.getMonth()]}{' '}
+        - {fullDate.getFullYear()}
       </p>
       {infomation === null ? (
         <p>no info</p>
@@ -68,7 +91,7 @@ function DateInformation(props) {
   );
 }
 DateInformation.propTypes = {
-  date: PropTypes.instanceOf(Date).isRequired,
+  fullDate: PropTypes.instanceOf(Date).isRequired,
 };
 
 export default DateInformation;
