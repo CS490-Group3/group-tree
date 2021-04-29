@@ -40,8 +40,8 @@ class Event(db.Model):
     """
     Database model for `event` table
 
-    Reccuring events have a `period` which measures the time in days between
-    occurrences. Nonreccuring events have a null `period`.
+    Reccuring events have a `period` which measures the time in days between occurrences.
+    Nonreccuring events have a null `period`.
 
     The `complete_time` column denotes the most recent time that the user completed the
     event. If `complete_time` is null, then the user has never completed the event.
