@@ -54,7 +54,7 @@ def add_event_info(activity, time, contact_id):
     """ helper method to add events to database """
 
     date_time_obj = datetime.datetime.strptime(time, "%Y-%m-%d")
-
+    print(contact_id)
     event = models.Event(
         activity=activity, time=date_time_obj, contact_id=contact_id, period=0
     )
@@ -192,11 +192,13 @@ def api_event():
     if request.method == "POST":
         # Gets the JSON object from the body of request sent by client
         print("pls")
+
         request_data = request.get_json()
+        print(request_data["activity"])
         add_event_info(
             request_data["activity"],
             request_data["time"],
-            request_data["contact_id"],
+            request_data["contactid"],
         )
         return {"success": True}  # Return success status if it worked
 

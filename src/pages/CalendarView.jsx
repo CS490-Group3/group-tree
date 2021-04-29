@@ -4,10 +4,9 @@ import 'react-calendar/dist/Calendar.css';
 import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
+import FrequencyOption from '../components/FrequencyOption';
 
 const BASE_URL = '/api/v1/events';
-const FREQUENCY = ['Once', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
-const DEFAULT = null;
 
 export default function CalendarView() {
   const [value, setValue] = useState(new Date());
@@ -34,7 +33,7 @@ export default function CalendarView() {
     const data = JSON.stringify({
       activity: selectedActivity,
       time: selectedDate,
-      contact_id: selectedContact,
+      contactid: selectedContact,
     });
 
     if (error.length === 0) {
@@ -50,6 +49,18 @@ export default function CalendarView() {
           setCreateStatus(responseData.success);
         });
     }
+  }
+
+  function selectDefaultActivity(activity) {
+    setSelectedActivity(activity);
+  }
+
+  function selectDefaultContact(contact) {
+    setSelectedContact(contact);
+  }
+
+  function selectDefaultFrequency(frequency) {
+    setSelectedFreq(frequency);
   }
 
   return (
@@ -86,10 +97,10 @@ export default function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption onSelectActivity={setSelectedActivity} />
+                <ActivityOption onSelectActivity={selectDefaultActivity} />
               </div>
               <div className="col center">
-                <ContactOption onSelectContact={setSelectedContact} />
+                <ContactOption onSelectContact={selectDefaultContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
@@ -103,22 +114,7 @@ export default function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <label htmlFor="exampleSelect1">
-                  Frequency
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    onChange={(event) => setSelectedFreq(event.target.value)}
-                  >
-                    <option value={DEFAULT} disabled>
-                      {' '}
-                      Choose contact{' '}
-                    </option>
-                    {FREQUENCY.map((item) => (
-                      <option value={item}>{item}</option>
-                    ))}
-                  </select>
-                </label>
+                <FrequencyOption onSelectFrequency={selectDefaultFrequency} />
               </div>
               <div className="col center">
                 <button className=" btn btn-info" type="button" onClick={createEvent}>

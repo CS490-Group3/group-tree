@@ -5,11 +5,12 @@ import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 
 const BASE_URL = '/api/v1/contacts';
-const DEFAULT = null;
 
 function ContactOption(props) {
   const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
+
+  const [defaultValue, setDefaultValue] = useState(contacts[0].name);
 
   const fetchContacts = () => {
     fetch(BASE_URL, { method: 'GET' })
@@ -21,6 +22,11 @@ function ContactOption(props) {
     fetchContacts();
   }, []);
 
+  function handleChange(event) {
+    onSelectContact(event.target.value);
+    setDefaultValue(event.target.value);
+  }
+
   return (
     <label htmlFor="exampleSelect1">
       Contact
@@ -28,14 +34,13 @@ function ContactOption(props) {
         className="form-control"
         id="exampleSelect1"
         placeholder="Activity"
-        onChange={(event) => onSelectContact(event.target.value)}
+        onChange={(event) => handleChange(event)}
+        value={onSelectContact(defaultValue)}
       >
-        <option value={DEFAULT} disabled>
-          {' '}
-          Choose contact{' '}
-        </option>
         {contacts.map((contact) => (
-          <option value={contact.id}>{contact.name}</option>
+          <option value={contact.id} selected={defaultValue === contact.name}>
+            {contact.name}
+          </option>
         ))}
       </select>
     </label>
