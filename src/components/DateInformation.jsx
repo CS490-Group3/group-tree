@@ -46,7 +46,7 @@ function DateInformation(props) {
     fetch(url, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => {
-        if (data !== null) {
+        if (data.length === 0) {
           setInfomation(data);
         }
       });
@@ -66,7 +66,7 @@ function DateInformation(props) {
         - {fullDate.getFullYear()}
       </p>
       {infomation === null ? (
-        <p>no info</p>
+        <p>No event on this date</p>
       ) : (
         <div>
           {Object.keys(infomation).map((contact) => {
