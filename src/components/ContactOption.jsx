@@ -17,7 +17,7 @@ function ContactOption(props) {
       .then((response) => response.json())
       .then((data) => {
         setContacts(data);
-        if (data !== null) {
+        if (data.length !== 0) {
           setDefaultValue(data[0].id);
         }
       });
