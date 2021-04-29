@@ -5,7 +5,13 @@ This file tests the function get_number_days from app.py
 import datetime
 import unittest
 
-from app.app import get_number_days, get_closest_date, get_next_occurrence, models
+from app.app import (
+    get_number_days,
+    get_closest_date,
+    get_next_occurrence,
+    models,
+    event_occurs_on_date,
+)
 
 
 KEY_INPUT = "input"
@@ -47,6 +53,46 @@ class GetNextOccurrenceTestCase(unittest.TestCase):
             get_next_occurrence(daily, now=self.today + datetime.timedelta(seconds=1)),
             self.tomorrow,
         )
+
+
+class EventOccursOnDateTestCase(unittest.TestCase):
+    """
+    Test case for `event_occurs_on_date`
+    """
+
+    def test_nonrecurring(self):
+        """
+        Test on a nonrecurring event
+        """
+        event = models.Event(
+            activity="foo",
+            start_time=datetime.datetime(
+                1970, 1, 8, 16, 20, 0, 0, datetime.timezone.utc
+            ),
+            period=None,
+        )
+
+        self.assertFalse(event_occurs_on_date(event, datetime.date(1970, 1, 1)))
+        self.assertTrue(event_occurs_on_date(event, datetime.date(1970, 1, 8)))
+        self.assertFalse(event_occurs_on_date(event, datetime.date(1970, 1, 12)))
+        self.assertFalse(event_occurs_on_date(event, datetime.date(1970, 1, 15)))
+
+    def test_recurring(self):
+        """
+        Test on a recurring event
+        """
+        event = models.Event(
+            activity="foo",
+            start_time=datetime.datetime(
+                1970, 1, 8, 16, 20, 0, 0, datetime.timezone.utc
+            ),
+            period=7,
+        )
+
+        self.assertFalse(event_occurs_on_date(event, datetime.date(1970, 1, 1)))
+        self.assertTrue(event_occurs_on_date(event, datetime.date(1970, 1, 8)))
+        self.assertFalse(event_occurs_on_date(event, datetime.date(1970, 1, 12)))
+        self.assertTrue(event_occurs_on_date(event, datetime.date(1970, 1, 15)))
 
 
 class NumberDaysTestCase(unittest.TestCase):

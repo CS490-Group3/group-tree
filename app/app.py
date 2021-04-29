@@ -140,9 +140,12 @@ def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
     Determines if `event` occurs on `date`.
     """
     # convert date to datetime
-    date_with_time = datetime.datetime(date.year, date.month, date.day)
+    date_with_time = datetime.datetime(
+        date.year, date.month, date.day, tzinfo=datetime.timezone.utc
+    )
+    next_occur = get_next_occurrence(event, date_with_time)
 
-    return get_next_occurrence(event, date_with_time).date == date
+    return next_occur is not None and next_occur.date() == date
 
 
 def get_events_by_date(
