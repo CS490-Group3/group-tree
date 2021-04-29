@@ -64,36 +64,6 @@ def add_event_info(activity, time, contact_id):
     db.session.commit()
 
 
-def get_number_days(frequency):
-    """helper method that returns the number of days based on input type"""
-    days = 1
-    if frequency == "single":
-        days = 0
-    elif frequency == "daily":
-        days = 1
-    elif frequency == "weekly":
-        days = 7
-    elif frequency == "biweekly":
-        days = 14
-    elif frequency == "monthly":
-        days = 30
-    return days
-
-
-def get_closest_date(time_now, event_list):
-    """
-    Helper method to get the next closest date.
-    Needs an in ordered list of date from "smaller" dates.
-    Needs time now we don't get dates before current date.
-    """
-    time = None
-    # Obtaining closest date
-    for time in event_list:
-        if time > time_now:
-            return time
-    return "No Event"
-
-
 def get_next_occurrence(
     event: models.Event, now: datetime.datetime
 ) -> Union[datetime.datetime, None]:
