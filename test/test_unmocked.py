@@ -5,11 +5,48 @@ This file tests the function get_number_days from app.py
 import datetime
 import unittest
 
-from app.app import get_number_days, get_closest_date
+from app.app import get_number_days, get_closest_date, get_next_occurrence, models
 
 
 KEY_INPUT = "input"
 KEY_EXPECTED = "expected"
+
+
+class GetNextOccurrenceTestCase(unittest.TestCase):
+    """
+    Test case for `get_next_occurrence`
+    """
+
+    def setUp(self):
+        """
+        Set up
+        """
+        self.today = datetime.datetime.now(datetime.timezone.utc)
+        self.yesterday = self.today - datetime.timedelta(days=1)
+        self.tomorrow = self.today + datetime.timedelta(days=1)
+
+    def test_nonrecurring(self):
+        """
+        Test on a nonreccuring event
+        """
+        event = models.Event(activity="foo", start_time=self.today, period=None)
+
+        self.assertEqual(get_next_occurrence(event, now=self.yesterday), self.today)
+        self.assertEqual(get_next_occurrence(event, now=self.today), self.today)
+        self.assertIsNone(get_next_occurrence(event, now=self.tomorrow))
+
+    def test_recurring(self):
+        """
+        Test on a recurring event
+        """
+        daily = models.Event(activity="foo", start_time=self.today, period=1)
+
+        self.assertEqual(get_next_occurrence(daily, now=self.yesterday), self.today)
+        self.assertEqual(get_next_occurrence(daily, now=self.today), self.today)
+        self.assertEqual(
+            get_next_occurrence(daily, now=self.today + datetime.timedelta(seconds=1)),
+            self.tomorrow,
+        )
 
 
 class NumberDaysTestCase(unittest.TestCase):
