@@ -167,7 +167,7 @@ def api_contacts():
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
-def api_event():
+def api_events():
     """
     Endpoint for API calls regarding events. The functionality is dependent on the HTTP
     method.
@@ -199,7 +199,7 @@ def api_event():
         )
         # check if the contact exists and belongs to the user
         contact = models.Contact.query.get(new_event.contact_id)
-        if contact is not None and contact.person.id == user.id:
+        if contact is not None and contact.person_id == user.id:
             db.session.add(new_event)
             db.session.commit()
 
@@ -207,6 +207,27 @@ def api_event():
         return ("", 404)  # Not Found
 
     return ("", 405)  # Method Not Allowed
+
+
+@flask_app.route("/api/v1/events/complete", methods=["POST"])
+@flask_login.login_required
+def api_events_complete():
+    """
+    Endpoint for API calls for completing events.
+    """
+    now = datetime.now(timezone.utc)
+    user = flask_login.current_user
+
+    request_data = request.get_json()
+    event_id = request_data["id"]
+    event = models.Event.query.get(event_id)
+
+    # check if the event exists and belongs to the user
+    if event is not None and event.contact.person_id == user.id:
+        if complete_event(event, now):
+            return ("", 204)  # No Content
+        return ("", 403)  # Forbidden
+    return ("", 404)  # Not Found
 
 
 @flask_app.route("/login", methods=["POST"])
