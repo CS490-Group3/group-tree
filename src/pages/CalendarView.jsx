@@ -43,11 +43,10 @@ function CalendarView() {
           'Content-Type': 'application/json',
         },
         body: data,
-      })
-        .then((response) => response.json())
-        .then((responseData) => {
-          setCreateStatus(responseData.success);
-        });
+      }).then((response) => {
+        response.json();
+        setCreateStatus(true);
+      });
     }
   }
 
