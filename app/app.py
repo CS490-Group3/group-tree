@@ -10,7 +10,7 @@ import os
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, request, Response, send_from_directory
+from flask import Flask, request, send_from_directory
 
 from app.exts import db
 import app.models as models
@@ -147,14 +147,7 @@ def get_event_info(person_id, date_time):
     """
     Helper method to get event from selected date
     """
-    """
-    result = db.engine.execute(
-        "SELECT * FROM CONTACTS WHERE person_id = "
-        + person_id
-        + "AND date_time = "
-        + str(date_time)
-    )
-    """
+
     result = db.engine.execute(
         "SELECT * FROM event WHERE id = %s AND time = %s ", (person_id, date_time)
     )
@@ -202,40 +195,6 @@ def api_event():
         )
         return {"success": True}  # Return success status if it worked
 
-    """
-        date_time = request.args.get("date_time", "")
-        if date_time is None:
-            return Response(
-                "Error: No date field provided. Please specify a date.", status=400
-            )
-        date_time_info = date_time.split('-')
-        event_year = int(date_time_info[0])
-        event_month = int(date_time_info[1])
-        event_date = int(date_time_info[2])
-        
-        event_date = datetime.datetime(event_year, event_month, event_date)
-        # For real DB, you would replace with a filter clause in SQLAlchemy
-        
-        results = get_event_info(flask_login.current_user.id, event_date)
-        
-        return json.dumps(results, indent=4, sort_keys=True, default=str)
-        #request_data = request.get_json()
-        print(request_data)
-        new_event = models.Event(
-            activity=request_data["activity"],
-            time=request_data["time"],
-            period=request_data["period"],
-            contact_id=int(request_data["contact_id"]),
-        )
-        # check if the contact exists and belongs to the user
-        contact = models.Contact.query.get(new_event.contact_id)
-        if contact is not None and contact.person.id == user.id:
-            db.session.add(new_event)
-            db.session.commit()
-
-            return ("", 204)  # No Content
-        return ("", 404)  # Not Found
-    """
     return ("", 405)  # Method Not Allowed
 
 
