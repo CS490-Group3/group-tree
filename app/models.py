@@ -38,13 +38,25 @@ class Contact(db.Model):
 
 class Event(db.Model):
     """
-    Model for event table
+    Database model for `event` table
+
+    Reccuring events have a `period` which measures the time in seconds between
+    occurrences. Nonreccuring events have a null `period`.
+
+    The `complete_time` column denotes the most recent time that the user completed the
+    event. If `complete_time` is null, then the user has never completed the event.
+
+    The user shall be limited to completing an event once per occurrence. Missed
+    occurrences can never be completed. The server is able to enforce these policies
+    through simple time calculations.
     """
 
     __tablename__ = "event"
 
     id = db.Column(db.Integer, primary_key=True)
     activity = db.Column(db.String(30), nullable=False)
-    time = db.Column(db.DateTime(), nullable=False)
+    start_time = db.Column(db.DateTime(), nullable=False)
     period = db.Column(db.Integer, nullable=True)
+    complete_time = db.Column(db.DateTime(), nullable=True)
+
     contact_id = db.Column(db.Integer, db.ForeignKey("contact.id"), nullable=False)

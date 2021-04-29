@@ -6,6 +6,8 @@ Template Flask app
 import datetime
 import json
 import os
+from datetime import datetime, timedelta, timezone
+from typing import Union
 
 import flask_login
 import requests
@@ -93,6 +95,49 @@ def get_closest_date(time_now, event_list):
     return "No Event"
 
 
+def get_next_occurrence(event: models.Event, now: datetime) -> Union[datetime, None]:
+    """
+    Gets the next occurrence of an event based on its most recent completion time.
+
+    A completed nonrecurring event will never have a next occurrence, hence `None` would
+    be returned.
+    """
+    if event.complete_time is not None and event.complete_time > now:
+        raise ValueError(f"event {event.id} was completed in the future")
+
+    if event.period is None:  # the event is nonrecurring
+        if event.complete_time is None:
+            return event.start_time
+        return None
+
+    # the event is recurring
+    if now < event.start_time:  # but has not occurred yet
+        return event.start_time
+
+    # calculate the event's most recent occurrence in the past
+    period = timedelta(seconds=event.period)
+    diff = event.start_time - now
+    most_recent = event.start_time + (diff - diff % period)
+
+    if event.complete_time is None or event.complete_time < most_recent:
+        return most_recent
+    return most_recent + period
+
+
+def complete_event(event: models.Event, now: datetime) -> bool:
+    """
+    Marks an event as completed, using `now` as the time of completion. Returns `True` on
+    success, `False` otherwise.
+    """
+    next_occur = get_next_occurrence(event, now)
+
+    if next_occur < now:
+        event.complete_time = now
+        db.session.commit()
+        return True
+    return False
+
+
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
 @flask_login.login_required
 def api_contacts():
@@ -161,7 +206,7 @@ def get_event_info(person_id, date_time):
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
-def api_event():
+def api_events():
     """
     Endpoint for API calls regarding events. The functionality is dependent on the HTTP
     method.
@@ -174,7 +219,7 @@ def api_event():
                 {
                     "id": event.id,
                     "activity": event.activity,
-                    "time": event.time,
+                    "start_time": event.start_time,
                     "period": event.period,
                 }
                 for event in contact.events
@@ -183,19 +228,45 @@ def api_event():
         }
     # add a new event
     if request.method == "POST":
-        # Gets the JSON object from the body of request sent by client
-        print("pls")
-
         request_data = request.get_json()
-        print(request_data["activity"])
-        add_event_info(
-            request_data["activity"],
-            request_data["time"],
-            request_data["contactid"],
+        print(request_data)
+        new_event = models.Event(
+            activity=request_data["activity"],
+            start_time=request_data["time"],
+            period=None,
+            contact_id=int(request_data["contact_id"]),
         )
-        return {"success": True}  # Return success status if it worked
+        # check if the contact exists and belongs to the user
+        contact = models.Contact.query.get(new_event.contact_id)
+        if contact is not None and contact.person_id == user.id:
+            db.session.add(new_event)
+            db.session.commit()
+
+            return ("", 204)  # No Content
+        return ("", 404)  # Not Found
 
     return ("", 405)  # Method Not Allowed
+
+
+@flask_app.route("/api/v1/events/complete", methods=["POST"])
+@flask_login.login_required
+def api_events_complete():
+    """
+    Endpoint for API calls for completing events.
+    """
+    now = datetime.now(timezone.utc)
+    user = flask_login.current_user
+
+    request_data = request.get_json()
+    event_id = request_data["id"]
+    event = models.Event.query.get(event_id)
+
+    # check if the event exists and belongs to the user
+    if event is not None and event.contact.person_id == user.id:
+        if complete_event(event, now):
+            return ("", 204)  # No Content
+        return ("", 403)  # Forbidden
+    return ("", 404)  # Not Found
 
 
 @flask_app.route("/login", methods=["POST"])

@@ -33,7 +33,7 @@ function CalendarView() {
     const data = JSON.stringify({
       activity: selectedActivity,
       time: selectedDate,
-      contactid: selectedContact,
+      contact_id: selectedContact,
     });
 
     if (error.length === 0) {
