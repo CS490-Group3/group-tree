@@ -115,7 +115,7 @@ def get_next_occurrence(event: models.Event, now: datetime) -> Union[datetime, N
         return event.start_time
 
     # calculate the event's most recent occurrence in the past
-    period = timedelta(seconds=event.period)
+    period = timedelta(days=event.period)
     diff = event.start_time - now
     most_recent = event.start_time + (diff - diff % period)
 
@@ -230,10 +230,11 @@ def api_events():
     if request.method == "POST":
         request_data = request.get_json()
         print(request_data)
+        period = request_data["period"]
         new_event = models.Event(
             activity=request_data["activity"],
-            start_time=request_data["time"],
-            period=None,
+            start_time=request_data["start_time"],
+            period=int(period) if period is not None else None,
             contact_id=int(request_data["contact_id"]),
         )
         # check if the contact exists and belongs to the user
