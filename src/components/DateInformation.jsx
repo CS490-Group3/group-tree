@@ -51,7 +51,7 @@ function DateInformation(props) {
         }
       });
   };
-  
+
   // Only fetch info when prop fullDate changes = when a user clicks on a date
   useEffect(() => {
     setSelectedDate(fullDate);
