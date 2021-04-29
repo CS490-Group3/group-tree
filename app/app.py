@@ -72,14 +72,13 @@ def get_closest_date(time_now, event_list):
     return "No Event"
 
 
-def get_next_occurrence(event: models.Event) -> Union[datetime, None]:
+def get_next_occurrence(event: models.Event, now: datetime) -> Union[datetime, None]:
     """
-    Gets the next occurrence of an event based on the most recent completion time.
+    Gets the next occurrence of an event based on its most recent completion time.
 
     A completed nonrecurring event will never have a next occurrence, hence `None` would
     be returned.
     """
-    now = datetime.now(timezone.utc)
     if event.complete_time is not None and event.complete_time > now:
         raise ValueError(f"event {event.id} was completed in the future")
 
@@ -100,6 +99,20 @@ def get_next_occurrence(event: models.Event) -> Union[datetime, None]:
     if event.complete_time is None or event.complete_time < most_recent:
         return most_recent
     return most_recent + period
+
+
+def complete_event(event: models.Event, now: datetime) -> bool:
+    """
+    Marks an event as completed, using `now` as the time of completion. Returns `True` on
+    success, `False` otherwise.
+    """
+    next_occur = get_next_occurrence(event, now)
+
+    if next_occur < now:
+        event.complete_time = now
+        db.session.commit()
+        return True
+    return False
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
