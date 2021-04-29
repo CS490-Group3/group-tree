@@ -111,7 +111,7 @@ def get_next_occurrence(
 
     # calculate the event's most recent occurrence
     period = datetime.timedelta(days=event.period)
-    diff = event.start_time - now
+    diff = now - event.start_time
     most_recent = event.start_time + (diff - diff % period)
 
     if most_recent == now:
@@ -252,7 +252,7 @@ def api_events_complete():
     """
     Endpoint for API calls for completing events.
     """
-    now = datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.timezone.utc)
     user = flask_login.current_user
 
     request_data = request.get_json()
