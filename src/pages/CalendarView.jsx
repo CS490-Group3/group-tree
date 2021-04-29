@@ -4,7 +4,6 @@ import 'react-calendar/dist/Calendar.css';
 import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
-import FrequencyOption from '../components/FrequencyOption';
 
 const BASE_URL = '/api/v1/events';
 
@@ -15,7 +14,6 @@ function CalendarView() {
   const [selectedContact, setSelectedContact] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [multiplier, setMultiplier] = useState(null);
-  const [selectedFreq, setSelectedFreq] = useState(null);
   const [error, setError] = useState([]);
 
   function createEvent() {
@@ -27,26 +25,22 @@ function CalendarView() {
     if (selectedContact === null) errorMsg.push('Contact is not selected');
     if (selectedDate === null) errorMsg.push('Activity Date is not selected');
     if (multiplier === null) errorMsg.push('Number of Times is not selected');
-    if (selectedFreq === null) errorMsg.push('Frequency is not selected');
 
     setError(errorMsg);
-    const data = JSON.stringify({
-      activity: selectedActivity,
-      time: selectedDate,
-      contact_id: selectedContact,
-    });
 
-    if (error.length === 0) {
+    if (errorMsg.length === 0) {
       fetch(BASE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: data,
-      }).then((response) => {
-        response.json();
-        setCreateStatus(true);
-      });
+        body: JSON.stringify({
+          activity: selectedActivity,
+          start_time: selectedDate,
+          period: multiplier !== '0' ? multiplier : null,
+          contact_id: selectedContact,
+        }),
+      }).then(() => setCreateStatus(true));
     }
   }
 
@@ -56,10 +50,6 @@ function CalendarView() {
 
   function selectDefaultContact(contact) {
     setSelectedContact(contact);
-  }
-
-  function selectDefaultFrequency(frequency) {
-    setSelectedFreq(frequency);
   }
 
   return (
@@ -103,17 +93,14 @@ function CalendarView() {
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
-                  Number of Times
+                  Repeat every # days
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     placeholder="#"
                     onChange={(event) => setMultiplier(event.target.value)}
                   />
                 </label>
-              </div>
-              <div className="col center">
-                <FrequencyOption onSelectFrequency={selectDefaultFrequency} />
               </div>
               <div className="col center">
                 <button className=" btn btn-info" type="button" onClick={createEvent}>
