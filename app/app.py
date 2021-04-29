@@ -6,8 +6,7 @@ Template Flask app
 import datetime
 import json
 import os
-from datetime import datetime, timedelta, timezone
-from typing import Union
+from typing import List, Union
 
 import flask_login
 import requests
@@ -95,47 +94,61 @@ def get_closest_date(time_now, event_list):
     return "No Event"
 
 
-def get_next_occurrence(event: models.Event, now: datetime) -> Union[datetime, None]:
+def get_next_occurrence(
+    event: models.Event, now: datetime.datetime
+) -> Union[datetime.datetime, None]:
     """
-    Gets the next occurrence of an event based on its most recent completion time.
-
-    A completed nonrecurring event will never have a next occurrence, hence `None` would
-    be returned.
+    Gets the next occurrence of `event` from `now`.
     """
-    if event.complete_time is not None and event.complete_time > now:
-        raise ValueError(f"event {event.id} was completed in the future")
-
     if event.period is None:  # the event is nonrecurring
-        if event.complete_time is None:
+        if now <= event.start_time:
             return event.start_time
         return None
 
     # the event is recurring
-    if now < event.start_time:  # but has not occurred yet
+    if now <= event.start_time:
         return event.start_time
 
-    # calculate the event's most recent occurrence in the past
-    period = timedelta(days=event.period)
+    # calculate the event's most recent occurrence
+    period = datetime.timedelta(days=event.period)
     diff = event.start_time - now
     most_recent = event.start_time + (diff - diff % period)
 
-    if event.complete_time is None or event.complete_time < most_recent:
+    if most_recent == now:
         return most_recent
     return most_recent + period
 
 
-def complete_event(event: models.Event, now: datetime) -> bool:
+def complete_event(event: models.Event, now: datetime.datetime) -> bool:
     """
     Marks an event as completed, using `now` as the time of completion. Returns `True` on
     success, `False` otherwise.
     """
     next_occur = get_next_occurrence(event, now)
 
-    if next_occur < now:
+    if next_occur is not None and (
+        event.complete_time is None or event.complete_time < next_occur
+    ):
         event.complete_time = now
         db.session.commit()
         return True
     return False
+
+
+def get_events_by_date(
+    person: models.Person, date: datetime.date
+) -> List[models.Event]:
+    """
+    Get all events that occur on the specified date.
+    """
+    # convert date to datetime
+    date_with_time = datetime.datetime(date.year, date.month, date.day)
+
+    return [
+        event
+        for event in person.events
+        if get_next_occurrence(event, date_with_time).date == date
+    ]
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
@@ -186,22 +199,6 @@ def api_contacts():
         return ("", 204)  # No Content
 
     return ("", 405)  # Method Not Allowed
-
-
-def get_event_info(person_id, date_time):
-    """
-    Helper method to get event from selected date
-    """
-
-    result = db.engine.execute(
-        "SELECT * FROM event WHERE id = %s AND time = %s ", (person_id, date_time)
-    )
-    info = []
-    for row in result:
-        r_dict = dict(row.items())  # convert to dict keyed by column names
-        info.append(r_dict)
-    # This returns a dictionary that contains key,value pairs of each data from database
-    return info
 
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
@@ -255,7 +252,7 @@ def api_events_complete():
     """
     Endpoint for API calls for completing events.
     """
-    now = datetime.now(timezone.utc)
+    now = datetime.now(datetime.timezone.utc)
     user = flask_login.current_user
 
     request_data = request.get_json()
