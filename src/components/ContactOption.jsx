@@ -9,7 +9,6 @@ const BASE_URL = '/api/v1/contacts';
 function ContactOption(props) {
   const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
-
   const [defaultValue, setDefaultValue] = useState(null);
 
   const fetchContacts = () => {
