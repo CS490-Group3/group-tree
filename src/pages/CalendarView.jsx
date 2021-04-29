@@ -43,11 +43,10 @@ function CalendarView() {
           'Content-Type': 'application/json',
         },
         body: data,
-      })
-        .then((response) => response.json())
-        .then((responseData) => {
-          setCreateStatus(responseData.success);
-        });
+      }).then((response) => {
+        response.json();
+        setCreateStatus(true);
+      });
     }
   }
 
@@ -68,7 +67,7 @@ function CalendarView() {
       <div className="container">
         <div className="item">
           <h3>Calendar View</h3>
-          <Calendar onChange={setValue} onClickDay={() => {}} value={value} />
+          <Calendar onChange={setValue} onClickDay={setValue} value={value} />
         </div>
         <div className="item">
           <h3>Upcoming events //Sprint 2</h3>
@@ -78,7 +77,7 @@ function CalendarView() {
             <li className="list-group-item">Morbi leo risus</li>
           </ul>
         </div>
-        <DateInformation date={selectedDate} />
+        <DateInformation date={value} />
       </div>
       <div className="container-form">
         <div className="item">

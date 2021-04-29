@@ -10,12 +10,17 @@ function ContactOption(props) {
   const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
 
-  const [defaultValue, setDefaultValue] = useState(contacts[0].name);
+  const [defaultValue, setDefaultValue] = useState(null);
 
   const fetchContacts = () => {
     fetch(BASE_URL, { method: 'GET' })
       .then((response) => response.json())
-      .then((data) => setContacts(data));
+      .then((data) => {
+        setContacts(data);
+        if (data.length !== 0) {
+          setDefaultValue(data[0].id);
+        }
+      });
   };
 
   useEffect(() => {
@@ -24,7 +29,7 @@ function ContactOption(props) {
 
   function handleChange(event) {
     onSelectContact(event.target.value);
-    setDefaultValue(event.target.value);
+    setDefaultValue(event.target.value.name);
   }
 
   return (

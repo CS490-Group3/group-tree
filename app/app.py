@@ -235,6 +235,7 @@ def api_events():
             start_time=request_data["time"],
             period=None,
             contact_id=int(request_data["contact_id"]),
+            complete_time=None,
         )
         # check if the contact exists and belongs to the user
         contact = models.Contact.query.get(new_event.contact_id)
