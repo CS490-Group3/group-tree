@@ -4,9 +4,9 @@ import 'react-calendar/dist/Calendar.css';
 import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
+import FrequencyOption from '../components/FrequencyOption';
 
 const BASE_URL = '/api/v1/events';
-const FREQUENCY = ['Once', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
 
 function CalendarView() {
   const [value, setValue] = useState(new Date());
@@ -30,21 +30,37 @@ function CalendarView() {
     if (selectedFreq === null) errorMsg.push('Frequency is not selected');
 
     setError(errorMsg);
+    const data = JSON.stringify({
+      activity: selectedActivity,
+      time: selectedDate,
+      contact_id: selectedContact,
+    });
 
-    if (error.length !== 0) {
+    if (error.length === 0) {
       fetch(BASE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          activity: selectedActivity,
-          time: selectedDate,
-          period: null,
-          contact_id: selectedContact,
-        }),
-      });
+        body: data,
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          setCreateStatus(responseData.success);
+        });
     }
+  }
+
+  function selectDefaultActivity(activity) {
+    setSelectedActivity(activity);
+  }
+
+  function selectDefaultContact(contact) {
+    setSelectedContact(contact);
+  }
+
+  function selectDefaultFrequency(frequency) {
+    setSelectedFreq(frequency);
   }
 
   return (
@@ -81,10 +97,10 @@ function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption onSelectActivity={setSelectedActivity} />
+                <ActivityOption onSelectActivity={selectDefaultActivity} />
               </div>
               <div className="col center">
-                <ContactOption onSelectContact={setSelectedContact} />
+                <ContactOption onSelectContact={selectDefaultContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
@@ -98,18 +114,7 @@ function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <label htmlFor="exampleSelect1">
-                  Frequency
-                  <select
-                    className="form-control"
-                    id="exampleSelect1"
-                    onChange={(event) => setSelectedFreq(event.target.value)}
-                  >
-                    {FREQUENCY.map((item) => (
-                      <option value={item}>{item}</option>
-                    ))}
-                  </select>
-                </label>
+                <FrequencyOption onSelectFrequency={selectDefaultFrequency} />
               </div>
               <div className="col center">
                 <button className=" btn btn-info" type="button" onClick={createEvent}>

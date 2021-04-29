@@ -3,7 +3,7 @@
 """
 Template Flask app
 """
-
+import datetime
 import json
 import os
 from datetime import datetime, timedelta, timezone
@@ -40,6 +40,29 @@ def load_user(user_id):
     `user_loader` callback needed by Flask-Login. Maps user ID to User object.
     """
     return User.query.get(user_id)
+
+
+def add_user(sub, name):
+    """ helper method to add new user to database """
+    temp = models.Person.query.filter_by(id=sub).first()
+    if not temp:
+        # working with database
+        new_user = models.Person(id=sub, username=name)
+        db.session.add(new_user)
+        db.session.commit()
+
+
+def add_event_info(activity, time, contact_id):
+    """ helper method to add events to database """
+
+    date_time_obj = datetime.datetime.strptime(time, "%Y-%m-%d")
+    print(contact_id)
+    event = models.Event(
+        activity=activity, time=date_time_obj, contact_id=contact_id, period=0
+    )
+    db.session.add(event)
+
+    db.session.commit()
 
 
 def get_number_days(frequency):
@@ -165,6 +188,22 @@ def api_contacts():
     return ("", 405)  # Method Not Allowed
 
 
+def get_event_info(person_id, date_time):
+    """
+    Helper method to get event from selected date
+    """
+
+    result = db.engine.execute(
+        "SELECT * FROM event WHERE id = %s AND time = %s ", (person_id, date_time)
+    )
+    info = []
+    for row in result:
+        r_dict = dict(row.items())  # convert to dict keyed by column names
+        info.append(r_dict)
+    # This returns a dictionary that contains key,value pairs of each data from database
+    return info
+
+
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
 def api_events():
@@ -193,8 +232,8 @@ def api_events():
         print(request_data)
         new_event = models.Event(
             activity=request_data["activity"],
-            start_time=request_data["start_time"],
-            period=request_data["period"],
+            start_time=request_data["time"],
+            period=None,
             contact_id=int(request_data["contact_id"]),
         )
         # check if the contact exists and belongs to the user
