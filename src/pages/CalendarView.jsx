@@ -8,7 +8,7 @@ import FrequencyOption from '../components/FrequencyOption';
 
 const BASE_URL = '/api/v1/events';
 
-export default function CalendarView() {
+function CalendarView() {
   const [value, setValue] = useState(new Date());
   const [createStatus, setCreateStatus] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -147,3 +147,5 @@ export default function CalendarView() {
     </div>
   );
 }
+
+export default CalendarView;
