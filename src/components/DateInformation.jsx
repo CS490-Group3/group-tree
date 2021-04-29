@@ -46,7 +46,7 @@ function DateInformation(props) {
     fetch(url, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => {
-        if (data.length === 0) {
+        if (data.length !== 0) {
           setInfomation(data);
         }
       });
