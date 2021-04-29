@@ -7,8 +7,9 @@ import ContactOption from '../components/ContactOption';
 
 const BASE_URL = '/api/v1/events';
 const FREQUENCY = ['Once', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
+const DEFAULT = null;
 
-function CalendarView() {
+export default function CalendarView() {
   const [value, setValue] = useState(new Date());
   const [createStatus, setCreateStatus] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -30,20 +31,24 @@ function CalendarView() {
     if (selectedFreq === null) errorMsg.push('Frequency is not selected');
 
     setError(errorMsg);
+    const data = JSON.stringify({
+      activity: selectedActivity,
+      time: selectedDate,
+      contact_id: selectedContact,
+    });
 
-    if (error.length !== 0) {
+    if (error.length === 0) {
       fetch(BASE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          activity: selectedActivity,
-          time: selectedDate,
-          period: null,
-          contact_id: selectedContact,
-        }),
-      });
+        body: data,
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          setCreateStatus(responseData.success);
+        });
     }
   }
 
@@ -105,6 +110,10 @@ function CalendarView() {
                     id="exampleSelect1"
                     onChange={(event) => setSelectedFreq(event.target.value)}
                   >
+                    <option value={DEFAULT} disabled>
+                      {' '}
+                      Choose contact{' '}
+                    </option>
                     {FREQUENCY.map((item) => (
                       <option value={item}>{item}</option>
                     ))}
@@ -142,5 +151,3 @@ function CalendarView() {
     </div>
   );
 }
-
-export default CalendarView;

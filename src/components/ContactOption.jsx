@@ -5,6 +5,7 @@ import '../css/ContactBook.css';
 import 'react-responsive-modal/styles.css';
 
 const BASE_URL = '/api/v1/contacts';
+const DEFAULT = null;
 
 function ContactOption(props) {
   const { onSelectContact } = props;
@@ -29,6 +30,10 @@ function ContactOption(props) {
         placeholder="Activity"
         onChange={(event) => onSelectContact(event.target.value)}
       >
+        <option value={DEFAULT} disabled>
+          {' '}
+          Choose contact{' '}
+        </option>
         {contacts.map((contact) => (
           <option value={contact.id}>{contact.name}</option>
         ))}
