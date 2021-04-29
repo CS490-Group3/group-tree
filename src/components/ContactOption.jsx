@@ -10,7 +10,8 @@ function ContactOption(props) {
   const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
 
-  const [defaultValue, setDefaultValue] = useState(contacts[0].name);
+  console.log(contacts);
+  const [defaultValue, setDefaultValue] = useState('');
 
   const fetchContacts = () => {
     fetch(BASE_URL, { method: 'GET' })

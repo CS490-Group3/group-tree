@@ -7,7 +7,8 @@ function DateInformation(props) {
   return (
     <div className="item border">
       <h3>Click on a date to view information</h3>
-      <p className="lead">{date !== null ? 'TODO' : null}</p>
+      <p className="lead">{date !== null ? 'TODO' : date.getMonth()}</p>
+      <p>{console.log(date)}</p>
     </div>
   );
 }
