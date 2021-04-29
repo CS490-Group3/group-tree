@@ -72,23 +72,35 @@ function App() {
           </Switch>
         </Router>
       ) : (
-        <GoogleLogin
-          clientId={clientId}
-          onSuccess={(googleResponse) =>
-            fetch('/login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token: googleResponse.tokenId }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.success === true) setLoggedIn(true);
-              })
-          }
-          onFailure={() => {}}
-          cookiePolicy="single_host_origin"
-          style={{ marginTop: '100px' }}
-        />
+        <div className="landing-page">
+          <div className="main">
+            <div className="login-button">
+              <GoogleLogin
+                clientId={clientId}
+                onSuccess={(googleResponse) =>
+                  fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: googleResponse.tokenId }),
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.success === true) setLoggedIn(true);
+                    })
+                }
+                onFailure={() => {}}
+                cookiePolicy="single_host_origin"
+                style={{ marginTop: '100px' }}
+              />
+            </div>
+          </div>
+          <div className="about">
+            <p>About</p>
+          </div>
+          <div className="team">
+            <p>Team</p>
+          </div>
+        </div>
       )}
     </div>
   );
