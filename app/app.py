@@ -203,7 +203,7 @@ def api_events():
                     "period": event.period,
                 }
                 for event in contact.events
-                if date is not None and event_occurs_on_date(event, date)
+                if date is None or event_occurs_on_date(event, date)
             ]
             for contact in user.contacts
         }
