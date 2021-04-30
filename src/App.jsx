@@ -103,9 +103,9 @@ function App() {
               </div>
             </nav>
             <div className="main">
-              <div>
+              <div className="intro">
                 <p>Connect with Family and Friends</p>
-                <p>And Grow Your tree</p>
+                <p>Grow Your tree</p>
               </div>
             </div>
           </div>

@@ -2,16 +2,50 @@
   text-align: center !important
 }
 
+/* navbar */
+.navbar-brand{
+  font-size: 5rem;
+  color: white;
+}
+#nav {
+  padding: 0.8rem 7rem;
+  background-color: #5b8a72;
+  color: white;
+}
+
+#nav-bar a:hover { 
+  color: #bfcba8 !important; 
+}
+
+#nav-bar li a {
+  color: white;
+}
+
+.fa-align-justify {
+  color: white;
+}
+
 /* Landing Page */
 .main {
   height: 100%;
   width: 100%;
   margin: auto;
-  background-image: url('jungle-graphic.jpeg');
+  background-image: url('graphic.png');
   display: table;
   top: 0;
   background-size: cover;
   height: 100vh;
+}
+
+.intro{
+  float: left;
+  text-align: left !important;
+  margin-top: 1rem;
+  margin-right: 5rem;
+  padding: 2rem;
+  font-size: 2rem;
+  color: #5b8a72;
+  background-colorr: rgb(255, 255, 255, 0.5);
 }
 
 .about {
@@ -103,33 +137,6 @@
   background-color: #B0BEC5;
   width: 150px;
   height: 10px;
-}
-
-
-
-
-
-/* navbar */
-.navbar-brand{
-  font-size: 5rem;
-  color: white;
-}
-#nav {
-  padding: 0.8rem 7rem;
-  background-color: #5b8a72;
-  color: white;
-}
-
-#nav-bar a:hover { 
-  color: #bfcba8 !important; 
-}
-
-#nav-bar li a {
-  color: white;
-}
-
-.fa-align-justify {
-  color: white;
 }
 
 /* calander view*/
