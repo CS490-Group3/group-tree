@@ -7,12 +7,107 @@
   height: 100%;
   width: 100%;
   margin: auto;
-  background-color: linear-gradient(to right,#5b8a72, #5b8a72), url('jungle-graphic.jpeg') no-repeat top center;
+  background-image: url('jungle-graphic.jpeg');
   display: table;
   top: 0;
   background-size: cover;
   height: 100vh;
 }
+
+.about {
+  padding: 3rem;
+}
+.outer {
+  display: flex;
+  flex-wrap:wrap;
+  flex-direction: column;
+}
+
+.row {
+  padding: 0;
+  margin: 5em;
+}
+
+.item{
+  width: 20em;
+}
+
+.team {
+  background-color: #325288;
+  color: white;
+}
+
+.team-row {
+  display: flex;
+  flex-wrap:wrap;
+  flex-direction: column;
+}
+
+.team-row {
+  padding: 0;
+  margin: 5em;
+}
+
+.team-item{
+  width: 20em;
+}
+
+/* conputer */
+
+.comp-container{
+  width: 380px;
+  margin: 20px auto;
+}
+
+.screen{
+  width: 380px;
+  height: 200px;
+  background-color: #607D8B;
+  background-image: url('contact.png');
+  border-radius: 25px 25px 1px 1px;
+  border: 1px solid #E0E0E0;
+  padding: 1rem;
+}
+
+#event{
+   background-image: url('calendar.png');
+}
+
+.key{
+  width: 380px;
+  height: 60px;
+  background-color: #E0E0E0;
+  border-radius: 0px 0px 20px 20px;
+  padding-top: 5px;
+}
+
+.comp-button{
+  background-color: #B0BEC5;
+  margin: 0 auto;
+  margin-top: 10px;
+  padding: 0px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.stand{
+  margin: 0 auto;
+  background-color: #B0BEC5;
+  width: 50px;
+  height: 50px;
+}
+
+.bottom-stand{
+  margin: 0 auto;
+  background-color: #B0BEC5;
+  width: 150px;
+  height: 10px;
+}
+
+
+
+
 
 /* navbar */
 .navbar-brand{

@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import TreeView from './pages/TreeView';
 import CalendarView from './pages/CalendarView';
 import ContactBook from './pages/ContactBook';
+import About from './components/About';
+import Team from './components/Team';
 import './css/App.css';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -94,12 +96,8 @@ function App() {
               />
             </div>
           </div>
-          <div className="about">
-            <p>About</p>
-          </div>
-          <div className="team">
-            <p>Team</p>
-          </div>
+          <About />
+          <Team />
         </div>
       )}
     </div>
