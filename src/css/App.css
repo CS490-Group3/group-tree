@@ -48,6 +48,23 @@
   background-colorr: rgb(255, 255, 255, 0.5);
 }
 
+.np{
+    margin-bottom: 0px;
+  
+}
+
+.learn-button {
+  border: none;
+  background-color: #5b8a72;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  color: white;
+    border-radius: 10px;
+
+
+
+}
+
 .about {
   padding: 3rem;
 }

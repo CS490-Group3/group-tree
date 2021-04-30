@@ -104,8 +104,11 @@ function App() {
             </nav>
             <div className="main">
               <div className="intro">
-                <p>Connect with Family and Friends</p>
+                <p className="np">Connect with Family and Friends</p>
                 <p>Grow Your tree</p>
+                <button className="learn-button" type="button">
+                  Scroll To Learn More
+                </button>
               </div>
             </div>
           </div>
