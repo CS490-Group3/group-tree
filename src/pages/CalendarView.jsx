@@ -44,20 +44,12 @@ function CalendarView() {
     }
   }
 
-  function selectDefaultActivity(activity) {
-    setSelectedActivity(activity);
-  }
-
-  function selectDefaultContact(contact) {
-    setSelectedContact(contact);
-  }
-
   return (
     <div className="landing">
       <div className="container">
         <div className="item">
           <h3>Calendar View</h3>
-          <Calendar onChange={setValue} onClickDay={setValue} value={value} />
+          <Calendar onChange={setValue} onClickDay={setValue} />
         </div>
         <div className="item">
           <h3>Upcoming events //Sprint 2</h3>
@@ -67,7 +59,7 @@ function CalendarView() {
             <li className="list-group-item">Morbi leo risus</li>
           </ul>
         </div>
-        <DateInformation date={value} />
+        <DateInformation fullDate={value} />
       </div>
       <div className="container-form">
         <div className="item">
@@ -86,10 +78,10 @@ function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption onSelectActivity={selectDefaultActivity} />
+                <ActivityOption onSelectActivity={setSelectedActivity} />
               </div>
               <div className="col center">
-                <ContactOption onSelectContact={selectDefaultContact} />
+                <ContactOption onSelectContact={setSelectedContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">

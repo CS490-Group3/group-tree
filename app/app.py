@@ -187,8 +187,15 @@ def api_events():
     user = flask_login.current_user
     # get a dictionary partitioned by contact where each entry is a list of events
     if request.method == "GET":
+        date_string = request.args.get("date", None)
+        date = (
+            datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+            if date_string is not None
+            else None
+        )
+
         return {
-            contact.id: [
+            str(contact.id): [
                 {
                     "id": event.id,
                     "activity": event.activity,
@@ -196,6 +203,7 @@ def api_events():
                     "period": event.period,
                 }
                 for event in contact.events
+                if date is None or event_occurs_on_date(event, date)
             ]
             for contact in user.contacts
         }
