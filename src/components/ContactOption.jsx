@@ -26,11 +26,6 @@ function ContactOption(props) {
     fetchContacts();
   }, []);
 
-  function handleChange(event) {
-    onSelectContact(event.target.value);
-    setDefaultValue(event.target.value.name);
-  }
-
   return (
     <label htmlFor="exampleSelect1">
       Contact
@@ -38,11 +33,10 @@ function ContactOption(props) {
         className="form-control"
         id="exampleSelect1"
         placeholder="Activity"
-        onChange={(event) => handleChange(event)}
-        value={onSelectContact(defaultValue)}
+        onChange={(event) => onSelectContact(event.target.value)}
       >
         {contacts.map((contact) => (
-          <option value={contact.id} selected={defaultValue === contact.name}>
+          <option value={contact.id} selected={defaultValue === contact.id}>
             {contact.name}
           </option>
         ))}

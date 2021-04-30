@@ -44,14 +44,6 @@ function CalendarView() {
     }
   }
 
-  function selectDefaultActivity(activity) {
-    setSelectedActivity(activity);
-  }
-
-  function selectDefaultContact(contact) {
-    setSelectedContact(contact);
-  }
-
   return (
     <div className="landing">
       <div className="container">
@@ -86,10 +78,10 @@ function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption onSelectActivity={selectDefaultActivity} />
+                <ActivityOption onSelectActivity={setSelectedActivity} />
               </div>
               <div className="col center">
-                <ContactOption onSelectContact={selectDefaultContact} />
+                <ContactOption onSelectContact={setSelectedContact} />
               </div>
               <div className="col center">
                 <label htmlFor="exampleTextarea">
