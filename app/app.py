@@ -187,24 +187,26 @@ def api_events():
     user = flask_login.current_user
     # get a dictionary partitioned by contact where each entry is a list of events
     if request.method == "GET":
-        date = request.args.get('date', '')
-        if date == '':
-            return ("Error: No id field provided. Please specify an id.", 400)
-        date_time_obj = datetime.strptime(date, "%Y-%m-%d")
-        result = {}
-        for contact in user.contacts:
-            for event in contact.events:
-                if event.start_time.date() == date_time_obj.date():
-                    result[contact.name] = [
-                        {
-                            "id": event.id,
-                            "activity": event.activity,
-                            "start_time": event.start_time,
-                            "period": event.period,
-                        }
-                        for event in contact.events
-                    ]
-        return result
+        date_string = request.args.get("date", None)
+        date = (
+            datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+            if date_string is not None
+            else None
+        )
+
+        return {
+            str(contact.id): [
+                {
+                    "id": event.id,
+                    "activity": event.activity,
+                    "start_time": event.start_time,
+                    "period": event.period,
+                }
+                for event in contact.events
+                if date is not None and event_occurs_on_date(event, date)
+            ]
+            for contact in user.contacts
+        }
     # add a new event
     if request.method == "POST":
         request_data = request.get_json()
