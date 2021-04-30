@@ -25,6 +25,115 @@
   color: white;
 }
 
+/* Landing Page */
+.main {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  background-image: url('tree.png');
+  display: table;
+  top: 0;
+  background-size: cover;
+  height: 100vh;
+}
+
+.intro{
+  float: left;
+  text-align: left !important;
+  margin-top: 1rem;
+  margin-right: 5rem;
+  padding: 2rem;
+  font-size: 2rem;
+  color: #5b8a72;
+  background-colorr: rgb(255, 255, 255, 0.5);
+}
+
+.np{
+    margin-bottom: 0px;
+}
+
+.learn-button {
+  border: none;
+  background-color: #5b8a72;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  color: white;
+    border-radius: 10px;
+
+}
+
+/* conputer */
+
+.comp-container{
+  width: 380px;
+  margin: 20px auto;
+}
+
+.screen{
+  width: 380px;
+  height: 200px;
+  background-color: #607D8B;
+  border-radius: 25px 25px 1px 1px;
+  border: 1px solid #E0E0E0;
+  padding: 1rem;
+}
+
+.key{
+  width: 380px;
+  height: 60px;
+  background-color: #E0E0E0;
+  border-radius: 0px 0px 20px 20px;
+  padding-top: 5px;
+}
+
+.comp-button{
+  background-color: #B0BEC5;
+  margin: 0 auto;
+  margin-top: 10px;
+  padding: 0px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.stand{
+  margin: 0 auto;
+  background-color: #B0BEC5;
+  width: 50px;
+  height: 50px;
+}
+
+.bottom-stand{
+  margin: 0 auto;
+  background-color: #B0BEC5;
+  width: 150px;
+  height: 10px;
+}
+
+
+/* about app */
+.about {
+  padding: 3rem;
+}
+
+.about-outer {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-around;
+
+}
+
+.about-item{
+  width: 25em;
+  color: white;
+  padding: 2rem 1rem;
+}
+
+.about-row {
+  padding: 0;
+  margin: 0rem 2rem;
+}
+
 /* calander view*/
 .container {
   display: flex;
