@@ -50,7 +50,6 @@
 
 .np{
     margin-bottom: 0px;
-  
 }
 
 .learn-button {
@@ -61,46 +60,6 @@
   color: white;
     border-radius: 10px;
 
-
-
-}
-
-.about {
-  padding: 3rem;
-}
-.outer {
-  display: flex;
-  flex-wrap:wrap;
-  flex-direction: column;
-}
-
-.row {
-  padding: 0;
-  margin: 5em;
-}
-
-.item{
-  width: 20em;
-}
-
-.team {
-  background-color: #325288;
-  color: white;
-}
-
-.team-row {
-  display: flex;
-  flex-wrap:wrap;
-  flex-direction: column;
-}
-
-.team-row {
-  padding: 0;
-  margin: 5em;
-}
-
-.team-item{
-  width: 20em;
 }
 
 /* conputer */
@@ -114,7 +73,6 @@
   width: 380px;
   height: 200px;
   background-color: #607D8B;
-  background-image: url('contact.png');
   border-radius: 25px 25px 1px 1px;
   border: 1px solid #E0E0E0;
   padding: 1rem;
@@ -154,6 +112,50 @@
   background-color: #B0BEC5;
   width: 150px;
   height: 10px;
+}
+
+
+/* about app */
+.about {
+  padding: 3rem;
+}
+
+.about-outer {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-around;
+
+}
+
+.about-item{
+  width: 25em;
+  color: white;
+  padding: 2rem 1rem;
+}
+
+.about-row {
+  padding: 0;
+  margin: 0rem 2rem;
+}
+
+/* team */
+.team {
+  color: orange;
+}
+
+.team-row {
+  display: flex;
+  flex-wrap:wrap;
+  flex-direction: column;
+}
+
+.team-row {
+  padding: 0;
+  margin: 5em;
+}
+
+.team-item{
+  width: 20em;
 }
 
 /* calander view*/
