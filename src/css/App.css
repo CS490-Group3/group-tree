@@ -30,7 +30,7 @@
   height: 100%;
   width: 100%;
   margin: auto;
-  background-image: url('graphic.png');
+  background-image: url('tree.png');
   display: table;
   top: 0;
   background-size: cover;
@@ -76,10 +76,6 @@
   border-radius: 25px 25px 1px 1px;
   border: 1px solid #E0E0E0;
   padding: 1rem;
-}
-
-#event{
-   background-image: url('calendar.png');
 }
 
 .key{
@@ -136,26 +132,6 @@
 .about-row {
   padding: 0;
   margin: 0rem 2rem;
-}
-
-/* team */
-.team {
-  color: orange;
-}
-
-.team-row {
-  display: flex;
-  flex-wrap:wrap;
-  flex-direction: column;
-}
-
-.team-row {
-  padding: 0;
-  margin: 5em;
-}
-
-.team-item{
-  width: 20em;
 }
 
 /* calander view*/
