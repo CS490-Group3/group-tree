@@ -46,7 +46,7 @@ def add_user(sub, name):
     temp = models.Person.query.filter_by(id=sub).first()
     if not temp:
         # working with database
-        new_user = models.Person(id=sub, username=name)
+        new_user = models.Person(id=sub, username=name, tree_points=0)
         db.session.add(new_user)
         db.session.commit()
 
@@ -226,6 +226,25 @@ def api_contacts():
     return ("", 405)  # Method Not Allowed
 
 
+@flask_app.route("/api/v1/treeview", methods=["GET"])
+@flask_login.login_required
+def api_tree_points():
+    """
+    Endpoint for API calls tree points for the user
+    """
+    user = flask_login.current_user
+
+    if request.method == "GET":
+        return json.dumps(
+            [
+                {
+                    "tree_points": user.tree_points
+                }
+            ]
+        )
+
+    return ("", 405)  # Method Not Allowed
+
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
 def api_events():
@@ -325,7 +344,7 @@ def login():
             # add new user to database if not already there
             user_id = str(sub)
             if not models.Person.query.get(user_id):
-                new_person = models.Person(id=user_id, name=name)
+                new_person = models.Person(id=user_id, name=name, tree_points=0)
                 db.session.add(new_person)
                 db.session.commit()
 
