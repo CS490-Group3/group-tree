@@ -1,5 +1,6 @@
 import React from 'react';
 import TeamMember from './TeamMember';
+import '../css/Team.css';
 
 export default function Team() {
   return (

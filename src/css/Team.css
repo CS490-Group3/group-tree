@@ -1,0 +1,31 @@
+.team {
+    background-color: #435560;
+    color: white;
+
+    
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+.team-itemm {
+    border: 5px solid purple;
+}
+
+.member-container {
+    display: flex;
+    border: 5px solid green;
+    align-items: center;
+}
+
+.member-item {
+    border: 5px solid blue;
+}
+
+#team-icon {
+    font-size: 10rem;
+}

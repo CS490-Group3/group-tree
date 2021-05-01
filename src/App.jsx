@@ -6,6 +6,8 @@ import TreeView from './pages/TreeView';
 import CalendarView from './pages/CalendarView';
 import ContactBook from './pages/ContactBook';
 import About from './components/About';
+import Team from './components/Team';
+
 import './css/App.css';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -112,6 +114,7 @@ function App() {
             </div>
           </div>
           <About />
+          <Team />
         </div>
       )}
     </div>
