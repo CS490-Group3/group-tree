@@ -89,6 +89,52 @@ def get_next_occurrence(
     return most_recent + period
 
 
+def update_tree_points(person_id, days_late):
+    """
+    Updates the `tree_points` column in person.
+    Uses person_id to identify and the amount of late days to calculate points
+    """
+    points = 0
+    if days_late == 1:
+        points = 7
+    if days_late == 2:
+        points = 6
+    if days_late == 3:
+        points = 5
+    if days_late == 4:
+        points = 4
+    if days_late == 5:
+        points = 3
+    if days_late == 6:
+        points = 2
+    if days_late >= 7:
+        points = 1
+    
+    person = models.Person.query.filter_by(id=person_id).first()
+    person.tree_points += points
+    db.session.commit()
+    
+# This updates a given person with person_id and days_late to compute points
+# update_tree_points("101263858443596549461", 1)
+
+
+def get_tree_index(person_id):
+    person = models.Person.query.filter_by(id=person_id).first()
+    tree_points = person.tree_points
+    index = 0
+    if tree_points >= 7 and tree_points < 21:
+        index = 1
+    if tree_points >= 21 and tree_points < 42:
+        index = 2
+    if tree_points >= 42 and tree_points < 98:
+        index = 3
+    if tree_points >= 98:
+        index = 4
+
+    return index
+
+# get_tree_index("101263858443596549461")
+
 def complete_event(event: models.Event, now: datetime.datetime) -> bool:
     """
     Marks an event as completed, using `now` as the time of completion. Returns `True` on
