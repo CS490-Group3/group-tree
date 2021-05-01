@@ -109,29 +109,32 @@ def update_tree_points(person_id, days_late):
         points = 2
     if days_late >= 7:
         points = 1
-    
+
     person = models.Person.query.filter_by(id=person_id).first()
     person.tree_points += points
     db.session.commit()
-    
+
 # This updates a given person with person_id and days_late to compute points
 # update_tree_points("101263858443596549461", 1)
 
 
 def get_tree_index(person_id):
+    """
+    Computes the tree index to be sent to client
+    This will be the index array of what image of tree that should be displayed
+    """
     person = models.Person.query.filter_by(id=person_id).first()
     tree_points = person.tree_points
-    index = 0
-    if tree_points >= 7 and tree_points < 21:
-        index = 1
-    if tree_points >= 21 and tree_points < 42:
-        index = 2
-    if tree_points >= 42 and tree_points < 98:
-        index = 3
+    tree_index = 0
+    if  7 <= tree_points < 21:
+        tree_index = 1
+    if 21 <= tree_points < 42:
+        tree_index = 2
+    if 42 <= tree_points < 98:
+        tree_index = 3
     if tree_points >= 98:
-        index = 4
-
-    return index
+        tree_index = 4
+    return tree_index
 
 # get_tree_index("101263858443596549461")
 
