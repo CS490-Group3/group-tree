@@ -95,7 +95,7 @@ def update_tree_points(person_id, days_late):
     Uses person_id to identify and the amount of late days to calculate points
     """
     points = 0
-    if days_late == 1:
+    if days_late <= 1:
         points = 7
     if days_late == 2:
         points = 6
