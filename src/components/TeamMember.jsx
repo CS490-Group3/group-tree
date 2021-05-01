@@ -8,7 +8,7 @@ export default function TeamMember() {
       </div>
       <div className="member-item">
         <p>TeamMember Name</p>
-        <p>CEO and Co Founderigjbnknbfjnbjnfbjnfjnb</p>
+        <p>CEO and Co Founderg</p>
         <p>Fullstack Developer</p>
       </div>
     </div>
