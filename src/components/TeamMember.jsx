@@ -8,8 +8,10 @@ export default function TeamMember() {
       </div>
       <div className="member-item">
         <p>TeamMember Name</p>
-        <p>CEO and Co Founderg</p>
+        <p>CEO and Co Founder</p>
         <p>Fullstack Developer</p>
+        <i className="fab fa-github fa-2x margin-left" />
+        <i className="fab fa-linkedin-in fa-2x margin-left" />
       </div>
     </div>
   );
