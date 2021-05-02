@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-// import ActivityOption from '../components/ActivityOption';
-import DateInformation from '../components/DateInformation';
+import RepeatOption from '../components/RepeatOption';
 import ContactOption from '../components/ContactOption';
-
+import DateOption from '../components/DateOption';
 import ActivityDropdown from '../components/ActivityDropdown';
+import DateInformation from '../components/DateInformation';
 
 const BASE_URL = '/api/v1/events';
 
@@ -68,16 +68,7 @@ function CalendarView() {
           <form className="container-fluid">
             <div className="form-row">
               <div className="col center">
-                <label htmlFor="example-date-input">
-                  Date
-                  <input
-                    className="form-control"
-                    type="date"
-                    placeholder="Date"
-                    id="example-date-input"
-                    onChange={(event) => setSelectedDate(event.target.value)}
-                  />
-                </label>
+                <DateOption onSelectDate={setSelectedDate} />
               </div>
               <div className="col center">
                 <ActivityDropdown onSelectActivity={setSelectedActivity} />
@@ -86,15 +77,7 @@ function CalendarView() {
                 <ContactOption onSelectContact={setSelectedContact} />
               </div>
               <div className="col center">
-                <label htmlFor="exampleTextarea">
-                  Repeat every # days
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="#"
-                    onChange={(event) => setMultiplier(event.target.value)}
-                  />
-                </label>
+                <RepeatOption onSetMultiplier={setMultiplier} />
               </div>
               <div className="col center">
                 <button className=" btn btn-info" type="button" onClick={createEvent}>
