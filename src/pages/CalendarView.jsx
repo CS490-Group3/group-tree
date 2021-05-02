@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import ActivityOption from '../components/ActivityOption';
+// import ActivityOption from '../components/ActivityOption';
 import DateInformation from '../components/DateInformation';
 import ContactOption from '../components/ContactOption';
+
+import ActivityDropdown from '../components/ActivityDropdown';
 
 const BASE_URL = '/api/v1/events';
 
@@ -78,7 +80,7 @@ function CalendarView() {
                 </label>
               </div>
               <div className="col center">
-                <ActivityOption onSelectActivity={setSelectedActivity} />
+                <ActivityDropdown onSelectActivity={setSelectedActivity} />
               </div>
               <div className="col center">
                 <ContactOption onSelectContact={setSelectedContact} />
