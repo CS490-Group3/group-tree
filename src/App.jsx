@@ -78,31 +78,26 @@ function App() {
       ) : (
         <div className="landing-page">
           <div className="login-button">
-            <nav className="navbar navbar-expand-md" id="nav">
+            <nav className="navbar navbar-default fixed-top" id="nav">
               <h1 classnName="navbar-brand">GroupTree</h1>
-              <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="nav navbar-nav ml-auto" id="nav-bar">
-                  <li className="nav-item px-4 py-2">
-                    <GoogleLogin
-                      clientId={clientId}
-                      onSuccess={(googleResponse) =>
-                        fetch('/login', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ token: googleResponse.tokenId }),
-                        })
-                          .then((response) => response.json())
-                          .then((data) => {
-                            if (data.success === true) setLoggedIn(true);
-                          })
-                      }
-                      onFailure={() => {}}
-                      cookiePolicy="single_host_origin"
-                      style={{ marginTop: '100px' }}
-                    />
-                  </li>
-                </ul>
-              </div>
+              <GoogleLogin
+                clientId={clientId}
+                onSuccess={(googleResponse) =>
+                  fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: googleResponse.tokenId }),
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.success === true) setLoggedIn(true);
+                    })
+                }
+                onFailure={() => {}}
+                cookiePolicy="single_host_origin"
+                style={{ marginTop: '100px' }}
+                className="nav-item"
+              />
             </nav>
             <div className="main">
               <div className="intro">
