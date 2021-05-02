@@ -169,9 +169,6 @@ def api_contacts():
 
         # check if the contact exists and belongs to the user
         if contact is not None and contact.person.id == user.id:
-            for event in contact.event:
-                db.session.delete(event)
-                db.session.commit()
             db.session.delete(contact)
             db.session.commit()
 
@@ -185,8 +182,12 @@ def api_contacts():
             now = datetime.datetime.now()
             occurences = []
             for event in contact.events:
-                next_occur = get_next_occurrence(event, now)
-                occurences.append(next_occur)
+                print(event.start_time)
+                if event.period == 1:
+                    occurences.append(event.start_time)
+                else:
+                    next_occur = get_next_occurrence(event, now)
+                    occurences.append(next_occur)
             
             print(contact.name, " : ", occurences)
             
@@ -194,13 +195,6 @@ def api_contacts():
             today = datetime.date.today()
             if occurences: 
                 closest = min(occurences)
-                '''
-                closest =  closest - datetime.timedelta(microseconds=closest.microseconds) #remove microseconds
-    
-                days = closest.days
-                seconds = closest.seconds
-                '''
-                
                 closest_date = closest.date()
                 print(closest_date)
                 delta = closest_date - today
@@ -215,7 +209,6 @@ def api_contacts():
                 else:
                     next_event = str(days) + " days"
 
-                #next_event = str(closest)
             else:
                 next_event = "No Event Created"
 
