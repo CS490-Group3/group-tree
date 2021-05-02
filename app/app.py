@@ -114,6 +114,7 @@ def update_tree_points(person_id, days_late):
     person.tree_points += points
     db.session.commit()
 
+
 # This updates a given person with person_id and days_late to compute points
 # update_tree_points("101263858443596549461", 1)
 
@@ -126,7 +127,7 @@ def get_tree_index(person_id):
     person = models.Person.query.filter_by(id=person_id).first()
     tree_points = person.tree_points
     tree_index = 0
-    if  7 <= tree_points < 21:
+    if 7 <= tree_points < 21:
         tree_index = 1
     if 21 <= tree_points < 42:
         tree_index = 2
@@ -136,7 +137,9 @@ def get_tree_index(person_id):
         tree_index = 4
     return tree_index
 
+
 # get_tree_index("101263858443596549461")
+
 
 def complete_event(event: models.Event, now: datetime.datetime) -> bool:
     """
@@ -235,15 +238,10 @@ def api_tree_points():
     user = flask_login.current_user
 
     if request.method == "GET":
-        return json.dumps(
-            [
-                {
-                    "tree_points": user.tree_points
-                }
-            ]
-        )
+        return json.dumps([{"tree_points": user.tree_points}])
 
     return ("", 405)  # Method Not Allowed
+
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
@@ -257,7 +255,7 @@ def api_events():
     if request.method == "GET":
         date_string = request.args.get("date", None)
         date = (
-            datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+            datetime.datetime.strptime(date_string, "%a, %d %b %Y %H:%M:%S %Z").date()
             if date_string is not None
             else None
         )
