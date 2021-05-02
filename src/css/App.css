@@ -112,6 +112,10 @@
 
 
 /* about app */
+h3.about {
+  color: #c87137;
+}
+
 .about {
   padding: 3rem;
   background-color: #5b8a72;
