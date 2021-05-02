@@ -43,3 +43,11 @@
 .member-item p{
     margin-bottom: 0.3rem;
 }
+
+.team-info {
+    padding-left: 1rem;
+}
+
+p.team-info {
+   color: pink;
+}

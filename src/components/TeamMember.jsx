@@ -9,11 +9,13 @@ export default function TeamMember(props) {
       <div className="member-item">
         <i className="fas fa-user-circle" id="team-icon" />
       </div>
-      <div className="member-item">
+      <div className="member-item team-info">
         <p>{name}</p>
-        <p>CEO and Co Founder</p>
-        <p>Fullstack Developer</p>
+        <p>CEO and Co-Founder</p>
+        <p>Full stack developer</p>
+
         <i className="fab fa-github fa-2x margin-left" />
+
         <i className="fab fa-linkedin-in fa-2x margin-left" />
       </div>
     </div>
