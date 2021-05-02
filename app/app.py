@@ -46,7 +46,7 @@ def add_user(sub, name):
     temp = models.Person.query.filter_by(id=sub).first()
     if not temp:
         # working with database
-        new_user = models.Person(id=sub, username=name)
+        new_user = models.Person(id=sub, username=name, tree_points=0)
         db.session.add(new_user)
         db.session.commit()
 
@@ -88,6 +88,55 @@ def get_next_occurrence(
         return most_recent
     return most_recent + period
 
+
+def update_tree_points(person_id, days_late):
+    """
+    Updates the `tree_points` column in person.
+    Uses person_id to identify and the amount of late days to calculate points
+    """
+    points = 0
+    if days_late <= 1:
+        points = 7
+    if days_late == 2:
+        points = 6
+    if days_late == 3:
+        points = 5
+    if days_late == 4:
+        points = 4
+    if days_late == 5:
+        points = 3
+    if days_late == 6:
+        points = 2
+    if days_late >= 7:
+        points = 1
+
+    person = models.Person.query.filter_by(id=person_id).first()
+    person.tree_points += points
+    db.session.commit()
+
+# This updates a given person with person_id and days_late to compute points
+# update_tree_points("101263858443596549461", 1)
+
+
+def get_tree_index(person_id):
+    """
+    Computes the tree index to be sent to client
+    This will be the index array of what image of tree that should be displayed
+    """
+    person = models.Person.query.filter_by(id=person_id).first()
+    tree_points = person.tree_points
+    tree_index = 0
+    if  7 <= tree_points < 21:
+        tree_index = 1
+    if 21 <= tree_points < 42:
+        tree_index = 2
+    if 42 <= tree_points < 98:
+        tree_index = 3
+    if tree_points >= 98:
+        tree_index = 4
+    return tree_index
+
+# get_tree_index("101263858443596549461")
 
 def complete_event(event: models.Event, now: datetime.datetime) -> bool:
     """
@@ -176,6 +225,25 @@ def api_contacts():
 
     return ("", 405)  # Method Not Allowed
 
+
+@flask_app.route("/api/v1/treeview", methods=["GET"])
+@flask_login.login_required
+def api_tree_points():
+    """
+    Endpoint for API calls tree points for the user
+    """
+    user = flask_login.current_user
+
+    if request.method == "GET":
+        return json.dumps(
+            [
+                {
+                    "tree_points": user.tree_points
+                }
+            ]
+        )
+
+    return ("", 405)  # Method Not Allowed
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
@@ -276,7 +344,7 @@ def login():
             # add new user to database if not already there
             user_id = str(sub)
             if not models.Person.query.get(user_id):
-                new_person = models.Person(id=user_id, name=name)
+                new_person = models.Person(id=user_id, name=name, tree_points=0)
                 db.session.add(new_person)
                 db.session.commit()
 
