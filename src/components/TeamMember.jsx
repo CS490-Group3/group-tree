@@ -1,13 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function TeamMember() {
+export default function TeamMember(props) {
+  const { name } = props;
+
   return (
     <div className="member-container">
       <div className="member-item">
-        <i className="far fa-user" id="team-icon" />
+        <i className="fas fa-user-circle" id="team-icon" />
       </div>
       <div className="member-item">
-        <p>TeamMember Name</p>
+        <p>{name}</p>
         <p>CEO and Co Founder</p>
         <p>Fullstack Developer</p>
         <i className="fab fa-github fa-2x margin-left" />
@@ -16,3 +19,7 @@ export default function TeamMember() {
     </div>
   );
 }
+
+TeamMember.propTypes = {
+  name: PropTypes.string.isRequired,
+};

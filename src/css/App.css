@@ -54,11 +54,11 @@
 
 .learn-button {
   border: none;
-  background-color: #5b8a72;
+  background-color: #c87137;
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   color: white;
-    border-radius: 10px;
+  border-radius: 10px;
 
 }
 
@@ -72,9 +72,9 @@
 .screen{
   width: 380px;
   height: 200px;
-  background-color: #607D8B;
+  background-color: black;
   border-radius: 25px 25px 1px 1px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid black;
   padding: 1rem;
 }
 
@@ -114,6 +114,8 @@
 /* about app */
 .about {
   padding: 3rem;
+  background-color: #5b8a72;
+  color: white;
 }
 
 .about-outer {
