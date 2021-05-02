@@ -7,6 +7,7 @@ import CalendarView from './pages/CalendarView';
 import ContactBook from './pages/ContactBook';
 import About from './components/About';
 import Team from './components/Team';
+import Footer from './components/Footer';
 
 import './css/App.css';
 
@@ -115,6 +116,7 @@ function App() {
           </div>
           <About />
           <Team />
+          <Footer />
         </div>
       )}
     </div>
