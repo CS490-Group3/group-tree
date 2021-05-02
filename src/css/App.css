@@ -27,14 +27,15 @@
 
 /* Landing Page */
 .main {
-  height: 100%;
-  width: 100%;
-  margin: auto;
-  background-image: url('tree.png');
-  display: table;
-  top: 0;
-  background-size: cover;
-  height: 100vh;
+    height: 800px;
+    width: 100%;
+    margin: auto;
+    background-image: url('tree.png');
+    display: table;
+    top: 0;
+    background-size: cover;
+    /* height: 100vh; */
+    margin-top: 80px;
 }
 
 .intro{
