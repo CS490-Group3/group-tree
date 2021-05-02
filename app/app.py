@@ -139,9 +139,7 @@ def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
     Determines if `event` occurs on `date`.
     """
     # convert date to datetime
-    date_with_time = datetime.datetime(
-        date.year, date.month, date.day, tzinfo=datetime.timezone.utc
-    )
+    date_with_time = datetime.datetime(date.year, date.month, date.day)
     next_occur = get_next_occurrence(event, date_with_time)
 
     return next_occur is not None and next_occur.date() == date
@@ -231,11 +229,14 @@ def api_events():
     # get a dictionary partitioned by contact where each entry is a list of events
     if request.method == "GET":
         date_string = request.args.get("date", None)
-        date = (
-            datetime.datetime.strptime(date_string, "%a, %d %b %Y %H:%M:%S %Z").date()
-            if date_string is not None
-            else None
-        )
+        try:
+            date = (
+                datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+                if date_string is not None
+                else None
+            )
+        except ValueError:
+            return ("date format error", 400)  # Bad Request
 
         return {
             str(contact.id): [
@@ -280,7 +281,7 @@ def api_events_complete():
     """
     Endpoint for API calls for completing events.
     """
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime)
     user = flask_login.current_user
 
     request_data = request.get_json()

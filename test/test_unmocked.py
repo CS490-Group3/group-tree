@@ -17,7 +17,7 @@ class GetNextOccurrenceTestCase(unittest.TestCase):
         """
         Set up
         """
-        self.today = datetime.datetime.now(datetime.timezone.utc)
+        self.today = datetime.datetime.now()
         self.yesterday = self.today - datetime.timedelta(days=1)
         self.tomorrow = self.today + datetime.timedelta(days=1)
 
@@ -56,9 +56,7 @@ class EventOccursOnDateTestCase(unittest.TestCase):
         """
         event = models.Event(
             activity="foo",
-            start_time=datetime.datetime(
-                1970, 1, 8, 16, 20, 0, 0, datetime.timezone.utc
-            ),
+            start_time=datetime.datetime(1970, 1, 8, 16, 20),
             period=None,
         )
 
@@ -73,9 +71,7 @@ class EventOccursOnDateTestCase(unittest.TestCase):
         """
         event = models.Event(
             activity="foo",
-            start_time=datetime.datetime(
-                1970, 1, 8, 16, 20, 0, 0, datetime.timezone.utc
-            ),
+            start_time=datetime.datetime(1970, 1, 8, 16, 20),
             period=7,
         )
 
