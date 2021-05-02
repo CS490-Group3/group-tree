@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import PeriodInformation from './PeriodInformation';
+
 const BASE_URL = '/api/v1/events';
 const months = [
   'January',
@@ -65,6 +67,7 @@ function DateInformation(props) {
         {fullDate === null ? 'TODO' : fullDate.getDate()} - {months[fullDate.getMonth()]}{' '}
         - {fullDate.getFullYear()}
       </p>
+      <hr />
       {infomation === null ? (
         <p>No event on this date</p>
       ) : (
@@ -72,16 +75,30 @@ function DateInformation(props) {
           {Object.keys(infomation).map((contact) => {
             if (infomation[contact].length !== 0)
               return (
-                <p>
-                  {' '}
-                  this is my key {contact} and this is my value
-                  {infomation[contact].map((data) =>
-                    Object.keys(data).map((value) => {
-                      if (data[value] !== null) return <li>{data[value]}</li>;
-                      return null;
+                <ul>
+                  {infomation[contact].map((data, i) =>
+                    Object.keys(data).map((value, j) => {
+                      if (value === 'period') {
+                        return <PeriodInformation period={data[value]} />;
+                      }
+                      if (j === 3 && i !== infomation[contact].length - 1) {
+                        return (
+                          <div>
+                            <li>
+                              {value} - {data[value]}
+                            </li>
+                            <hr />
+                          </div>
+                        );
+                      }
+                      return (
+                        <li>
+                          {value} - {data[value]}
+                        </li>
+                      );
                     }),
                   )}
-                </p>
+                </ul>
               );
             return null;
           })}

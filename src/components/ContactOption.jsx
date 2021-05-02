@@ -34,6 +34,7 @@ function ContactOption(props) {
         id="exampleSelect1"
         placeholder="Activity"
         onChange={(event) => onSelectContact(event.target.value)}
+        value={onSelectContact(defaultValue)}
       >
         {contacts.map((contact) => (
           <option value={contact.id} selected={defaultValue === contact.id}>

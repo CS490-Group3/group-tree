@@ -172,3 +172,13 @@ h3.about {
   justify-content: center;
   align-items: center;
 }
+
+ select {
+ font-family: 'FontAwesome', 'Second Font name'
+ }
+
+ ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
