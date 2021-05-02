@@ -41,29 +41,6 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-def add_user(sub, name):
-    """ helper method to add new user to database """
-    temp = models.Person.query.filter_by(id=sub).first()
-    if not temp:
-        # working with database
-        new_user = models.Person(id=sub, username=name, tree_points=0)
-        db.session.add(new_user)
-        db.session.commit()
-
-
-def add_event_info(activity, time, contact_id):
-    """ helper method to add events to database """
-
-    date_time_obj = datetime.datetime.strptime(time, "%Y-%m-%d")
-    print(contact_id)
-    event = models.Event(
-        activity=activity, time=date_time_obj, contact_id=contact_id, period=0
-    )
-    db.session.add(event)
-
-    db.session.commit()
-
-
 def get_next_occurrence(
     event: models.Event, now: datetime.datetime
 ) -> Union[datetime.datetime, None]:
