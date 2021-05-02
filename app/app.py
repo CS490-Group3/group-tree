@@ -189,7 +189,9 @@ def api_contacts():
             
             #return the closest occurence to now
             if occurences: 
-                next_event = str(min(occurences))
+                closest = min(occurences)
+                closest =  closest - datetime.timedelta(microseconds=closest.microseconds) #remove microseconds
+                next_event = str(closest)
             else:
                 next_event = "No Event Created"
 
