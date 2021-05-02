@@ -176,17 +176,18 @@ def api_contacts():
         return ("", 404)  # Not Found
     # get a list of the user's contacts
     if request.method == "GET":
-        return json.dumps(
-            [
-                {
+        contacts = []
+        for contact in user.contacts:
+            d = {
                     "id": contact.id,
                     "name": contact.name,
                     "email": contact.email,
                     "phone": contact.phone,
                 }
-                for contact in user.contacts
-            ]
-        )
+            
+            contacts.append(d)
+        return json.dumps(contacts)
+
     # add a new contact
     if request.method == "POST":
         request_data = request.get_json()
