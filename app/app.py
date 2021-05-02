@@ -41,29 +41,6 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-def add_user(sub, name):
-    """ helper method to add new user to database """
-    temp = models.Person.query.filter_by(id=sub).first()
-    if not temp:
-        # working with database
-        new_user = models.Person(id=sub, username=name, tree_points=0)
-        db.session.add(new_user)
-        db.session.commit()
-
-
-def add_event_info(activity, time, contact_id):
-    """ helper method to add events to database """
-
-    date_time_obj = datetime.datetime.strptime(time, "%Y-%m-%d")
-    print(contact_id)
-    event = models.Event(
-        activity=activity, time=date_time_obj, contact_id=contact_id, period=0
-    )
-    db.session.add(event)
-
-    db.session.commit()
-
-
 def get_next_occurrence(
     event: models.Event, now: datetime.datetime
 ) -> Union[datetime.datetime, None]:
@@ -114,6 +91,7 @@ def update_tree_points(person_id, days_late):
     person.tree_points += points
     db.session.commit()
 
+
 # This updates a given person with person_id and days_late to compute points
 # update_tree_points("101263858443596549461", 1)
 
@@ -126,7 +104,7 @@ def get_tree_index(person_id):
     person = models.Person.query.filter_by(id=person_id).first()
     tree_points = person.tree_points
     tree_index = 0
-    if  7 <= tree_points < 21:
+    if 7 <= tree_points < 21:
         tree_index = 1
     if 21 <= tree_points < 42:
         tree_index = 2
@@ -136,7 +114,9 @@ def get_tree_index(person_id):
         tree_index = 4
     return tree_index
 
+
 # get_tree_index("101263858443596549461")
+
 
 def complete_event(event: models.Event, now: datetime.datetime) -> bool:
     """
@@ -159,9 +139,7 @@ def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
     Determines if `event` occurs on `date`.
     """
     # convert date to datetime
-    date_with_time = datetime.datetime(
-        date.year, date.month, date.day, tzinfo=datetime.timezone.utc
-    )
+    date_with_time = datetime.datetime(date.year, date.month, date.day)
     next_occur = get_next_occurrence(event, date_with_time)
 
     return next_occur is not None and next_occur.date() == date
@@ -235,15 +213,10 @@ def api_tree_points():
     user = flask_login.current_user
 
     if request.method == "GET":
-        return json.dumps(
-            [
-                {
-                    "tree_points": user.tree_points
-                }
-            ]
-        )
+        return json.dumps([{"tree_points": user.tree_points}])
 
     return ("", 405)  # Method Not Allowed
+
 
 @flask_app.route("/api/v1/events", methods=["GET", "POST"])
 @flask_login.login_required
@@ -256,11 +229,14 @@ def api_events():
     # get a dictionary partitioned by contact where each entry is a list of events
     if request.method == "GET":
         date_string = request.args.get("date", None)
-        date = (
-            datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
-            if date_string is not None
-            else None
-        )
+        try:
+            date = (
+                datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+                if date_string is not None
+                else None
+            )
+        except ValueError:
+            return ("date format error", 400)  # Bad Request
 
         return {
             str(contact.id): [
@@ -305,7 +281,7 @@ def api_events_complete():
     """
     Endpoint for API calls for completing events.
     """
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime)
     user = flask_login.current_user
 
     request_data = request.get_json()

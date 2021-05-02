@@ -38,7 +38,7 @@ function CalendarView() {
         },
         body: JSON.stringify({
           activity: selectedActivity,
-          start_time: selectedDate,
+          start_time: new Date(selectedDate).toUTCString(),
           period: multiplier !== '0' ? multiplier : null,
           contact_id: selectedContact,
         }),
