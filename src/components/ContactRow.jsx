@@ -14,7 +14,7 @@ function ContactRow(props) {
       </th>
       <td className="align-middle">{email}</td>
       <td className="align-middle">{phone}</td>
-      <td className="align-middle">{nextEvent.substring(2)}</td>
+      <td className="align-middle">{nextEvent}</td>
       <td className="align-middle">
         <button
           onClick={() => {

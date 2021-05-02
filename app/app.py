@@ -169,6 +169,9 @@ def api_contacts():
 
         # check if the contact exists and belongs to the user
         if contact is not None and contact.person.id == user.id:
+            for event in contact.event:
+                db.session.delete(event)
+                db.session.commit()
             db.session.delete(contact)
             db.session.commit()
 
@@ -183,24 +186,38 @@ def api_contacts():
             occurences = []
             for event in contact.events:
                 next_occur = get_next_occurrence(event, now)
-                occurences.append(next_occur - now)
+                occurences.append(next_occur)
             
             print(contact.name, " : ", occurences)
             
             #return the closest occurence to now in days or today or tomorrow
+            today = datetime.date.today()
             if occurences: 
                 closest = min(occurences)
+                '''
                 closest =  closest - datetime.timedelta(microseconds=closest.microseconds) #remove microseconds
-                
+    
                 days = closest.days
+                seconds = closest.seconds
+                '''
+                
+                closest_date = closest.date()
+                print(closest_date)
+                delta = closest_date - today
+                days = delta.days
+                
+                next_event = str(closest_date)
+                                
                 if days == 0:
-                    next_event = "00Today"
+                    next_event = "Today"
                 elif days == 1:
-                    next_event = "01Tomorrow"
+                    next_event = "Tomorrow"
                 else:
-                    next_event = "02" + str(closest)
+                    next_event = str(days) + " days"
+
+                #next_event = str(closest)
             else:
-                next_event = "zzNo Event Created"
+                next_event = "No Event Created"
 
             d = {
                     "id": contact.id,
@@ -213,7 +230,7 @@ def api_contacts():
             contacts.append(d)
             contacts = sorted(contacts, key = lambda i: i['nextEvent'])
             
-            print(sorted(contacts, key = lambda i: i['nextEvent']))
+            #print(sorted(contacts, key = lambda i: i['nextEvent']))
 
         return json.dumps(contacts)
 
