@@ -27,14 +27,15 @@
 
 /* Landing Page */
 .main {
-  height: 100%;
-  width: 100%;
-  margin: auto;
-  background-image: url('tree.png');
-  display: table;
-  top: 0;
-  background-size: cover;
-  height: 100vh;
+    height: 800px;
+    width: 100%;
+    margin: auto;
+    background-image: url('tree.png');
+    display: table;
+    top: 0;
+    background-size: cover;
+    /* height: 100vh; */
+    margin-top: 80px;
 }
 
 .intro{
@@ -54,16 +55,15 @@
 
 .learn-button {
   border: none;
-  background-color: #5b8a72;
+  background-color: #c87137;
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   color: white;
-    border-radius: 10px;
+  border-radius: 10px;
 
 }
 
 /* conputer */
-
 .comp-container{
   width: 380px;
   margin: 20px auto;
@@ -72,9 +72,9 @@
 .screen{
   width: 380px;
   height: 200px;
-  background-color: #607D8B;
+  background-color: black;
   border-radius: 25px 25px 1px 1px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid black;
   padding: 1rem;
 }
 
@@ -112,8 +112,14 @@
 
 
 /* about app */
+h3.about {
+  color: #c87137;
+}
+
 .about {
   padding: 3rem;
+  background-color: #5b8a72;
+  color: white;
 }
 
 .about-outer {
@@ -132,6 +138,13 @@
 .about-row {
   padding: 0;
   margin: 0rem 2rem;
+}
+
+/* footer */
+.footer {
+  color: white;
+  background-color: #5b8a72;
+  padding: 1rem;
 }
 
 /* calander view*/
