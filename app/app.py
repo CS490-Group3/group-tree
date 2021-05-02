@@ -178,6 +178,15 @@ def api_contacts():
     if request.method == "GET":
         contacts = []
         for contact in user.contacts:
+            #get all the occurence for each event
+            now = datetime.datetime.now()
+            occurences = []
+            for event in contact.events:
+                next_occur = get_next_occurrence(event, now)
+                occurences.append(next_occur)
+            
+            print(contact.name, " : ", occurences)
+
             d = {
                     "id": contact.id,
                     "name": contact.name,
