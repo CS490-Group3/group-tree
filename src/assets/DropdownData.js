@@ -10,20 +10,26 @@ const DROPDOWN_DATA = [
     ],
   },
   {
-    key: 'Food',
+    key: 'Eat',
     color: '#81b214',
     modules: [
-      { key: 'Mexican' },
-      { key: 'Japanese' },
-      { key: 'Vietnamese' },
-      { key: 'Korean' },
-      { key: 'Diner' },
+      { key: 'Mexican food' },
+      { key: 'Japanese food' },
+      { key: 'Vietnamese food' },
+      { key: 'Korean food' },
+      { key: 'Diner food' },
     ],
   },
   {
     key: 'Other',
     color: '#f58634',
-    modules: [{ key: 'Movies' }, { key: 'Read' }, { key: 'Picnic' }, { key: 'Museum' }],
+    modules: [
+      { key: 'Movies' },
+      { key: 'Read' },
+      { key: 'Picnic' },
+      { key: 'Museum' },
+      { key: 'Cook' },
+    ],
   },
 ];
 

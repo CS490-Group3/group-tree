@@ -17,7 +17,7 @@ function PeriodInformation(props) {
       case 31:
         return 'This is a monthly event';
       default:
-        return `This event occurs every ${period} days</li>`;
+        return `This event occurs every ${period} days`;
     }
   }
   return <li>{getPeriodInfo()}</li>;
