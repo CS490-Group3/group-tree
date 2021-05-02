@@ -16,6 +16,7 @@ class Person(db.Model):
 
     id = db.Column(db.String(30), primary_key=True)
     name = db.Column(db.String(30), nullable=False)
+    tree_points = db.Column(db.Integer, default=0, nullable=False)
 
     contacts = db.relationship("Contact", backref="person", lazy=True)
 
