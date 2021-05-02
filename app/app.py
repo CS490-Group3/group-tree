@@ -183,7 +183,7 @@ def api_contacts():
             occurences = []
             for event in contact.events:
                 next_occur = get_next_occurrence(event, now)
-                occurences.append(next_occur)
+                occurences.append(next_occur - now)
             
             print(contact.name, " : ", occurences)
 
