@@ -241,7 +241,7 @@ def api_events():
         return {
             str(contact.id): [
                 {
-                    "id": event.id,
+                    "contact": models.Contact.query.get(event.contact_id).name,
                     "activity": event.activity,
                     "start_time": event.start_time,
                     "period": event.period,
