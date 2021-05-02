@@ -16,15 +16,15 @@ export default function About() {
         <div className="about-item">
           <Computer
             step="2"
-            p1="Creates Events"
-            p2="Creat event and get reminders about those event so no event is missed"
+            p1="Create Events"
+            p2="Creat events and get reminders about those event so no event is missed"
           />
         </div>
         <div className="about-item">
           <Computer
             step="3"
             p1="Watch Youur Tree Grow"
-            p2="Be rewareded for staying connected with your family and friends and Watch Your Tree Grow"
+            p2="Be rewareded for staying connected with your family and friends and watch your tree grow"
           />
         </div>
       </div>
