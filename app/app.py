@@ -187,20 +187,20 @@ def api_contacts():
             
             print(contact.name, " : ", occurences)
             
-            #return the closest occurence to now
+            #return the closest occurence to now in days or today or tomorrow
             if occurences: 
                 closest = min(occurences)
                 closest =  closest - datetime.timedelta(microseconds=closest.microseconds) #remove microseconds
                 
                 days = closest.days
                 if days == 0:
-                    next_event = "Today"
+                    next_event = "00Today"
                 elif days == 1:
-                    next_event = "Tomorrow"
+                    next_event = "01Tomorrow"
                 else:
-                    next_event = str(closest)
+                    next_event = "02" + str(closest)
             else:
-                next_event = "No Event Created"
+                next_event = "zzNo Event Created"
 
             d = {
                     "id": contact.id,
@@ -211,7 +211,7 @@ def api_contacts():
                 }
             
             contacts.append(d)
-            #contacts = sorted(contacts, key = lambda i: i['nextEvent'])
+            contacts = sorted(contacts, key = lambda i: i['nextEvent'])
             
             print(sorted(contacts, key = lambda i: i['nextEvent']))
 
