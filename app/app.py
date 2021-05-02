@@ -186,12 +186,19 @@ def api_contacts():
                 occurences.append(next_occur - now)
             
             print(contact.name, " : ", occurences)
+            
+            #return the closest occurence to now
+            if occurences: 
+                next_event = str(min(occurences))
+            else:
+                next_event = "No Event Created"
 
             d = {
                     "id": contact.id,
                     "name": contact.name,
                     "email": contact.email,
                     "phone": contact.phone,
+                    "nextEvent": next_event
                 }
             
             contacts.append(d)
