@@ -202,3 +202,12 @@ h3.about {
 .hr-green {
   border: 2px dotted #5b8a72;
 }
+
+.text-big{
+  font-size: 17px;
+}
+
+.btn-green {
+  background-color: #5b8a72;
+  color: white;
+}

@@ -55,7 +55,7 @@ function CalendarView() {
         </div>
         <DateInformation fullDate={value} />
       </div>
-      <div className="container-form">
+      <div className="container-form text-big text-green font-weight-bold">
         <div className="item">
           <form className="container-fluid border rounded">
             <div className="form-row">
@@ -72,7 +72,7 @@ function CalendarView() {
                 <RepeatOption onSetMultiplier={setMultiplier} />
               </div>
               <div className="col center">
-                <button className=" btn btn-info" type="button" onClick={createEvent}>
+                <button className=" btn btn-green" type="button" onClick={createEvent}>
                   Add new event
                 </button>
               </div>
