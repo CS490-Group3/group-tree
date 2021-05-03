@@ -244,6 +244,7 @@ def api_events():
         return {
             str(contact.id): [
                 {
+                    "id": event.id,
                     "contact": models.Contact.query.get(event.contact_id).name,
                     "activity": event.activity,
                     "start_time": event.start_time,
@@ -289,7 +290,7 @@ def api_events_complete():
     """
     Endpoint for API calls for completing events.
     """
-    now = datetime.datetime.now(datetime)
+    now = datetime.datetime.now()
     user = flask_login.current_user
 
     request_data = request.get_json()
@@ -300,6 +301,7 @@ def api_events_complete():
     if event is not None and event.contact.person_id == user.id:
         if can_complete(event, now):
             event.complete_time = now
+            user.tree_points += 7
             db.session.commit()
 
             return ("", 204)  # No Content
