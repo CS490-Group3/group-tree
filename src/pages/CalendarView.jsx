@@ -56,7 +56,12 @@ function CalendarView() {
       <div className="container">
         <div className="item">
           <h3 className="calendar__header font-weight-bold">Calendar View</h3>
-          <Calendar className="calendar" onChange={setValue} onClickDay={setValue} />
+          <Calendar
+            calendarType="US"
+            className="calendar"
+            onChange={setValue}
+            onClickDay={setValue}
+          />
         </div>
         <DateInformation fullDate={value} />
       </div>
