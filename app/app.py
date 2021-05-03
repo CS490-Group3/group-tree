@@ -41,6 +41,23 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
+def get_prev_occurrence(
+    event: models.Event, now: datetime.datetime
+) -> Union[datetime.datetime, None]:
+    """
+    Gets the previous occurrence of `event` from `now`.
+    """
+    if event.period is None:  # the event is nonrecurring
+        return event.start_time if now > event.start_time else None
+
+    if now <= event.start_time:
+        return None
+
+    period = datetime.timedelta(days=event.period)
+    diff = now - event.start_time
+    return now - diff % period
+
+
 def get_next_occurrence(
     event: models.Event, now: datetime.datetime
 ) -> Union[datetime.datetime, None]:
@@ -48,22 +65,72 @@ def get_next_occurrence(
     Gets the next occurrence of `event` from `now`.
     """
     if event.period is None:  # the event is nonrecurring
-        if now <= event.start_time:
-            return event.start_time
-        return None
+        return event.start_time if now <= event.start_time else None
 
-    # the event is recurring
     if now <= event.start_time:
         return event.start_time
 
-    # calculate the event's most recent occurrence
     period = datetime.timedelta(days=event.period)
-    diff = now - event.start_time
-    most_recent = event.start_time + (diff - diff % period)
+    return get_prev_occurrence(event, now) + period
 
-    if most_recent == now:
-        return most_recent
-    return most_recent + period
+
+def can_complete(event: models.Event, now: datetime.datetime) -> bool:
+    """
+    Determines if `event` can be completed `now`.
+    """
+    # if the event is nonrecurring, can complete after it starts
+    if event.period is None:
+        return event.complete_time is None and now > event.start_time
+
+    next_occur = get_next_occurrence(event, now)
+    return next_occur
+    if next_occur is None or (
+        event.complete_time is None or event.complete_time < next_occur
+    ):
+        event.complete_time = now
+        db.session.commit()
+        return True
+    return False
+
+
+def complete_event(event: models.Event, now: datetime.datetime) -> bool:
+    """
+    Marks an event as completed, using `now` as the time of completion. Returns `True` on
+    success, `False` otherwise.
+    """
+    # if the event is nonrecurring, can complete after it starts
+    if event.period is None:
+        can_complete = event.complete_time is None and now > event.start_time
+    else:
+        next_occur = get_next_occurrence(event, now)
+
+    if next_occur is None or (
+        event.complete_time is None or event.complete_time < next_occur
+    ):
+        event.complete_time = now
+        db.session.commit()
+        return True
+    return False
+
+
+def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
+    """
+    Determines if `event` occurs on `date`.
+    """
+    # convert date to datetime
+    date_with_time = datetime.datetime(date.year, date.month, date.day)
+    next_occur = get_next_occurrence(event, date_with_time)
+
+    return next_occur is not None and next_occur.date() == date
+
+
+def get_events_by_date(
+    person: models.Person, date: datetime.date
+) -> List[models.Event]:
+    """
+    Get all events that occur on the specified date.
+    """
+    return [event for event in person.events if event_occurs_on_date(event, date)]
 
 
 def update_tree_points(person_id, days_late):
@@ -116,42 +183,6 @@ def get_tree_index(person_id):
 
 
 # get_tree_index("101263858443596549461")
-
-
-def complete_event(event: models.Event, now: datetime.datetime) -> bool:
-    """
-    Marks an event as completed, using `now` as the time of completion. Returns `True` on
-    success, `False` otherwise.
-    """
-    next_occur = get_next_occurrence(event, now)
-
-    if next_occur is not None and (
-        event.complete_time is None or event.complete_time < next_occur
-    ):
-        event.complete_time = now
-        db.session.commit()
-        return True
-    return False
-
-
-def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
-    """
-    Determines if `event` occurs on `date`.
-    """
-    # convert date to datetime
-    date_with_time = datetime.datetime(date.year, date.month, date.day)
-    next_occur = get_next_occurrence(event, date_with_time)
-
-    return next_occur is not None and next_occur.date() == date
-
-
-def get_events_by_date(
-    person: models.Person, date: datetime.date
-) -> List[models.Event]:
-    """
-    Get all events that occur on the specified date.
-    """
-    return [event for event in person.events if event_occurs_on_date(event, date)]
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
