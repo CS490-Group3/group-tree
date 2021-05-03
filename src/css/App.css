@@ -214,3 +214,29 @@ h3.about {
 .alert-success{
   margin: 0 auto;
 }
+
+.treeview {
+    height: 800px;
+    width: 100%;
+    margin: auto;
+    background-image: url('grass_background.png');
+    display: table;
+    top: 0;
+    background-size: cover;
+    /* height: 100vh; */
+    margin-top: 60px;
+    position: relative;
+}
+
+.tree-text {
+  color: green;
+  font-family: "Brush Script";
+  margin-top: -40px;
+}
+
+.tree > img {
+    position:absolute;
+    width: 30%;
+    top:1%;
+    left:35%;
+}
