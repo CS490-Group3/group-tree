@@ -172,26 +172,6 @@ def complete_event(event: models.Event, now: datetime.datetime) -> bool:
         return True
     return False
 
-
-def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
-    """
-    Determines if `event` occurs on `date`.
-    """
-    # convert date to datetime
-    date_with_time = datetime.datetime(date.year, date.month, date.day)
-    next_occur = get_next_occurrence(event, date_with_time)
-
-    return next_occur is not None and next_occur.date() == date
-
-
-def get_events_by_date(
-    person: models.Person, date: datetime.date
-) -> List[models.Event]:
-    """
-    Get all events that occur on the specified date.
-    """
-    return [event for event in person.events if event_occurs_on_date(event, date)]
-
 def get_next_event(contact):
     '''
     Gets the next event for a contact
