@@ -152,6 +152,41 @@ def get_events_by_date(
     Get all events that occur on the specified date.
     """
     return [event for event in person.events if event_occurs_on_date(event, date)]
+    
+    
+def get_next_event(contact):
+    '''
+    Gets the next event for a contact
+    '''
+    
+    now = datetime.datetime.now()
+    
+    #get all the occurence for each event
+    occurences = []
+    for event in contact.events:
+        if event.period == 1:       #if there is an event that is occuring daily, next event will always be today
+            return "Today"
+
+        next_occur = get_next_occurrence(event, now)
+        occurences.append(next_occur)
+    
+    #return the closest occurence to now in days or today or tomorrow
+    today = datetime.date.today()
+    if occurences: 
+        closest = min(occurences)
+        closest_date = closest.date()
+        delta = closest_date - today
+        days = delta.days
+
+        if days == 1:
+            return "Tomorrow"
+        else:
+            return str(days) + " days"
+        
+
+    return "No Event Created"
+            
+
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
@@ -169,6 +204,11 @@ def api_contacts():
 
         # check if the contact exists and belongs to the user
         if contact is not None and contact.person.id == user.id:
+            for event in contact.events:
+                if contact is not None:
+                    db.session.delete(event)
+                    db.session.commit()
+
             db.session.delete(contact)
             db.session.commit()
 
@@ -178,40 +218,7 @@ def api_contacts():
     if request.method == "GET":
         contacts = []
         for contact in user.contacts:
-            #get all the occurence for each event
-            now = datetime.datetime.now()
-            occurences = []
-            for event in contact.events:
-                print(event.start_time)
-                if event.period == 1:
-                    occurences.append(event.start_time)
-                else:
-                    next_occur = get_next_occurrence(event, now)
-                    occurences.append(next_occur)
-            
-            print(contact.name, " : ", occurences)
-            
-            #return the closest occurence to now in days or today or tomorrow
-            today = datetime.date.today()
-            if occurences: 
-                closest = min(occurences)
-                closest_date = closest.date()
-                print(closest_date)
-                delta = closest_date - today
-                days = delta.days
-                
-                next_event = str(closest_date)
-                                
-                if days == 0:
-                    next_event = "Today"
-                elif days == 1:
-                    next_event = "Tomorrow"
-                else:
-                    next_event = str(days) + " days"
-
-            else:
-                next_event = "No Event Created"
-
+            next_event = get_next_event(contact)
             d = {
                     "id": contact.id,
                     "name": contact.name,
