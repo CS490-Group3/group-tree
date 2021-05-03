@@ -10,7 +10,6 @@ const BASE_URL = '/api/v1/events';
 function DateInformation(props) {
   const { fullDate } = props;
   const [selectedDate, setSelectedDate] = useState(fullDate);
-
   const [infomation, setInfomation] = useState(null);
 
   function formatDate() {
@@ -51,7 +50,9 @@ function DateInformation(props) {
   return (
     <div className="item border card">
       <div className="card-body">
-        <h5 className="card-title">Click on a date to view information</h5>
+        <h5 className="card-title text-green font-weight-bold">
+          Click on a date to view information
+        </h5>
         <p className="card-header">
           {fullDate === null ? 'TODO' : fullDate.getDate()} -{' '}
           {MONTHS[fullDate.getMonth()]} - {fullDate.getFullYear()}
@@ -62,7 +63,7 @@ function DateInformation(props) {
       ) : (
         <div>
           {Object.keys(infomation).map((contact) => {
-            if (infomation[contact].length !== 0)
+            if (infomation[contact].length !== 0) {
               return (
                 <ul className="list-group list-group-flush">
                   {infomation[contact].map((data) =>
@@ -74,22 +75,29 @@ function DateInformation(props) {
                         return (
                           <div>
                             <StartTimeInformation startTime={data[value]} />
-                            <hr />
+                            <hr className="hr-green" />
                           </div>
                         );
                       }
                       if (value === 'contact') {
-                        return <li>You are meeting up with: {data[value]}</li>;
+                        return (
+                          <li>
+                            You are meeting up with:{' '}
+                            <span className="font-weight-bold">{data[value]}</span>
+                          </li>
+                        );
                       }
                       return (
                         <li>
-                          {value[0].toUpperCase() + value.substring(1)}: {data[value]}
+                          {value[0].toUpperCase() + value.substring(1)}:{' '}
+                          <span className="font-weight-bold">{data[value]}</span>
                         </li>
                       );
                     }),
                   )}
                 </ul>
               );
+            }
             return null;
           })}
         </div>

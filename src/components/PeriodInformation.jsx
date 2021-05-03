@@ -20,7 +20,7 @@ function PeriodInformation(props) {
         return `This event occurs every ${period} days`;
     }
   }
-  return <li>{getPeriodInfo()}</li>;
+  return <li className="font-italic">{getPeriodInfo()}</li>;
 }
 
 PeriodInformation.propTypes = {

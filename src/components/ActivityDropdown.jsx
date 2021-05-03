@@ -24,7 +24,7 @@ function ActivityDropdown(props) {
         rel="stylesheet"
       />
       <select
-        className="form-control"
+        className="form-contro custom-select"
         id="exampleSelect1"
         placeholder="Activity"
         onChange={(event) => handleChange(event)}

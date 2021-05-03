@@ -16,7 +16,11 @@ function StartTimeInformation(props) {
     return info.join(' - ');
   }
 
-  return <li>Start time: {getStartTimeInfo()}</li>;
+  return (
+    <li>
+      Start time: <span className="font-weight-bold">{getStartTimeInfo()}</span>
+    </li>
+  );
 }
 
 StartTimeInformation.propTypes = {

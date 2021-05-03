@@ -50,22 +50,14 @@ function CalendarView() {
     <div className="landing">
       <div className="container">
         <div className="item">
-          <h3>Calendar View</h3>
-          <Calendar onChange={setValue} onClickDay={setValue} />
-        </div>
-        <div className="item">
-          <h3>Upcoming events //Sprint 2</h3>
-          <ul className="list-group">
-            <li className="list-group-item">Cras justo odio</li>
-            <li className="list-group-item">Dapibus ac facilisis in</li>
-            <li className="list-group-item">Morbi leo risus</li>
-          </ul>
+          <h3 className="calendar__header font-weight-bold">Calendar View</h3>
+          <Calendar className="calendar" onChange={setValue} onClickDay={setValue} />
         </div>
         <DateInformation fullDate={value} />
       </div>
-      <div className="container-form">
+      <div className="container-form text-big text-green font-weight-bold">
         <div className="item">
-          <form className="container-fluid">
+          <form className="container-fluid border rounded">
             <div className="form-row">
               <div className="col center">
                 <DateOption onSelectDate={setSelectedDate} />
@@ -80,7 +72,7 @@ function CalendarView() {
                 <RepeatOption onSetMultiplier={setMultiplier} />
               </div>
               <div className="col center">
-                <button className=" btn btn-info" type="button" onClick={createEvent}>
+                <button className=" btn btn-green" type="button" onClick={createEvent}>
                   Add new event
                 </button>
               </div>
