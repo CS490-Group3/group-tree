@@ -8,7 +8,7 @@ function ActivityDropdown(props) {
   // const activityList = [...new Set(DROPDOWN_DATA.map((item) => item.activity))];
   // const [defaultValue, setDefaultValue] = useState(activityList[0]);
   const newActivityList = DROPDOWN_DATA;
-  const [newDefaultValue, setNewDefaultValue] = useState(DROPDOWN_DATA[0].key);
+  const [newDefaultValue, setNewDefaultValue] = useState(DROPDOWN_DATA[0].modules[0].key);
   function handleChange(event) {
     onSelectActivity(event.target.value);
     // setDefaultValue(event.target.value);
