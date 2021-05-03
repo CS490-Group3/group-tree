@@ -163,7 +163,7 @@ def get_next_event(contact):
     occurences = []
     for event in contact.events:
         #if there is an event that is occuring daily, next event will always be today
-        if event.period == 1:  
+        if event.period == 1:
             return "01Today"
 
         next_occur = get_next_occurrence(event, now)
