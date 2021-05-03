@@ -89,6 +89,9 @@ function DateInformation(props) {
                           </li>
                         );
                       }
+                      if (value === 'id') {
+                        return <span className="font-weight-bold"> </span>;
+                      }
                       return (
                         <li>
                           {value[0].toUpperCase() + value.substring(1)}:{' '}
