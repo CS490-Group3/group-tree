@@ -151,7 +151,7 @@ h3.about {
 .container {
   display: flex;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   align-items: center;
 }
@@ -159,8 +159,8 @@ h3.about {
 .item {
   flex-grow: 1;
   margin: 10px;
-  align-items: center;
-  text-align: center 
+  align-items: center !important;
+  text-align: center !important
 }
 
 .border {
@@ -181,4 +181,16 @@ h3.about {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.calendar{
+  margin: 0 auto;
+}
+
+.react-calendar {
+  width: 500px !important;
+}
+
+.calendar__header {
+  color: #5b8a72;
 }

@@ -50,16 +50,8 @@ function CalendarView() {
     <div className="landing">
       <div className="container">
         <div className="item">
-          <h3>Calendar View</h3>
-          <Calendar onChange={setValue} onClickDay={setValue} />
-        </div>
-        <div className="item">
-          <h3>Upcoming events //Sprint 2</h3>
-          <ul className="list-group">
-            <li className="list-group-item">Cras justo odio</li>
-            <li className="list-group-item">Dapibus ac facilisis in</li>
-            <li className="list-group-item">Morbi leo risus</li>
-          </ul>
+          <h3 className="calendar__header font-weight-bold">Calendar View</h3>
+          <Calendar className="calendar" onChange={setValue} onClickDay={setValue} />
         </div>
         <DateInformation fullDate={value} />
       </div>
