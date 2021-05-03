@@ -1,10 +1,10 @@
 .App {
-  text-align: center !important
+  text-align: center !important;
 }
 
 /* navbar */
-.navbar-brand{
-  font-size: 5rem;
+.navbar-brand {
+  font-size: 3rem;
   color: white;
 }
 #nav {
@@ -13,8 +13,8 @@
   color: white;
 }
 
-#nav-bar a:hover { 
-  color: #bfcba8 !important; 
+#nav-bar a:hover {
+  color: #bfcba8 !important;
 }
 
 #nav-bar li a {
@@ -27,18 +27,18 @@
 
 /* Landing Page */
 .main {
-    height: 800px;
-    width: 100%;
-    margin: auto;
-    background-image: url('tree.png');
-    display: table;
-    top: 0;
-    background-size: cover;
-    /* height: 100vh; */
-    margin-top: 80px;
+  height: 800px;
+  width: 100%;
+  margin: auto;
+  background-image: url('tree.png');
+  display: table;
+  top: 0;
+  background-size: cover;
+  /* height: 100vh; */
+  margin-top: 80px;
 }
 
-.intro{
+.intro {
   float: left;
   text-align: left !important;
   margin-top: 1rem;
@@ -49,8 +49,8 @@
   background-colorr: rgb(255, 255, 255, 0.5);
 }
 
-.np{
-    margin-bottom: 0px;
+.np {
+  margin-bottom: 0px;
 }
 
 .learn-button {
@@ -60,16 +60,15 @@
   padding: 0.5rem 1rem;
   color: white;
   border-radius: 10px;
-
 }
 
 /* conputer */
-.comp-container{
+.comp-container {
   width: 380px;
   margin: 20px auto;
 }
 
-.screen{
+.screen {
   width: 380px;
   height: 200px;
   background-color: black;
@@ -78,16 +77,16 @@
   padding: 1rem;
 }
 
-.key{
+.key {
   width: 380px;
   height: 60px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   border-radius: 0px 0px 20px 20px;
   padding-top: 5px;
 }
 
-.comp-button{
-  background-color: #B0BEC5;
+.comp-button {
+  background-color: #b0bec5;
   margin: 0 auto;
   margin-top: 10px;
   padding: 0px;
@@ -96,20 +95,19 @@
   border-radius: 50%;
 }
 
-.stand{
+.stand {
   margin: 0 auto;
-  background-color: #B0BEC5;
+  background-color: #b0bec5;
   width: 50px;
   height: 50px;
 }
 
-.bottom-stand{
+.bottom-stand {
   margin: 0 auto;
-  background-color: #B0BEC5;
+  background-color: #b0bec5;
   width: 150px;
   height: 10px;
 }
-
 
 /* about app */
 h3.about {
@@ -124,12 +122,11 @@ h3.about {
 
 .about-outer {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   justify-content: space-around;
-
 }
 
-.about-item{
+.about-item {
   width: 25em;
   color: white;
   padding: 2rem 1rem;
@@ -147,7 +144,7 @@ h3.about {
   padding: 1rem;
 }
 
-/* calander view*/
+/* calendar view*/
 .container {
   display: flex;
   display: grid;
@@ -160,7 +157,7 @@ h3.about {
   flex-grow: 1;
   margin: 10px;
   align-items: center !important;
-  text-align: center !important
+  text-align: center !important;
 }
 
 .border {
@@ -173,17 +170,17 @@ h3.about {
   align-items: center;
 }
 
- select {
- font-family: 'FontAwesome', 'Second Font name'
- }
+select {
+  font-family: 'FontAwesome', 'Second Font name';
+}
 
- ul {
+ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.calendar{
+.calendar {
   margin: 0 auto;
 }
 
@@ -203,7 +200,7 @@ h3.about {
   border: 2px dotted #5b8a72;
 }
 
-.text-big{
+.text-big {
   font-size: 17px;
 }
 
@@ -211,6 +208,6 @@ h3.about {
   background-color: #5b8a72;
   color: white;
 }
-.alert-success{
+.alert-success {
   margin: 0 auto;
 }
