@@ -50,7 +50,9 @@ function DateInformation(props) {
   return (
     <div className="item border card">
       <div className="card-body">
-        <h5 className="card-title">Click on a date to view information</h5>
+        <h5 className="card-title text-green font-weight-bold">
+          Click on a date to view information
+        </h5>
         <p className="card-header">
           {fullDate === null ? 'TODO' : fullDate.getDate()} -{' '}
           {MONTHS[fullDate.getMonth()]} - {fullDate.getFullYear()}
@@ -73,7 +75,7 @@ function DateInformation(props) {
                         return (
                           <div>
                             <StartTimeInformation startTime={data[value]} />
-                            <hr />
+                            <hr className="hr-green" />
                           </div>
                         );
                       }

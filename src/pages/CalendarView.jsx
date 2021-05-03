@@ -57,7 +57,7 @@ function CalendarView() {
       </div>
       <div className="container-form">
         <div className="item">
-          <form className="container-fluid">
+          <form className="container-fluid border rounded">
             <div className="form-row">
               <div className="col center">
                 <DateOption onSelectDate={setSelectedDate} />
