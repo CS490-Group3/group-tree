@@ -165,7 +165,7 @@ def get_next_event(contact):
     occurences = []
     for event in contact.events:
         if event.period == 1:       #if there is an event that is occuring daily, next event will always be today
-            return "Today"
+            return "01Today"
 
         next_occur = get_next_occurrence(event, now)
         occurences.append(next_occur)
@@ -179,12 +179,12 @@ def get_next_event(contact):
         days = delta.days
 
         if days == 1:
-            return "Tomorrow"
+            return "02Tomorrow"
         else:
-            return str(days) + " days"
+            return "03" + str(days) + " days"
         
 
-    return "No Event Created"
+    return "04No Event Created"
             
 
 
@@ -230,7 +230,6 @@ def api_contacts():
             contacts.append(d)
             contacts = sorted(contacts, key = lambda i: i['nextEvent'])
             
-            #print(sorted(contacts, key = lambda i: i['nextEvent']))
 
         return json.dumps(contacts)
 
