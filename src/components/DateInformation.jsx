@@ -87,8 +87,12 @@ function DateInformation(props) {
                       }
                       return (
                         <li>
+<<<<<<< HEAD
                           {value[0].toUpperCase() + value.substring(1)}:{' '}
                           <span className="font-weight-bold">{data[value]}</span>
+=======
+                          {value[0].toUpperCase() + value.substring(1)}: {data[value]}
+>>>>>>> f0f8374ac69fda2428e0620affaf84ca50704cc4
                         </li>
                       );
                     }),
