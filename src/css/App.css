@@ -211,3 +211,6 @@ h3.about {
   background-color: #5b8a72;
   color: white;
 }
+.alert-success{
+  margin: 0 auto;
+}
