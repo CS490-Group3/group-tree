@@ -152,27 +152,26 @@ def get_events_by_date(
     Get all events that occur on the specified date.
     """
     return [event for event in person.events if event_occurs_on_date(event, date)]
-    
-    
+
 def get_next_event(contact):
     '''
     Gets the next event for a contact
     '''
-    
     now = datetime.datetime.now()
-    
+
     #get all the occurence for each event
     occurences = []
     for event in contact.events:
-        if event.period == 1:       #if there is an event that is occuring daily, next event will always be today
+        #if there is an event that is occuring daily, next event will always be today
+        if event.period == 1:  
             return "01Today"
 
         next_occur = get_next_occurrence(event, now)
         occurences.append(next_occur)
-    
+
     #return the closest occurence to now in days or today or tomorrow
     today = datetime.date.today()
-    if occurences: 
+    if occurences:
         closest = min(occurences)
         closest_date = closest.date()
         delta = closest_date - today
@@ -180,12 +179,9 @@ def get_next_event(contact):
 
         if days == 1:
             return "02Tomorrow"
-        else:
-            return "03" + str(days) + " days"
-        
+        return "03" + str(days) + " days"
 
     return "04No Event Created"
-            
 
 
 
@@ -219,18 +215,14 @@ def api_contacts():
         contacts = []
         for contact in user.contacts:
             next_event = get_next_event(contact)
-            d = {
+            contacts.append({
                     "id": contact.id,
                     "name": contact.name,
                     "email": contact.email,
                     "phone": contact.phone,
                     "nextEvent": next_event
-                }
-            
-            contacts.append(d)
+            })
             contacts = sorted(contacts, key = lambda i: i['nextEvent'])
-            
-
         return json.dumps(contacts)
 
     # add a new contact
