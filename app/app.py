@@ -78,39 +78,11 @@ def can_complete(event: models.Event, now: datetime.datetime) -> bool:
     """
     Determines if `event` can be completed `now`.
     """
-    # if the event is nonrecurring, can complete after it starts
-    if event.period is None:
-        return event.complete_time is None and now > event.start_time
+    prev = get_prev_occurrence(event, now)
 
-    next_occur = get_next_occurrence(event, now)
-    return next_occur
-    if next_occur is None or (
-        event.complete_time is None or event.complete_time < next_occur
-    ):
-        event.complete_time = now
-        db.session.commit()
-        return True
-    return False
-
-
-def complete_event(event: models.Event, now: datetime.datetime) -> bool:
-    """
-    Marks an event as completed, using `now` as the time of completion. Returns `True` on
-    success, `False` otherwise.
-    """
-    # if the event is nonrecurring, can complete after it starts
-    if event.period is None:
-        can_complete = event.complete_time is None and now > event.start_time
-    else:
-        next_occur = get_next_occurrence(event, now)
-
-    if next_occur is None or (
-        event.complete_time is None or event.complete_time < next_occur
-    ):
-        event.complete_time = now
-        db.session.commit()
-        return True
-    return False
+    return prev is not None and (
+        event.complete_time is None or event.complete_time <= prev
+    )
 
 
 def event_occurs_on_date(event: models.Event, date: datetime.date) -> bool:
@@ -326,7 +298,10 @@ def api_events_complete():
 
     # check if the event exists and belongs to the user
     if event is not None and event.contact.person_id == user.id:
-        if complete_event(event, now):
+        if can_complete(event, now):
+            event.complete_time = now
+            db.session.commit()
+
             return ("", 204)  # No Content
         return ("", 403)  # Forbidden
     return ("", 404)  # Not Found
