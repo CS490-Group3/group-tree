@@ -156,22 +156,6 @@ def get_tree_index(person_id):
 
 # get_tree_index("101263858443596549461")
 
-
-def complete_event(event: models.Event, now: datetime.datetime) -> bool:
-    """
-    Marks an event as completed, using `now` as the time of completion. Returns `True` on
-    success, `False` otherwise.
-    """
-    next_occur = get_next_occurrence(event, now)
-
-    if next_occur is not None and (
-        event.complete_time is None or event.complete_time < next_occur
-    ):
-        event.complete_time = now
-        db.session.commit()
-        return True
-    return False
-
 def get_next_event(contact):
     '''
     Gets the next event for a contact
@@ -220,7 +204,7 @@ def api_contacts():
         # check if the contact exists and belongs to the user
         if contact is not None and contact.person.id == user.id:
             for event in contact.events:
-                if contact is not None:
+                if event is not None:
                     db.session.delete(event)
                     db.session.commit()
 
