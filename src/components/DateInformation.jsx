@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import PeriodInformation from './PeriodInformation';
 import StartTimeInformation from './StartTimeInformation';
+import CompleteEvent from './CompleteEvent';
 
 const BASE_URL = '/api/v1/events';
 
@@ -73,6 +74,7 @@ function DateInformation(props) {
                         return (
                           <div>
                             <StartTimeInformation startTime={data[value]} />
+                            <CompleteEvent data={data} />
                             <hr className="hr-green" />
                           </div>
                         );
