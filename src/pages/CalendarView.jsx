@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { Calendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import ActivityOption from '../components/ActivityOption';
-import DateInformation from '../components/DateInformation';
+/*
+import RepeatOption from '../components/RepeatOption';
 import ContactOption from '../components/ContactOption';
+import DateOption from '../components/DateOption';
+import ActivityDropdown from '../components/ActivityDropdown';
+*/
+import DateInformation from '../components/DateInformation';
 
-const BASE_URL = '/api/v1/events';
+import InputForm from '../components/InputForm';
+
+// const BASE_URL = '/api/v1/events';
 
 function CalendarView() {
   const [value, setValue] = useState(new Date());
-  const [createStatus, setCreateStatus] = useState(false);
+  /* const [createStatus, setCreateStatus] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [multiplier, setMultiplier] = useState(null);
   const [error, setError] = useState([]);
-
+  */
+  /*
   function createEvent() {
     setCreateStatus(false);
     const errorMsg = [];
@@ -42,85 +49,19 @@ function CalendarView() {
         }),
       }).then(() => setCreateStatus(true));
     }
-  }
+  } */
 
   return (
     <div className="landing">
       <div className="container">
         <div className="item">
-          <h3>Calendar View</h3>
-          <Calendar onChange={setValue} onClickDay={setValue} />
-        </div>
-        <div className="item">
-          <h3>Upcoming events //Sprint 2</h3>
-          <ul className="list-group">
-            <li className="list-group-item">Cras justo odio</li>
-            <li className="list-group-item">Dapibus ac facilisis in</li>
-            <li className="list-group-item">Morbi leo risus</li>
-          </ul>
+          <h3 className="calendar__header font-weight-bold">Calendar View</h3>
+          <Calendar className="calendar" onChange={setValue} onClickDay={setValue} />
         </div>
         <DateInformation fullDate={value} />
       </div>
-      <div className="container-form">
-        <div className="item">
-          <form className="container-fluid">
-            <div className="form-row">
-              <div className="col center">
-                <label htmlFor="example-date-input">
-                  Date
-                  <input
-                    className="form-control"
-                    type="date"
-                    placeholder="Date"
-                    id="example-date-input"
-                    onChange={(event) => setSelectedDate(event.target.value)}
-                  />
-                </label>
-              </div>
-              <div className="col center">
-                <ActivityOption onSelectActivity={setSelectedActivity} />
-              </div>
-              <div className="col center">
-                <ContactOption onSelectContact={setSelectedContact} />
-              </div>
-              <div className="col center">
-                <label htmlFor="exampleTextarea">
-                  Repeat every # days
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="#"
-                    onChange={(event) => setMultiplier(event.target.value)}
-                  />
-                </label>
-              </div>
-              <div className="col center">
-                <button className=" btn btn-info" type="button" onClick={createEvent}>
-                  Add new event
-                </button>
-              </div>
-              {createStatus ? (
-                <div className="col center">
-                  <div className="alert alert-success" role="alert">
-                    Successfully added events!
-                  </div>
-                </div>
-              ) : null}
-              {error.length === 0 ? null : (
-                <div className="col center">
-                  <div className="alert alert-danger" role="alert">
-                    Error creating a new event
-                    <ul className="list-group">
-                      {error.map((msg) => (
-                        <li className="list-group-item">{msg}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
-          </form>
-        </div>
+      <div className="container-form text-big text-green font-weight-bold">
+        <InputForm />
       </div>
     </div>
   );

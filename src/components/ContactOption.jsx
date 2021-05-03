@@ -30,10 +30,11 @@ function ContactOption(props) {
     <label htmlFor="exampleSelect1">
       Contact
       <select
-        className="form-control"
+        className="form-control custom-select"
         id="exampleSelect1"
         placeholder="Activity"
         onChange={(event) => onSelectContact(event.target.value)}
+        value={onSelectContact(defaultValue)}
       >
         {contacts.map((contact) => (
           <option value={contact.id} selected={defaultValue === contact.id}>

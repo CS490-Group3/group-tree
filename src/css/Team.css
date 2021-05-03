@@ -1,0 +1,59 @@
+.team {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 2rem 5rem;
+}
+
+.team-row {
+    flex-direction: row;
+
+}
+
+.team-item {
+    margin-bottom: 3rem;
+}
+
+.member-container {
+    display: flex;
+    borderr: 5px solid pink;
+    align-items: center;
+}
+
+.member-item {
+    borderr: 5px solid blue;
+    align-self: center;
+    text-align: left;
+}
+
+#team-icon {
+    font-size: 8rem;
+}
+
+.margin-left {
+    margin-left: 0.8rem;
+}
+
+.member-item p{
+    margin-bottom: 0.3rem;
+}
+
+.team-info {
+    padding-left: 1rem;
+}
+
+p.team-info {
+   color: pink;
+}
+
+.team-name {
+     font-weight: bold;
+     font-size: 1.1rem;
+     color: #c87137;
+}

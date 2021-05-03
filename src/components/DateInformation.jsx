@@ -1,26 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import PeriodInformation from './PeriodInformation';
+import StartTimeInformation from './StartTimeInformation';
+import MONTHS from '../assets/Months';
+
 const BASE_URL = '/api/v1/events';
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
 
 function DateInformation(props) {
   const { fullDate } = props;
   const [selectedDate, setSelectedDate] = useState(fullDate);
-
   const [infomation, setInfomation] = useState(null);
 
   function formatDate() {
@@ -59,30 +48,56 @@ function DateInformation(props) {
   }, [fullDate]);
 
   return (
-    <div className="item border">
-      <h3>Click on a date to view information</h3>
-      <p className="lead">
-        {fullDate === null ? 'TODO' : fullDate.getDate()} - {months[fullDate.getMonth()]}{' '}
-        - {fullDate.getFullYear()}
-      </p>
+    <div className="item border card">
+      <div className="card-body">
+        <h5 className="card-title text-green font-weight-bold">
+          Click on a date to view information
+        </h5>
+        <p className="card-header">
+          {fullDate === null ? 'TODO' : fullDate.getDate()} -{' '}
+          {MONTHS[fullDate.getMonth()]} - {fullDate.getFullYear()}
+        </p>
+      </div>
       {infomation === null ? (
         <p>No event on this date</p>
       ) : (
         <div>
           {Object.keys(infomation).map((contact) => {
-            if (infomation[contact].length !== 0)
+            if (infomation[contact].length !== 0) {
               return (
-                <p>
-                  {' '}
-                  this is my key {contact} and this is my value
+                <ul className="list-group list-group-flush">
                   {infomation[contact].map((data) =>
                     Object.keys(data).map((value) => {
-                      if (data[value] !== null) return <li>{data[value]}</li>;
-                      return null;
+                      if (value === 'period') {
+                        return <PeriodInformation period={data[value]} />;
+                      }
+                      if (value === 'start_time') {
+                        return (
+                          <div>
+                            <StartTimeInformation startTime={data[value]} />
+                            <hr className="hr-green" />
+                          </div>
+                        );
+                      }
+                      if (value === 'contact') {
+                        return (
+                          <li>
+                            You are meeting up with:{' '}
+                            <span className="font-weight-bold">{data[value]}</span>
+                          </li>
+                        );
+                      }
+                      return (
+                        <li>
+                          {value[0].toUpperCase() + value.substring(1)}:{' '}
+                          <span className="font-weight-bold">{data[value]}</span>
+                        </li>
+                      );
                     }),
                   )}
-                </p>
+                </ul>
               );
+            }
             return null;
           })}
         </div>
