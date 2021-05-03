@@ -156,6 +156,37 @@ def get_tree_index(person_id):
 
 # get_tree_index("101263858443596549461")
 
+def get_next_event(contact):
+    '''
+    Gets the next event for a contact
+    '''
+    now = datetime.datetime.now()
+
+    #get all the occurence for each event
+    occurences = []
+    for event in contact.events:
+        #if there is an event that is occuring daily, next event will always be today
+        if event.period == 1:
+            return "01Today"
+
+        next_occur = get_next_occurrence(event, now)
+        occurences.append(next_occur)
+
+    #return the closest occurence to now in days or today or tomorrow
+    today = datetime.date.today()
+    if occurences:
+        closest = min(occurences)
+        closest_date = closest.date()
+        delta = closest_date - today
+        days = delta.days
+
+        if days == 1:
+            return "02Tomorrow"
+        return "03" + str(days) + " days"
+
+    return "04No Event Created"
+
+
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
 @flask_login.login_required
@@ -172,6 +203,11 @@ def api_contacts():
 
         # check if the contact exists and belongs to the user
         if contact is not None and contact.person.id == user.id:
+            for event in contact.events:
+                if event is not None:
+                    db.session.delete(event)
+                    db.session.commit()
+
             db.session.delete(contact)
             db.session.commit()
 
@@ -179,17 +215,19 @@ def api_contacts():
         return ("", 404)  # Not Found
     # get a list of the user's contacts
     if request.method == "GET":
-        return json.dumps(
-            [
-                {
+        contacts = []
+        for contact in user.contacts:
+            next_event = get_next_event(contact)
+            contacts.append({
                     "id": contact.id,
                     "name": contact.name,
                     "email": contact.email,
                     "phone": contact.phone,
-                }
-                for contact in user.contacts
-            ]
-        )
+                    "nextEvent": next_event
+            })
+            contacts = sorted(contacts, key = lambda i: i['nextEvent'])
+        return json.dumps(contacts)
+
     # add a new contact
     if request.method == "POST":
         request_data = request.get_json()
