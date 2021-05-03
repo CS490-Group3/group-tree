@@ -255,11 +255,16 @@ def api_events():
     if request.method == "POST":
         request_data = request.get_json()
         print(request_data)
-        period = request_data["period"]
+
+        period = request_data.get("period")
+        period = int(period) if period is not None else None
+        if period is not None and period <= 0:
+            return ("period must be null or positive integer", 400)  # Bad Request
+
         new_event = models.Event(
             activity=request_data["activity"],
             start_time=request_data["start_time"],
-            period=int(period) if period is not None else None,
+            period=period,
             contact_id=int(request_data["contact_id"]),
             complete_time=None,
         )
