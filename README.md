@@ -1,6 +1,8 @@
 # Group 3 - Project 3
 
-Heroku Link: https://secure-badlands-86419.herokuapp.com
+Heroku Link: 
+- Sprint 1: https://secure-badlands-86419.herokuapp.com
+- Sprint 2: https://aqueous-meadow-24998.herokuapp.com
 
 ## Prerequisites
 
