@@ -56,7 +56,7 @@ This application uses the Google Sign-In API. You must [create authorization cre
 
 You need an SQL database for this application to work. At the time of writing, only PostgreSQL has been tested.
 
-## Requirements
+### Requirements
 
 After cloning the repository, run the following commands to install the required libraries.
 
@@ -65,7 +65,7 @@ npm install
 python3 -m pip install -r requirements.txt
 ```
 
-## Local Deployment
+### Local Deployment
 
 Both the React and Flask apps require specific environment variables. There are two approaches to setting environment variables. The traditional way is to use the shell, e.g., in `sh` you would run the following command to set variable `FOO` to `bar`.
 
@@ -90,7 +90,7 @@ python3 -m app.app
 
 1. Run `echo "DANGEROUSLY_DISABLE_HOST_CHECK=true" > .env.development.local` in the project directory
 
-## Deploy to Heroku
+### Deploy to Heroku
 
 1. Create a Heroku app: `heroku create --buildpack heroku/python`
 2. Add nodejs buildpack: `heroku buildpacks:add --index 1 heroku/nodejs`
