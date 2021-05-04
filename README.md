@@ -98,3 +98,6 @@ python3 -m app.app
 1. Create a Heroku app: `heroku create --buildpack heroku/python`
 2. Add nodejs buildpack: `heroku buildpacks:add --index 1 heroku/nodejs`
 3. Push to Heroku: `git push heroku main`
+
+
+[product-screenshot]: images/screenshot.png
