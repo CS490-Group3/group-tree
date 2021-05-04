@@ -11,9 +11,7 @@ function CalendarView() {
   const [eventBlob, setEventBlob] = useState({});
   const today = new Date();
 
-  const shortISOFormat = (date) => {
-    return date.toISOString().slice(0, 10);
-  };
+  const shortISOFormat = (date) => date.toISOString().slice(0, 10);
 
   const fetchEvents = () => {
     fetch(`/api/v1/events?date=${shortISOFormat(today)}`, { method: 'GET' })
