@@ -216,24 +216,31 @@ ul {
     height: 800px;
     width: 100%;
     margin: auto;
-    background-image: url('grass_background.png');
+    /*background-image: url('grass_background.png');*/
     display: table;
     top: 0;
     background-size: cover;
     /* height: 100vh; */
     margin-top: 60px;
-    position: relative;
+    position: absolute;
 }
 
 .tree-text {
   color: green;
   font-family: "Brush Script";
-  margin-top: -40px;
+  margin-top: 69px;
 }
 
 .tree > img {
-    position:absolute;
+    position:fixed;
     width: 30%;
-    top:1%;
+    top:18%;
     left:35%;
+}
+
+.tree_background > img {
+    position:fixed;
+    width: 100%;
+    top:25%;
+    left:0%;
 }
