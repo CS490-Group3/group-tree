@@ -17,10 +17,8 @@ export default function CompleteEvent(props) {
   };
 
   function sendPoints() {
-    // const time = new Date(date);
     const buttonPtr = document.getElementById('complete_button');
     buttonPtr.style.display = 'none';
-    console.log(data);
     addPoints(data);
   }
 
