@@ -156,16 +156,17 @@ def get_tree_index(person_id):
 
 # get_tree_index("101263858443596549461")
 
+
 def get_next_event(contact):
-    '''
+    """
     Gets the next event for a contact
-    '''
+    """
     now = datetime.datetime.now()
 
-    #get all the occurence for each event
+    # get all the occurence for each event
     occurences = []
     for event in contact.events:
-        #if there is an event that is occuring daily, next event will always be today
+        # if there is an event that is occuring daily, next event will always be today
         if event.period == 1:
             return "01Today"
 
@@ -173,7 +174,7 @@ def get_next_event(contact):
         if next_occur:
             occurences.append(next_occur)
 
-    #return the closest occurence to now in days or today or tomorrow
+    # return the closest occurence to now in days or today or tomorrow
     today = datetime.date.today()
     if occurences:
         closest = min(occurences)
@@ -186,7 +187,6 @@ def get_next_event(contact):
         return "03" + str(days) + " days"
 
     return "04No Event Created"
-
 
 
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
@@ -219,14 +219,16 @@ def api_contacts():
         contacts = []
         for contact in user.contacts:
             next_event = get_next_event(contact)
-            contacts.append({
+            contacts.append(
+                {
                     "id": contact.id,
                     "name": contact.name,
                     "email": contact.email,
                     "phone": contact.phone,
-                    "nextEvent": next_event
-            })
-            contacts = sorted(contacts, key = lambda i: i['nextEvent'])
+                    "nextEvent": next_event,
+                }
+            )
+            contacts = sorted(contacts, key=lambda i: i["nextEvent"])
         return json.dumps(contacts)
 
     # add a new contact

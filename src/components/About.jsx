@@ -1,7 +1,7 @@
 import React from 'react';
 import Computer from './Computer';
 
-export default function About() {
+function About() {
   return (
     <div className="about">
       <h3>How It Works</h3>
@@ -17,17 +17,19 @@ export default function About() {
           <Computer
             step="2"
             p1="Create Events"
-            p2="Creat events and get reminders about those event so no event is missed"
+            p2="Create events and get reminders about those event so no event is missed"
           />
         </div>
         <div className="about-item">
           <Computer
             step="3"
-            p1="Watch Youur Tree Grow"
-            p2="Be rewareded for staying connected with your family and friends and watch your tree grow"
+            p1="Watch Your Tree Grow"
+            p2="Be rewarded for staying connected with your family and friends and watch your tree grow"
           />
         </div>
       </div>
     </div>
   );
 }
+
+export default About;

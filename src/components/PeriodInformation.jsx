@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function PeriodInformation(props) {
   const { period } = props;
 
-  function getPeriodInfo() {
+  const getPeriodInfo = () => {
     switch (period) {
       case null:
         return 'This is a non-repeating event';
@@ -19,12 +19,12 @@ function PeriodInformation(props) {
       default:
         return `This event occurs every ${period} days`;
     }
-  }
+  };
   return <li className="font-italic">{getPeriodInfo()}</li>;
 }
 
 PeriodInformation.propTypes = {
-  period: PropTypes.func.isRequired,
+  period: PropTypes.number.isRequired,
 };
 
 export default PeriodInformation;
