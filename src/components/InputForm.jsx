@@ -28,6 +28,9 @@ function InputForm() {
     setError(errorMsg);
 
     if (errorMsg.length === 0) {
+      const [year, month, date] = selectedDate.split('-');
+      const realDate = new Date(year, month - 1, date);
+
       fetch(BASE_URL, {
         method: 'POST',
         headers: {
@@ -35,7 +38,7 @@ function InputForm() {
         },
         body: JSON.stringify({
           activity: selectedActivity,
-          start_time: new Date(...selectedDate.split('-')).toUTCString(),
+          start_time: realDate,
           period: multiplier !== '0' ? multiplier : null,
           contact_id: selectedContact,
         }),
