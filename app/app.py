@@ -170,7 +170,8 @@ def get_next_event(contact):
             return "01Today"
 
         next_occur = get_next_occurrence(event, now)
-        occurences.append(next_occur)
+        if next_occur:
+            occurences.append(next_occur)
 
     #return the closest occurence to now in days or today or tomorrow
     today = datetime.date.today()
