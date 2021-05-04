@@ -4,15 +4,54 @@ Heroku Link:
 - Sprint 1: https://secure-badlands-86419.herokuapp.com
 - Sprint 2: https://aqueous-meadow-24998.herokuapp.com
 
+
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#google-sign-in">Prerequisites</a></li>
+        <li><a href="#database">Installation</a></li>
+        <li><a href="#requirements">Installation</a></li>
+        <li><a href="#local-deployment">Installation</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#setup">Getting Started</a>
+      <ul>
+        <li><a href="#google-sign-in">Prerequisites</a></li>
+        <li><a href="#database">Installation</a></li>
+        <li><a href="#requirements">Installation</a></li>
+        <li><a href="#local-deployment">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#deploy-to-Heroku">Usage</a></li>
+  </ol>
+</details>
+
+
 ## About the Project
 ### Deliverable
 We aim to deliver an app accessible from the browser. This app will help users to remember to check in on their family and friends. The app will provide a login to allow users create scheduled reminders, and features a list of contacts with details regarding their friends and family. The user is encouraged to complete reminders which will be rewarded with a growing-tree visualization.
 ### Motivation 
 During the Covid-19 pandemic, being in touch with friends and family is a lot harder now, and this app will help users to stay connected with friends and family more easily. 
-### Technical Approach
-react-calendar library. SQL database backend and React/JS in the frontend. The app will feature social login via Google, and be deployed on Heroku. The reminder system will have integrations with email reminders as well as SMS over Twilio. 
+### Built with
+- react-calendar library
+- SQL database
+- Flask  
+- React/JS and Bootstrap 
+- Google Login authentication API
+- Heroku 
 
-
+## Getting started
 ### Google Sign-In
 
 This application uses the Google Sign-In API. You must [create authorization credentials](https://developers.google.com/identity/sign-in/web/sign-in#create_authorization_credentials).
