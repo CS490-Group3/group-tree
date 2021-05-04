@@ -35,6 +35,7 @@ export default function Team() {
             <TeamMember
               name="Kathlyn Hang Nguyen"
               github="https://github.com/kathlynnguyenh11"
+              linkedin="http://linkedin.com/in/kathlyn-hang-nguyen/"
             />
           </div>
         </div>
