@@ -37,7 +37,8 @@ Heroku Link:
 
 
 ## About the Project
-[![Product Name Screen Shot][product-screenshot]](https://imgur.com/RGI0gIz) 
+<blockquote class="imgur-embed-pub" lang="en" data-id="RGI0gIz"><a href="https://imgur.com/RGI0gIz">View post on imgur.com</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
 ### Deliverable
 We aim to deliver an app accessible from the browser. This app will help users to remember to check in on their family and friends. The app will provide a login to allow users create scheduled reminders, and features a list of contacts with details regarding their friends and family. The user is encouraged to complete reminders which will be rewarded with a growing-tree visualization.
 ### Motivation 
