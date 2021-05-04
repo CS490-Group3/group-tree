@@ -57,3 +57,14 @@ p.team-info {
      font-size: 1.1rem;
      color: #c87137;
 }
+
+.team-link {
+    background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+.team-link:hover{
+    color: #5b8a72;
+}
