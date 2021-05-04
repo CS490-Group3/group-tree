@@ -10,7 +10,7 @@ const BASE_URL = '/api/v1/events';
 function DateInformation(props) {
   const { fullDate } = props;
   const [selectedDate, setSelectedDate] = useState(fullDate);
-  const [infomation, setInfomation] = useState(null);
+  const [information, setInformation] = useState(null);
 
   function formatDate() {
     const year = selectedDate.getFullYear();
@@ -31,13 +31,12 @@ function DateInformation(props) {
   const fetchDateInfo = () => {
     const formattedDate = formatDate();
     const url = `${BASE_URL}?date=${formattedDate}`;
-    setInfomation(null);
+    setInformation(null);
     fetch(url, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => {
         if (data.length !== 0) {
-          setInfomation(data);
-          console.log(data);
+          setInformation(data);
         }
       });
   };
@@ -58,15 +57,15 @@ function DateInformation(props) {
           {fullDate === null ? 'TODO' : fullDate.toDateString()}
         </p>
       </div>
-      {infomation === null ? (
+      {information === null ? (
         <p>No event on this date</p>
       ) : (
         <div>
-          {Object.keys(infomation).map((contact) => {
-            if (infomation[contact].length !== 0) {
+          {Object.keys(information).map((contact) => {
+            if (information[contact].length !== 0) {
               return (
                 <ul className="list-group list-group-flush">
-                  {infomation[contact].map((data) =>
+                  {information[contact].map((data) =>
                     Object.keys(data).map((value) => {
                       if (value === 'period') {
                         return <PeriodInformation period={data[value]} />;
