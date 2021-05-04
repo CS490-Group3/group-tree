@@ -4,7 +4,11 @@ Heroku Link:
 - Sprint 1: https://secure-badlands-86419.herokuapp.com
 - Sprint 2: https://aqueous-meadow-24998.herokuapp.com
 
-## Prerequisites
+## About the Project
+### Deliverable: We aim to deliver an app accessible from the browser. This app will help users to remember to check in on their family and friends. The app will provide a login to allow users create scheduled reminders, and features a list of contacts with details regarding their friends and family. The user is encouraged to complete reminders which will be rewarded with a growing-tree visualization.
+### Motivation: During the Covid-19 pandemic, being in touch with friends and family is a lot harder now, and this app will help users to stay connected with friends and family more easily. 
+### Technical Approach: react-calendar library. SQL database backend and React/JS in the frontend. The app will feature social login via Google, and be deployed on Heroku. The reminder system will have integrations with email reminders as well as SMS over Twilio. 
+
 
 ### Google Sign-In
 
