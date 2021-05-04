@@ -278,7 +278,6 @@ def api_events():
             )
         except ValueError:
             return ("date format error", 400)  # Bad Request
-
         return {
             str(contact.id): [
                 {
@@ -287,6 +286,7 @@ def api_events():
                     "activity": event.activity,
                     "start_time": event.start_time,
                     "period": event.period,
+                    "can_complete": str(can_complete(event, datetime.datetime.now())),
                 }
                 for event in contact.events
                 if date is None or event_occurs_on_date(event, date)
