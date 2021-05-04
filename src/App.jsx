@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -15,6 +15,12 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+
+  const titleRef = useRef();
+
+  function handleBackClick() {
+    titleRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
 
   return (
     <div className="App">
@@ -103,12 +109,13 @@ function App() {
               <div className="intro">
                 <p className="np">Connect with Family and Friends</p>
                 <p>Grow Your tree</p>
-                <button className="learn-button" type="button">
-                  Scroll To Learn More
+                <button className="learn-button" type="button" onClick={handleBackClick}>
+                  Learn More
                 </button>
               </div>
             </div>
           </div>
+          <div ref={titleRef} />
           <About />
           <Team />
           <Footer />

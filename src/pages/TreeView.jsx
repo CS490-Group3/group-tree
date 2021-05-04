@@ -41,6 +41,13 @@ export default function TreeView() {
   return (
     <div className="treeview">
       <h2 className="tree-text">TREE LEVEL: {indexValue} / 5 </h2>
+      <div className="tree_background">
+        <img
+          className="tree_background"
+          alt="Tree background"
+          src="grass_background.png"
+        />
+      </div>
       <div className="tree">
         <img className="tree" alt="Treeview" src={trees[indexValue]} />
       </div>
