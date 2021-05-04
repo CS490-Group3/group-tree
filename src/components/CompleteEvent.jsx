@@ -18,6 +18,8 @@ export default function CompleteEvent(props) {
 
   function sendPoints() {
     // const time = new Date(date);
+    const buttonPtr = document.getElementById('complete_button');
+    buttonPtr.style.display = 'none';
     console.log(data);
     addPoints(data);
   }
@@ -25,9 +27,15 @@ export default function CompleteEvent(props) {
   CompleteEvent.propTypes = {
     data: PropTypes.func.isRequired,
   };
-  return (
-    <button type="button" onClick={sendPoints}>
-      Complete
-    </button>
-  );
+  if (data.can_complete === 'True') {
+    return (
+      <div>
+        <button type="button" id="complete_button" onClick={sendPoints}>
+          Complete
+        </button>
+        <hr className="hr-green" />
+      </div>
+    );
+  }
+  return <hr className="hr-green" />;
 }
