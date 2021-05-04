@@ -37,6 +37,7 @@ function DateInformation(props) {
       .then((data) => {
         if (data.length !== 0) {
           setInfomation(data);
+          console.log(data);
         }
       });
   };
@@ -75,7 +76,6 @@ function DateInformation(props) {
                           <div>
                             <StartTimeInformation startTime={data[value]} />
                             <CompleteEvent data={data} />
-                            <hr className="hr-green" />
                           </div>
                         );
                       }
@@ -87,7 +87,7 @@ function DateInformation(props) {
                           </li>
                         );
                       }
-                      if (value === 'id') {
+                      if (value === 'id' || value === 'can_complete') {
                         return <span className="font-weight-bold"> </span>;
                       }
                       return (
