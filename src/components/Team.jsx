@@ -9,18 +9,33 @@ export default function Team() {
       <div className="team-container">
         <div className="team-row">
           <div className="team-item">
-            <TeamMember name="Benjamin Hayduchok" />
+            <TeamMember
+              name="Benjamin Hayduchok"
+              linkedin="https://www.linkedin.com/in/benjamin-hayduchok/"
+              github="https://github.com/Benjamin-Hayduchok"
+            />
           </div>
           <div className="team-item">
-            <TeamMember name="Juhi Chaudhari" />
+            <TeamMember
+              name="Juhi Chaudhari"
+              linkedin="https://www.linkedin.com/in/juhichaudhari88/"
+              github="https://github.com/juhichaudhari"
+            />
           </div>
         </div>
         <div className="team-row">
           <div className="team-item">
-            <TeamMember name="Andrew Kritzler" />
+            <TeamMember
+              name="Andrew Kritzler"
+              github="https://github.com/peppermintpatty5/"
+              linkedin="https://www.linkedin.com/in/andrew-kritzler-799630196/"
+            />
           </div>
           <div className="team-item">
-            <TeamMember name="Kathlyn Hang Nguyen" />
+            <TeamMember
+              name="Kathlyn Hang Nguyen"
+              github="https://github.com/kathlynnguyenh11"
+            />
           </div>
         </div>
       </div>
