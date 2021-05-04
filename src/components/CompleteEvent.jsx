@@ -17,17 +17,23 @@ export default function CompleteEvent(props) {
   };
 
   function sendPoints() {
-    // const time = new Date(date);
-    console.log(data);
+    const buttonPtr = document.getElementById('complete_button');
+    buttonPtr.style.display = 'none';
     addPoints(data);
   }
 
   CompleteEvent.propTypes = {
     data: PropTypes.func.isRequired,
   };
-  return (
-    <button type="button" onClick={sendPoints}>
-      Complete
-    </button>
-  );
+  if (data.can_complete) {
+    return (
+      <div>
+        <button type="button" id="complete_button" onClick={sendPoints}>
+          Complete
+        </button>
+        <hr className="hr-green" />
+      </div>
+    );
+  }
+  return <hr className="hr-green" />;
 }
