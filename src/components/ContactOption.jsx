@@ -15,7 +15,7 @@ function ContactOption(props) {
       .then((response) => response.json())
       .then((data) => {
         setContacts(data);
-        if (data.length !== 0) onSelectContact(data[0]);
+        if (data.length !== 0) onSelectContact(data[0].id);
         else onSelectContact(null);
       });
   };
