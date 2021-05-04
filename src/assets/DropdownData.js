@@ -1,35 +1,24 @@
 const DROPDOWN_DATA = [
   {
-    key: 'Sports',
+    category: 'Sports',
     color: '#206a5d',
-    modules: [
-      { key: 'Basketball' },
-      { key: 'Soccer' },
-      { key: 'Swimming' },
-      { key: 'Biking' },
-    ],
+    activities: ['Basketball', 'Soccer', 'Swimming', 'Biking'],
   },
   {
-    key: 'Eat',
+    category: 'Eat',
     color: '#81b214',
-    modules: [
-      { key: 'Mexican food' },
-      { key: 'Japanese food' },
-      { key: 'Vietnamese food' },
-      { key: 'Korean food' },
-      { key: 'Diner food' },
+    activities: [
+      'Mexican food',
+      'Japanese food',
+      'Vietnamese food',
+      'Korean food',
+      'Diner food',
     ],
   },
   {
-    key: 'Other',
+    category: 'Other',
     color: '#f58634',
-    modules: [
-      { key: 'Movies' },
-      { key: 'Read' },
-      { key: 'Picnic' },
-      { key: 'Museum' },
-      { key: 'Cook' },
-    ],
+    activities: ['Movies', 'Read', 'Picnic', 'Museum', 'Cook'],
   },
 ];
 

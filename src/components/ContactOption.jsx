@@ -9,16 +9,14 @@ const BASE_URL = '/api/v1/contacts';
 function ContactOption(props) {
   const { onSelectContact } = props;
   const [contacts, setContacts] = useState([]);
-  const [defaultValue, setDefaultValue] = useState(null);
 
   const fetchContacts = () => {
     fetch(BASE_URL, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => {
         setContacts(data);
-        if (data.length !== 0) {
-          setDefaultValue(data[0].id);
-        }
+        if (data.length !== 0) onSelectContact(data[0].id);
+        else onSelectContact(null);
       });
   };
 
@@ -34,12 +32,9 @@ function ContactOption(props) {
         id="exampleSelect1"
         placeholder="Activity"
         onChange={(event) => onSelectContact(event.target.value)}
-        value={onSelectContact(defaultValue)}
       >
         {contacts.map((contact) => (
-          <option value={contact.id} selected={defaultValue === contact.id}>
-            {contact.name}
-          </option>
+          <option value={contact.id}>{contact.name}</option>
         ))}
       </select>
     </label>

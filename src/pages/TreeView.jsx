@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../css/App.css';
 
 export default function TreeView() {
   const BASE_URL = '/api/v1/treeview';
@@ -22,23 +23,34 @@ export default function TreeView() {
   }
 
   let indexValue = 0;
-  if (treePoints >= 7 && treePoints < 21) {
+  if (treePoints >= 0 && treePoints < 7) {
     indexValue = 1;
-  } else if (treePoints >= 21 && treePoints < 42) {
+  } else if (treePoints >= 7 && treePoints < 21) {
     indexValue = 2;
-  } else if (treePoints >= 42 && treePoints < 98) {
+  } else if (treePoints >= 21 && treePoints < 42) {
     indexValue = 3;
-  } else if (treePoints >= 98) {
+  } else if (treePoints >= 42 && treePoints < 98) {
     indexValue = 4;
-  } else if (treePoints === -1) {
+  } else if (treePoints >= 98) {
     indexValue = 5;
+  } else if (treePoints === -1) {
+    indexValue = 0;
   }
 
-  const trees = ['1.png', '2.png', '3.png', '4.png', '5.png', 'empty.png'];
+  const trees = ['empty.png', '1.png', '2.png', '3.png', '4.png', '5.png'];
   return (
     <div className="treeview">
-      <p>TreeView</p>
-      <img alt="timer" src={trees[indexValue]} />
+      <h2 className="tree-text">TREE LEVEL: {indexValue} / 5 </h2>
+      <div className="tree_background">
+        <img
+          className="tree_background"
+          alt="Tree background"
+          src="grass_background.png"
+        />
+      </div>
+      <div className="tree">
+        <img className="tree" alt="Treeview" src={trees[indexValue]} />
+      </div>
     </div>
   );
 }

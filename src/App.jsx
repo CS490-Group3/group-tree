@@ -27,7 +27,7 @@ function App() {
       {loggedIn === true ? (
         <Router>
           <nav className="navbar navbar-expand-md" id="nav">
-            <h1 classnName="navbar-brand">GroupTree</h1>
+            <h1 className="navbar-brand">GroupTree</h1>
             <button
               className="navbar-toggler"
               type="button"
@@ -85,7 +85,7 @@ function App() {
         <div className="landing-page">
           <div className="login-button">
             <nav className="navbar navbar-default fixed-top" id="nav">
-              <h1 classnName="navbar-brand">GroupTree</h1>
+              <h1 className="navbar-brand">GroupTree</h1>
               <GoogleLogin
                 clientId={clientId}
                 onSuccess={(googleResponse) =>

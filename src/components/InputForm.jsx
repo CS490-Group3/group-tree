@@ -35,7 +35,7 @@ function InputForm() {
         },
         body: JSON.stringify({
           activity: selectedActivity,
-          start_time: new Date(selectedDate).toUTCString(),
+          start_time: new Date(...selectedDate.split('-')).toUTCString(),
           period: multiplier !== '0' ? multiplier : null,
           contact_id: selectedContact,
         }),
