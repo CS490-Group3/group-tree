@@ -13,7 +13,7 @@ function StartTimeInformation(props) {
 }
 
 StartTimeInformation.propTypes = {
-  startTime: PropTypes.func.isRequired,
+  startTime: PropTypes.string.isRequired,
 };
 
 export default StartTimeInformation;
