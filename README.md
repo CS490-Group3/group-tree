@@ -18,22 +18,18 @@ Heroku Link:
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#google-sign-in">Prerequisites</a></li>
-        <li><a href="#database">Installation</a></li>
-        <li><a href="#requirements">Installation</a></li>
-        <li><a href="#local-deployment">Installation</a></li>
+        <li><a href="#google-sign-in">Google Sign-in</a></li>
+        <li><a href="#database">Database</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#local-deployment">Local Deployment</a></li>
       </ul>
     </li>
     <li>
-      <a href="#setup">Getting Started</a>
+      <a href="#setup">Setup</a>
       <ul>
-        <li><a href="#google-sign-in">Prerequisites</a></li>
-        <li><a href="#database">Installation</a></li>
-        <li><a href="#requirements">Installation</a></li>
-        <li><a href="#local-deployment">Installation</a></li>
+        <li><a href="#deploy-to-Heroku">Deploy to Heroku</a></li>
       </ul>
     </li>
-    <li><a href="#deploy-to-Heroku">Usage</a></li>
   </ol>
 </details>
 
