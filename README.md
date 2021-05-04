@@ -12,6 +12,8 @@ Heroku Link:
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#deliverable">Deliverable</a></li>
+        <li><a href="#motivation"Motivation</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
