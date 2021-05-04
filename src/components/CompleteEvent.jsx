@@ -25,7 +25,7 @@ export default function CompleteEvent(props) {
   CompleteEvent.propTypes = {
     data: PropTypes.func.isRequired,
   };
-  if (data.can_complete === 'True') {
+  if (data.can_complete) {
     return (
       <div>
         <button type="button" id="complete_button" onClick={sendPoints}>

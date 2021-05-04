@@ -270,6 +270,7 @@ def api_events():
     # get a dictionary partitioned by contact where each entry is a list of events
     if request.method == "GET":
         date_string = request.args.get("date", None)
+        now = datetime.datetime.now()
         try:
             date = (
                 datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
@@ -286,7 +287,7 @@ def api_events():
                     "activity": event.activity,
                     "start_time": event.start_time,
                     "period": event.period,
-                    "can_complete": str(can_complete(event, datetime.datetime.now())),
+                    "can_complete": can_complete(event, now),
                 }
                 for event in contact.events
                 if date is None or event_occurs_on_date(event, date)
