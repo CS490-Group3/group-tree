@@ -46,7 +46,7 @@
   padding: 2rem;
   font-size: 2rem;
   color: #5b8a72;
-  background-colorr: rgb(255, 255, 255, 0.5);
+  background-color: rgb(255, 255, 255, 0.5);
 }
 
 .np {
@@ -62,7 +62,7 @@
   border-radius: 10px;
 }
 
-/* conputer */
+/* computer */
 .comp-container {
   width: 380px;
   margin: 20px auto;
