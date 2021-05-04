@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import PeriodInformation from './PeriodInformation';
 import StartTimeInformation from './StartTimeInformation';
 import CompleteEvent from './CompleteEvent';
-import MONTHS from '../assets/Months';
 
 const BASE_URL = '/api/v1/events';
 
@@ -55,8 +54,7 @@ function DateInformation(props) {
           Click on a date to view information
         </h5>
         <p className="card-header">
-          {fullDate === null ? 'TODO' : fullDate.getDate()} -{' '}
-          {MONTHS[fullDate.getMonth()]} - {fullDate.getFullYear()}
+          {fullDate === null ? 'TODO' : fullDate.toDateString()}
         </p>
       </div>
       {infomation === null ? (
