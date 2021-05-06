@@ -4,7 +4,7 @@ This module contains unit tests with mocking
 
 import datetime
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 from app.app import add_new_event, models, User
 
