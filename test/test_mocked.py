@@ -41,8 +41,8 @@ class AddNewEventTest(unittest.TestCase):
         """Test on valid input"""
         with patch("app.app.db.session.add", self.mocked_db_session_add), patch(
             "app.app.db.session.commit", self.mocked_db_session_commit
-        ), patch("app.models.Contact.query") as mocked_query:
-            mocked_query.get = self.mocked_contact_query_get
+        ), patch("app.app.models.Contact") as mocked_query:
+            mocked_query.query.get = self.mocked_contact_query_get
             result = add_new_event(
                 {
                     "activity": "fishing",
@@ -59,8 +59,8 @@ class AddNewEventTest(unittest.TestCase):
         """Test on valid input"""
         with patch("app.app.db.session.add", self.mocked_db_session_add), patch(
             "app.app.db.session.commit", self.mocked_db_session_commit
-        ), patch("app.models.Contact.query") as mocked_query:
-            mocked_query.get = self.mocked_contact_query_get
+        ), patch("app.app.models.Contact") as mocked_query:
+            mocked_query.query.get = self.mocked_contact_query_get
             result = add_new_event(
                 {
                     "activity": "fishing",
