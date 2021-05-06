@@ -1,9 +1,23 @@
 # Group 3 - Project 3
 
-Heroku Link: https://secure-badlands-86419.herokuapp.com
+Heroku Link: 
+- Sprint 1: https://secure-badlands-86419.herokuapp.com
+- Sprint 2: https://aqueous-meadow-24998.herokuapp.com
 
-## Prerequisites
+## About the Project
+### Deliverable
+We aim to deliver an app accessible from the browser. This app will help users to remember to check in on their family and friends. The app will provide a login to allow users create scheduled reminders, and features a list of contacts with details regarding their friends and family. The user is encouraged to complete reminders which will be rewarded with a growing-tree visualization.
+### Motivation 
+During the Covid-19 pandemic, being in touch with friends and family is a lot harder now, and this app will help users to stay connected with friends and family more easily. 
+### Built with
+- react-calendar library
+- SQL database
+- Flask  
+- React/JS and Bootstrap 
+- Google Login authentication API
+- Heroku 
 
+## Getting started
 ### Google Sign-In
 
 This application uses the Google Sign-In API. You must [create authorization credentials](https://developers.google.com/identity/sign-in/web/sign-in#create_authorization_credentials).
@@ -12,7 +26,7 @@ This application uses the Google Sign-In API. You must [create authorization cre
 
 You need an SQL database for this application to work. At the time of writing, only PostgreSQL has been tested.
 
-## Requirements
+### Requirements
 
 After cloning the repository, run the following commands to install the required libraries.
 
@@ -21,7 +35,7 @@ npm install
 python3 -m pip install -r requirements.txt
 ```
 
-## Local Deployment
+### Local Deployment
 
 Both the React and Flask apps require specific environment variables. There are two approaches to setting environment variables. The traditional way is to use the shell, e.g., in `sh` you would run the following command to set variable `FOO` to `bar`.
 
@@ -46,8 +60,9 @@ python3 -m app.app
 
 1. Run `echo "DANGEROUSLY_DISABLE_HOST_CHECK=true" > .env.development.local` in the project directory
 
-## Deploy to Heroku
+### Deploy to Heroku
 
 1. Create a Heroku app: `heroku create --buildpack heroku/python`
 2. Add nodejs buildpack: `heroku buildpacks:add --index 1 heroku/nodejs`
 3. Push to Heroku: `git push heroku main`
+
