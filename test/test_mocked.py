@@ -4,7 +4,7 @@ This module contains unit tests with mocking
 
 import datetime
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from app.app import add_new_event, models, User
 
@@ -37,12 +37,16 @@ class AddNewEventTest(unittest.TestCase):
         """Mocked database function"""
         return self.mock_contacts.get(contact_id)
 
-    @unittest.skip("I don't know what I'm doing")
+    # @unittest.skip("I don't know what I'm doing")
     def test_valid(self):
         """Test on valid input"""
+        mock_app = Mock()
+        mock_app.session.query.return_value
+
         with patch("app.app.db.session.add", self.mocked_db_session_add), patch(
             "app.app.db.session.commit", self.mocked_db_session_commit
-        ), patch("app.app.models.Contact.query.get", self.mocked_contact_query_get):
+        ), patch("app.models.Contact.query") as mocked_query:
+            mocked_query.get = self.mocked_contact_query_get
             result = add_new_event(
                 {
                     "activity": "fishing",
