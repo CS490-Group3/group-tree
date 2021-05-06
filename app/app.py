@@ -8,6 +8,7 @@ import json
 import os
 from typing import List, Union
 
+import flask
 import flask_login
 import requests
 from dotenv import load_dotenv, find_dotenv
@@ -189,6 +190,34 @@ def get_next_event(contact):
     return "04No Event Created"
 
 
+def add_new_event(request_data: dict, user: User) -> flask.Response:
+    """
+    Adds a new event to the database from the given request data.
+    """
+    period = request_data.get("period")
+    period = int(period) if period is not None else None
+    if period is not None and period <= 0:
+        return flask.Response(
+            "period must be null or positive integer", 400
+        )  # Bad Request
+
+    new_event = models.Event(
+        activity=request_data["activity"],
+        start_time=request_data["start_time"],
+        period=period,
+        contact_id=int(request_data["contact_id"]),
+        complete_time=None,
+    )
+    # check if the contact exists and belongs to the user
+    contact = models.Contact.query.get(new_event.contact_id)
+    if contact is not None and contact.person_id == user.id:
+        db.session.add(new_event)
+        db.session.commit()
+
+        return flask.Response("", 204)  # No Content
+    return flask.Response("", 404)  # Not Found
+
+
 @flask_app.route("/api/v1/contacts", methods=["DELETE", "GET", "POST"])
 @flask_login.login_required
 def api_contacts():
@@ -299,29 +328,7 @@ def api_events():
         }
     # add a new event
     if request.method == "POST":
-        request_data = request.get_json()
-        print(request_data)
-
-        period = request_data.get("period")
-        period = int(period) if period is not None else None
-        if period is not None and period <= 0:
-            return ("period must be null or positive integer", 400)  # Bad Request
-
-        new_event = models.Event(
-            activity=request_data["activity"],
-            start_time=request_data["start_time"],
-            period=period,
-            contact_id=int(request_data["contact_id"]),
-            complete_time=None,
-        )
-        # check if the contact exists and belongs to the user
-        contact = models.Contact.query.get(new_event.contact_id)
-        if contact is not None and contact.person_id == user.id:
-            db.session.add(new_event)
-            db.session.commit()
-
-            return ("", 204)  # No Content
-        return ("", 404)  # Not Found
+        return add_new_event(request.get_json(), user)
 
     return ("", 405)  # Method Not Allowed
 
