@@ -191,6 +191,9 @@ def get_next_event(contact):
 
 
 def add_new_event(request_data: dict, user: User) -> flask.Response:
+    """
+    Adds a new event to the database from the given request data.
+    """
     period = request_data.get("period")
     period = int(period) if period is not None else None
     if period is not None and period <= 0:

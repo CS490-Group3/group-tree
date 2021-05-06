@@ -32,7 +32,6 @@ class AddNewEventTest(unittest.TestCase):
 
     def mocked_db_session_commit(self):
         """Mocked database function"""
-        pass
 
     def mocked_contact_query_get(self, contact_id):
         """Mocked database function"""
