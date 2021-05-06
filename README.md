@@ -4,38 +4,6 @@ Heroku Link:
 - Sprint 1: https://secure-badlands-86419.herokuapp.com
 - Sprint 2: https://aqueous-meadow-24998.herokuapp.com
 
-
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#deliverable">Deliverable</a></li>
-        <li><a href="#motivation">Motivation</a></li>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#google-sign-in">Google Sign-in</a></li>
-        <li><a href="#database">Database</a></li>
-        <li><a href="#requirements">Requirements</a></li>
-        <li><a href="#local-deployment">Local Deployment</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#setup">Setup</a>
-      <ul>
-        <li><a href="#deploy-to-Heroku">Deploy to Heroku</a></li>
-      </ul>
-    </li>
-  </ol>
-</details>
-
-
 ## About the Project
 ### Deliverable
 We aim to deliver an app accessible from the browser. This app will help users to remember to check in on their family and friends. The app will provide a login to allow users create scheduled reminders, and features a list of contacts with details regarding their friends and family. The user is encouraged to complete reminders which will be rewarded with a growing-tree visualization.
